@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Salsabela — The Qur’an</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    main {
+      max-width: 850px;
+      margin: auto;
+      padding: 1rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--primary, #2a9d8f);
+    }
+    .sura-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .sura-item {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .sura-item:hover {
+      background-color: var(--primary, #2a9d8f);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: #2a9d8f;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+    input[type="search"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<div id="header-holder"></div>
+
+<main>
+  <h1>📖 Index of Qur’an Chapters</h1>
+
+  <input type="search" id="search" placeholder="🔍 Search for a surah..." oninput="filterSurahs()">
+
+  <div class="sura-list" id="suraList"></div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+  const suraList = document.getElementById("suraList");
+  const searchInput = document.getElementById("search");
+
+  // Array of surah names (1–114)
+  const surahNames = [
+    "Al-Fatihah","Al-Baqarah","Aal Imran","An-Nisa","Al-Ma’idah","Al-An’am","Al-A’raf","Al-Anfal","At-Tawbah","Yunus",
+    "Hud","Yusuf","Ar-Ra’d","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha",
+    "Al-Anbiya","Al-Hajj","Al-Mu’minun","An-Nur","Al-Furqan","Ash-Shu’ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum",
+    "Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir",
+    "Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf",
+    "Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi’ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah",
+    "As-Saff","Al-Jumu’ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma’arij",
+    "Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi’at","Abasa",
+    "At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A’la","Al-Ghashiyah","Al-Fajr","Al-Balad",
+    "Ash-Shams","Al-Layl","Ad-Duhaa","Ash-Sharh","At-Tin","Al-‘Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-‘Adiyat",
+    "Al-Qari’ah","At-Takathur","Al-‘Asr","Al-Humazah","Al-Fil","Quraish","Al-Ma’un","Al-Kawthar","Al-Kafirun","An-Nasr",
+    "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
+  ];
+
+  // Render surah list
+  function renderSurahList() {
+    suraList.innerHTML = "";
+    surahNames.forEach((name, i) => {
+      const div = document.createElement("div");
+      div.className = "sura-item";
+      div.textContent = `${i + 1}. ${name}`;
+      div.onclick = () => window.location.href = `surah.html?id=${i + 1}`;
+      suraList.appendChild(div);
+    });
+  }
+
+  // Filter surahs
+  function filterSurahs() {
+    const val = searchInput.value.trim().toLowerCase();
+    const items = document.querySelectorAll(".sura-item");
+    items.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(val) ? "block" : "none";
+    });
+  }
+
+  renderSurahList();
+</script>
+
+</body>
+</html>

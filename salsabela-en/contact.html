@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — Salsabela</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="header-holder"></div>
+
+<main class="container">
+  <section class="card">
+    <h2>Contact Us</h2>
+    <form id="contact-form">
+      <label>Name</label>
+      <input required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
+      
+      <label>Email</label>
+      <input type="email" required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
+      
+      <label>Message</label>
+      <textarea required style="width:100%;padding:.6rem;margin-bottom:.6rem"></textarea>
+      
+      <button class="adhkar-btn" type="submit">Send</button>
+    </form>
+  </section>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="js/common.js"></script>
+<script>
+  document.getElementById('contact-form').addEventListener('submit', e => {
+    e.preventDefault();
+    alert('Message sent (demo)');
+    e.target.reset();
+  });
+</script>
+</body>
+</html>

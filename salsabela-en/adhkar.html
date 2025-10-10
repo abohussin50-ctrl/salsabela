@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Salsabela — Adhkar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="header-holder"></div>
+<main class="container">
+  <section class="card">
+    <h2>Morning and Evening Remembrances</h2>
+    <div id="adhkar-list"></div>
+    <div style="margin-top:1rem">
+      <button id="reset" class="adhkar-btn">Reset</button>
+    </div>
+  </section>
+</main>
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script>
+const adhkar = [
+  {id:1, text:'Subhan Allah (Glory be to Allah)', count:33},
+  {id:2, text:'Alhamdulillah (Praise be to Allah)', count:33},
+  {id:3, text:'Allahu Akbar (Allah is the Greatest)', count:34},
+  {id:4, text:'La ilaha illa Allah, wahdahu la sharika lah (There is no deity but Allah, alone without partner)', count:1}
+];
+function renderAdhkar(){
+  const holder = document.getElementById('adhkar-list');
+  holder.innerHTML = '';
+  const saved = JSON.parse(localStorage.getItem('salsabeela-adhkar') || '{}');
+  adhkar.forEach(a => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    const current = saved[a.id] || a.count;
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong>${a.text}</strong>
+          <div class="small">Remaining: <span id="cnt-${a.id}">${current}</span></div>
+        </div>
+        <button class="adhkar-btn" data-id="${a.id}">Tap</button>
+      </div>`;
+    holder.appendChild(div);
+  });
+  holder.querySelectorAll('.adhkar-btn').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+      const span = document.getElementById('cnt-' + id);
+      let val = parseInt(span.textContent);
+      if (val > 0) val--;
+      span.textContent = val;
+      const obj = JSON.parse(localStorage.getItem('salsabeela-adhkar') || '{}');
+      obj[id] = val;
+      localStorage.setItem('salsabeela-adhkar', JSON.stringify(obj));
+    })
+  );
+}
+document.getElementById('reset').addEventListener('click', () => {
+  localStorage.removeItem('salsabeela-adhkar');
+  renderAdhkar();
+});
+renderAdhkar();
+</script>
+</body>
+</html>

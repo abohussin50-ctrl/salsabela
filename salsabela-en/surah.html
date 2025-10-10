@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salsabela — Surah Viewer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+main {
+  max-width: 850px;
+  margin: auto;
+  padding: 1rem;
+}
+#surah-title {
+  background-color: var(--primary, #2a9d8f);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+.translation-select {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.verse {
+  font-family: 'Amiri', serif;
+  line-height: 2.3;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  text-align: justify;
+  position: relative;
+}
+.ayah-text {
+  cursor: pointer;
+}
+.ayah-number {
+  color: var(--primary, #2a9d8f);
+  font-weight: bold;
+  margin-left: 5px;
+}
+.translation {
+  font-family: 'Cairo', sans-serif;
+  color: #555;
+  margin-top: 2px;
+  font-size: 0.9rem;
+  display: none;
+}
+.play-btn {
+  cursor: pointer;
+  color: var(--primary, #2a9d8f);
+  margin-left: 5px;
+  font-weight: bold;
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #2a9d8f;
+  text-decoration: none;
+  font-weight: 600;
+}
+.back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div id="header-holder"></div>
+
+<main>
+
+  <a href="quran.html" class="back-link">← Back to Surah Index</a>
+
+  <div id="surah-title">Loading...</div>
+
+  <div class="translation-select">
+    Select Translation Language: 
+    <select id="translationLang">
+      <option value="ar">Arabic</option>
+      <option value="en" selected>English</option>
+      <option value="id">Indonesian</option>
+    </select>
+  </div>
+
+  <div id="verses"></div>
+
+</main>
+
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const surahNumber = parseInt(params.get("id")) || 1;
+
+const surahTitle = document.getElementById("surah-title");
+const versesEl = document.getElementById("verses");
+const langSelect = document.getElementById("translationLang");
+
+let ayahsObj = {};
+let ayahKeys = [];
+let translationData = {};
+
+// Load Surah
+async function loadSurah(num) {
+  try {
+    const url = `source/surah/surah_${num}.json`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("File not found");
+    const data = await res.json();
+
+    surahTitle.textContent = `Surah ${data.name}`;
+    versesEl.innerHTML = "";
+
+    ayahsObj = data.verse || {};
+    ayahKeys = Object.keys(ayahsObj).sort((a, b) => {
+      const numA = parseInt(a.replace("verse_", ""));
+      const numB = parseInt(b.replace("verse_", ""));
+      return numA - numB;
+    });
+
+    await loadTranslation(langSelect.value);
+  } catch (err) {
+    surahTitle.textContent = "⚠️ Error loading Surah";
+    versesEl.innerHTML = `<p style="color:red;text-align:center">The requested file could not be found.</p>`;
+    console.error(err);
+  }
+}
+
+// Load Translation
+async function loadTranslation(lang) {
+  try {
+    const transUrl = `source/translation/${lang}/${lang}_translation_${surahNumber}.json`;
+    const transRes = await fetch(transUrl);
+    if (transRes.ok) translationData = await transRes.json();
+    else translationData = {};
+  } catch(e) { translationData = {}; }
+
+  renderVerses();
+}
+
+// Render verses with audio and hidden translation
+function renderVerses() {
+  versesEl.innerHTML = "";
+
+  ayahKeys.forEach((key) => {
+    const text = ayahsObj[key].replace(/^\uFEFF/, '').trim();
+    const ayahNumber = key.replace("verse_", "");
+    const audioUrl = `source/audio/${String(surahNumber).padStart(3,'0')}/${String(ayahNumber).padStart(3,'0')}.mp3`;
+    const transText = translationData[key] || "";
+
+    const div = document.createElement("div");
+    div.className = "verse";
+    div.innerHTML = `
+      <span class="ayah-text">${text}</span>
+      ${ayahNumber !== "0" ? `<span class="ayah-number">(${ayahNumber})</span>` : ""}
+      <span class="play-btn" onclick="playAudio('${audioUrl}')">▶️</span>
+      <div class="translation">${transText}</div>
+    `;
+
+    // Toggle translation visibility when clicking on the verse text
+    const ayahTextSpan = div.querySelector(".ayah-text");
+    if (ayahTextSpan && transText) {
+      const transDiv = div.querySelector(".translation");
+      transDiv.style.display = "none"; // Hidden by default
+      ayahTextSpan.addEventListener("click", () => {
+        transDiv.style.display = transDiv.style.display === "block" ? "none" : "block";
+      });
+    }
+
+    versesEl.appendChild(div);
+  });
+}
+
+// Play audio
+function playAudio(url) {
+  const audio = new Audio(url);
+  audio.play();
+}
+
+// Change translation language
+langSelect.addEventListener("change", () => {
+  loadTranslation(langSelect.value);
+});
+
+loadSurah(surahNumber);
+</script>
+
+</body>
+</html>
