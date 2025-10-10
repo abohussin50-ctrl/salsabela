@@ -3,35 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Salsabela — Quran Online</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-
-<main>
-  <h1>جاري تحديد اللغة...</h1>
-  <p>إذا لم يتم تحويل الموقع تلقائيًا، اضغط على النسخة المرغوبة:</p>
-  <ul>
-    <li><a href="salsabela/index.html">العربية</a></li>
-    <li><a href="salsabela-en/index.html">English</a></li>
-  </ul>
-</main>
+<title>Redirecting...</title>
 
 <script>
-// تحديد لغة المتصفح
-const userLang = navigator.language || navigator.userLanguage; // مثال: "en-US", "ar-EG"
-
-// تحويل تلقائي حسب اللغة
-if(userLang.startsWith("en")) {
-    window.location.href = "salsabela-en/index.html";
-} else if(userLang.startsWith("ar")) {
-    window.location.href = "salsabela/index.html";
-} else {
-    // لغة غير معروفة → افتراضي العربية
-    window.location.href = "salsabela/index.html";
-}
+// تحويل فوري حسب لغة المتصفح قبل عرض أي شيء
+(function() {
+  const lang = navigator.language || navigator.userLanguage;
+  if (lang && lang.toLowerCase().startsWith('en')) {
+    window.location.replace('salsabela-en/index.html');
+  } else {
+    window.location.replace('salsabela/index.html');
+  }
+})();
 </script>
 
-</body>
+<style>
+  body { display: none; }
+</style>
+</head>
+<body></body>
 </html>
