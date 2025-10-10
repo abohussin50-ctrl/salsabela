@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>سلسبيلا — الأذكار</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css"></head><body>
+<div id="header-holder"></div>
+<main class="container">
+  <section class="card">
+    <h2>أذكار الصباح والمساء</h2>
+    <div id="adhkar-list"></div>
+    <div style="margin-top:1rem"><button id="reset" class="adhkar-btn">إعادة التهيئة</button></div>
+  </section>
+</main>
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script>
+const adhkar = [
+  {id:1,text:'سبحان الله',count:33},
+  {id:2,text:'الحمد لله',count:33},
+  {id:3,text:'الله أكبر',count:34},
+  {id:4,text:'لا إله إلا الله وحده لا شريك له',count:1}
+];
+function renderAdhkar(){
+  const holder = document.getElementById('adhkar-list'); holder.innerHTML='';
+  const saved = JSON.parse(localStorage.getItem('salsabeela-adhkar')||'{}');
+  adhkar.forEach(a=>{
+    const div=document.createElement('div'); div.className='card';
+    const current = saved[a.id] || a.count;
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div><strong>${a.text}</strong><div class="small">المتبقي: <span id="cnt-${a.id}">${current}</span></div></div><button class="adhkar-btn" data-id="${a.id}">اضغط</button></div>`;
+    holder.appendChild(div);
+  });
+  holder.querySelectorAll('.adhkar-btn').forEach(btn=> btn.addEventListener('click', ()=>{ const id=btn.getAttribute('data-id'); const span=document.getElementById('cnt-'+id); let val=parseInt(span.textContent); if(val>0) val--; span.textContent=val; const obj=JSON.parse(localStorage.getItem('salsabeela-adhkar')||'{}'); obj[id]=val; localStorage.setItem('salsabeela-adhkar', JSON.stringify(obj)); }));
+}
+document.getElementById('reset').addEventListener('click', ()=>{ localStorage.removeItem('salsabeela-adhkar'); renderAdhkar(); });
+renderAdhkar();
+</script></body></html>

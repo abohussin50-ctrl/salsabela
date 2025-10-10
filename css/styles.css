@@ -1,0 +1,24 @@
+
+:root{
+  --bg:#f8fbff;
+  --card:#ffffff;
+  --accent:#2b9edb;
+  --text:#0b2540;
+  --muted:#6b7c88;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);margin:0;line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding:1rem}
+.site-header{background:linear-gradient(90deg,var(--accent),rgba(43,158,219,0.85));color:#fff;padding:.9rem 0;box-shadow:0 6px 24px rgba(11,37,64,0.06);position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:1100px;margin:0 auto;padding:0 1rem}
+.brand{font-weight:800;font-size:1.25rem;letter-spacing:1px}
+.nav a{color:rgba(255,255,255,0.95);margin-left:1rem;text-decoration:none;font-weight:600}
+.hero{padding:2rem;background:linear-gradient(180deg,rgba(255,255,255,0.6),transparent);text-align:right;border-radius:12px}
+.card{background:var(--card);padding:1.2rem;border-radius:12px;box-shadow:0 8px 30px rgba(16,24,40,0.04);margin-bottom:1rem}
+.footer{background:#071526;color:#cfe9ff;padding:1rem;margin-top:2rem;text-align:center}
+.button{background:var(--accent);color:#fff;padding:.6rem 1rem;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+.link-btn{display:inline-block;padding:.5rem .8rem;background:rgba(43,158,219,0.12);border-radius:8px;color:var(--accent);text-decoration:none;font-weight:600}
+.surah-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:0;list-style:none}
+.surah-item{background:#fff;padding:.8rem;border-radius:10px;border:1px solid #eef6fb;cursor:pointer}
+@media(max-width:700px){.header-inner{flex-direction:column;align-items:flex-start}.nav{display:flex;flex-wrap:wrap}}

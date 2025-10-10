@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>سلسبيلا — الكتب</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/styles.css"></head><body>
+<div id="header-holder"></div>
+<main class="container card">
+  <h2>📚 مكتبة الكتب الإسلامية</h2>
+  <p>أضف ملفات PDF أو روابط الكتب هنا.</p>
+  <div class="book-list" id="bookList"></div>
+</main>
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script>
+// مثال على عنصر كتاب يمكنك تعديله لاحقًا
+const books = [
+  {title:'تفسير ابن كثير',link:'#'},
+  {title:'صحيح البخاري',link:'#'}
+];
+const holder = document.getElementById('bookList');
+books.forEach(b=>{ const div=document.createElement('div'); div.className='card'; div.style.marginBottom='8px'; div.innerHTML=`<h3>${b.title}</h3><a href="${b.link}" target="_blank">📥 تحميل / عرض</a>`; holder.appendChild(div); });
+</script>
+</body></html>

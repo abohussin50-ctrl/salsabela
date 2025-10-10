@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سلسبيلا — عرض السورة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    main {
+      max-width: 850px;
+      margin: auto;
+      padding: 1rem;
+    }
+    #surah-title {
+      background-color: var(--primary, #2a9d8f);
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+    .verse {
+      font-family: 'Amiri', serif;
+      line-height: 2.3;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      text-align: justify;
+    }
+    .ayah-number {
+      color: var(--primary, #2a9d8f);
+      font-weight: bold;
+    }
+    #controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem 0;
+    }
+    select, button {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      font-family: 'Cairo', sans-serif;
+    }
+    button {
+      background-color: var(--primary, #2a9d8f);
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #21867a;
+    }
+    audio {
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: #2a9d8f;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div id="header-holder"></div>
+
+<main>
+
+  <div id="surah-title">جاري التحميل...</div>
+
+
+  <audio id="player" controls style="display:none"></audio>
+
+  <div id="verses"></div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+  // الحصول على رقم السورة من الرابط
+  const params = new URLSearchParams(window.location.search);
+  const surahNumber = parseInt(params.get("id")) || 1; // الفاتحة افتراضياً
+
+  const surahTitle = document.getElementById("surah-title");
+  const versesEl = document.getElementById("verses");
+  const player = document.getElementById("player");
+  const reciterSelect = document.getElementById("reciter");
+  const playBtn = document.getElementById("playSurah");
+
+  // تحميل السورة من مجلد source
+  async function loadSurah(num) {
+    try {
+      const res = await fetch(`source/surah/${num}.json`);
+      if (!res.ok) throw new Error("لم يتم العثور على الملف");
+      const data = await res.json();
+
+      surahTitle.textContent = `سورة ${data.name}`;
+      versesEl.innerHTML = "";
+
+      data.verses.forEach((v, i) => {
+        const div = document.createElement("div");
+        div.className = "verse";
+        div.innerHTML = `
+          <span class="ayah-text">${v.text}</span>
+          <span class="ayah-number">(${i + 1})</span>
+        `;
+        versesEl.appendChild(div);
+      });
+    } catch (err) {
+      surahTitle.textContent = "⚠️ خطأ في تحميل السورة";
+      versesEl.innerHTML = `<p style="color:red;text-align:center">لم يتم العثور على الملف المطلوب.</p>`;
+      console.error(err);
+    }
+  }
+
+  // تشغيل السورة بصوت القارئ المختار
+  playBtn.addEventListener("click", () => {
+    const base = reciterSelect.value;
+    const file = surahNumber.toString().padStart(3, '0') + ".mp3";
+    player.src = base + file;
+    player.style.display = "block";
+    player.play();
+  });
+
+  loadSurah(surahNumber);
+</script>
+
+</body>
+</html>

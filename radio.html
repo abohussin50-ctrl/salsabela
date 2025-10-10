@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سلسبيلا — إذاعة القرآن الكريم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f5f7fa;
+      color: #222;
+    }
+    main {
+      max-width: 700px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      color: #00695c;
+      margin-bottom: 1rem;
+    }
+    select {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin: 10px;
+      font-size: 1rem;
+    }
+    button {
+      background: #00897b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #00695c;
+    }
+    audio {
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+    .station-info {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+<div id="header-holder"></div>
+<main>
+  <h1>📻 إذاعة القرآن الكريم</h1>
+  <p>استمع إلى بث مباشر لتلاوات القرآن الكريم من إذاعات مختلفة حول العالم.</p>
+
+  <div>
+    <label for="radioSelect">اختر الإذاعة:</label><br>
+    <select id="radioSelect">
+      <option value="">-- اختر إذاعة --</option>
+      <option value="https://qurango.net/radio/tarateel">📖 إذاعة ترتيل القرآن</option>
+      <option value="https://backup.qurango.net/radio/mohammed_siddiq_alminshawi/%D8%A3%D8%AB%D9%8A%D8%B1%20%D8%B1%D8%A7%D8%AF%D9%8A%D9%88.mp3">🎙️ إذاعة المنشاوي</option>
+      <option value="https://server03.quran-uni.com:7007/;*.mp3">🎧 إذاعة الحصري</option>
+      <option value="https://qurango.net/radio/mishary_alafasi.mp3">🕋 إذاعة العفاسي</option>
+      <option value="http://stream.radiojar.com/0tpy1h0kxtzuv">📡 إذاعة القرآن الكريم السعودية</option>
+      <option value="https://stream.radiojar.com/8s5u5tpdtwzuv">🇪🇬 إذاعة القرآن الكريم من مصر</option>
+    </select>
+  </div>
+
+  <button id="playBtn">تشغيل الإذاعة</button>
+
+  <div class="station-info" id="stationName"></div>
+
+  <audio id="radioPlayer" controls autoplay></audio>
+</main>
+<div id="footer-holder"></div>
+
+<script src="js/common.js"></script>
+<script>
+const player = document.getElementById("radioPlayer");
+const select = document.getElementById("radioSelect");
+const btn = document.getElementById("playBtn");
+const info = document.getElementById("stationName");
+
+btn.addEventListener("click", () => {
+  const url = select.value;
+  const name = select.options[select.selectedIndex].text;
+  if (!url) {
+    alert("من فضلك اختر إذاعة أولا 🎧");
+    return;
+  }
+  player.src = url;
+  player.play();
+  info.textContent = "جاري تشغيل: " + name;
+});
+</script>
+</body>
+</html>

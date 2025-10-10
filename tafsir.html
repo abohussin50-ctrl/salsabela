@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>سلسبيلا — التفسير</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css"></head><body>
+<div id="header-holder"></div>
+<main class="container">
+  <section class="card">
+    <h2>تفسير ابن كثير</h2>
+    <div id="tafsir-holder"></div>
+  </section>
+</main>
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script src="js/main.js"></script>
+<script>
+async function loadTafsir(){
+  const taf = await fetchJSON('data/tafsir_ibn_kathir.json');
+  const holder = document.getElementById('tafsir-holder');
+  if(!taf){ holder.innerHTML = '<div class="card">لم يُعثر على ملف التفسير؛ شغّل السكربت fetch-data.sh لتحميله أو ضع الملف في data/</div>'; return; }
+  holder.innerHTML = '<div class="card">تم تحميل التفسير. استخدم صفحة المصحف لعرض تفسير الآيات عند النقر عليها.</div>';
+}
+loadTafsir();
+</script></body></html>
