@@ -1,158 +1,192 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سلسبيلا — عرض السورة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+main {
+  max-width: 850px;
+  margin: auto;
+  padding: 1rem;
+}
+#surah-title {
+  background-color: var(--primary, #2a9d8f);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+.translation-select {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.verse {
+  font-family: 'Amiri', serif;
+  line-height: 2.3;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  text-align: justify;
+  position: relative;
+}
+.ayah-text {
+  cursor: pointer;
+}
+.ayah-number {
+  color: var(--primary, #2a9d8f);
+  font-weight: bold;
+  margin-left: 5px;
+}
+.translation {
+  font-family: 'Cairo', sans-serif;
+  color: #555;
+  margin-top: 2px;
+  font-size: 0.9rem;
+  display: none;
+}
+.play-btn {
+  cursor: pointer;
+  color: var(--primary, #2a9d8f);
+  margin-left: 5px;
+  font-weight: bold;
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #2a9d8f;
+  text-decoration: none;
+  font-weight: 600;
+}
+.back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div id="header-holder"></div>
+
+<main>
+
+  <a href="quran.html" class="back-link">← الرجوع إلى فهرس السور</a>
+
+  <div id="surah-title">جاري التحميل...</div>
+
+  <div class="translation-select">
+    اختر لغة الترجمة: 
+    <select id="translationLang">
+      <option value="ar">العربية</option>
+      <option value="en" selected>الإنجليزية</option>
+      <option value="id">الإندونيسية</option>
+    </select>
+  </div>
+
+  <div id="verses"></div>
+
+</main>
+
+<div id="footer-holder"></div>
+<script src="js/common.js"></script>
+<script src="js/main.js"></script>
+
 <script>
-  // استخراج رقم السورة من الرابط
-  const params = new URLSearchParams(window.location.search);
-  const surahNumber = parseInt(params.get("id")) || 1; // الفاتحة افتراضياً
+const params = new URLSearchParams(window.location.search);
+const surahNumber = parseInt(params.get("id")) || 1;
 
-  const surahTitle = document.getElementById("surah-title");
-  const versesEl = document.getElementById("verses");
+const surahTitle = document.getElementById("surah-title");
+const versesEl = document.getElementById("verses");
+const langSelect = document.getElementById("translationLang");
 
-  // قائمة أسماء السور بالعربية
-  const surahNamesAr = {
-    1: "الفاتحة",
-    2: "البقرة",
-    3: "آل عمران",
-    4: "النساء",
-    5: "المائدة",
-    6: "الأنعام",
-    7: "الأعراف",
-    8: "الأنفال",
-    9: "التوبة",
-    10: "يونس",
-    11: "هود",
-    12: "يوسف",
-    13: "الرعد",
-    14: "إبراهيم",
-    15: "الحجر",
-    16: "النحل",
-    17: "الإسراء",
-    18: "الكهف",
-    19: "مريم",
-    20: "طه",
-    21: "الأنبياء",
-    22: "الحج",
-    23: "المؤمنون",
-    24: "النور",
-    25: "الفرقان",
-    26: "الشعراء",
-    27: "النمل",
-    28: "القصص",
-    29: "العنكبوت",
-    30: "الروم",
-    31: "لقمان",
-    32: "السجدة",
-    33: "الأحزاب",
-    34: "سبأ",
-    35: "فاطر",
-    36: "يس",
-    37: "الصافات",
-    38: "ص",
-    39: "الزمر",
-    40: "غافر",
-    41: "فصلت",
-    42: "الشورى",
-    43: "الزخرف",
-    44: "الدخان",
-    45: "الجاثية",
-    46: "الأحقاف",
-    47: "محمد",
-    48: "الفتح",
-    49: "الحجرات",
-    50: "ق",
-    51: "الذاريات",
-    52: "الطور",
-    53: "النجم",
-    54: "القمر",
-    55: "الرحمن",
-    56: "الواقعة",
-    57: "الحديد",
-    58: "المجادلة",
-    59: "الحشر",
-    60: "الممتحنة",
-    61: "الصف",
-    62: "الجمعة",
-    63: "المنافقون",
-    64: "التغابن",
-    65: "الطلاق",
-    66: "التحريم",
-    67: "الملك",
-    68: "القلم",
-    69: "الحاقة",
-    70: "المعارج",
-    71: "نوح",
-    72: "الجن",
-    73: "المزمل",
-    74: "المدثر",
-    75: "القيامة",
-    76: "الإنسان",
-    77: "المرسلات",
-    78: "النبأ",
-    79: "النازعات",
-    80: "عبس",
-    81: "التكوير",
-    82: "الانفطار",
-    83: "المطففين",
-    84: "الانشقاق",
-    85: "البروج",
-    86: "الطارق",
-    87: "الأعلى",
-    88: "الغاشية",
-    89: "الفجر",
-    90: "البلد",
-    91: "الشمس",
-    92: "الليل",
-    93: "الضحى",
-    94: "الشرح",
-    95: "التين",
-    96: "العلق",
-    97: "القدر",
-    98: "البينة",
-    99: "الزلزلة",
-    100: "العاديات",
-    101: "القارعة",
-    102: "التكاثر",
-    103: "العصر",
-    104: "الهمزة",
-    105: "الفيل",
-    106: "قريش",
-    107: "الماعون",
-    108: "الكوثر",
-    109: "الكافرون",
-    110: "النصر",
-    111: "المسد",
-    112: "الإخلاص",
-    113: "الفلق",
-    114: "الناس"
-  };
+let ayahsObj = {};
+let ayahKeys = [];
+let translationData = {};
 
-  // تحميل السورة من GitHub Raw
-  async function loadSurah(num) {
-    try {
-      const url = `https://raw.githubusercontent.com/abohussin50-ctrl/salsabela/main/source/surah/${num}.json`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("لم يتم العثور على الملف");
-      const data = await res.json();
+// تحميل السورة
+async function loadSurah(num) {
+  try {
+    const url = `source/surah/surah_${num}.json`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("لم يتم العثور على الملف");
+    const data = await res.json();
 
-      // استخدام الاسم العربي إذا كان موجوداً
-      const surahNameAr = surahNamesAr[num] || data.name || `سورة رقم ${num}`;
-      surahTitle.textContent = `سورة ${surahNameAr}`;
-      versesEl.innerHTML = "";
+    surahTitle.textContent = `سورة ${data.name}`;
+    versesEl.innerHTML = "";
 
-      const ayahs = data.ayahs || data.verses || [];
-      ayahs.forEach((v, i) => {
-        const div = document.createElement("div");
-        div.className = "verse";
-        div.innerHTML = `
-          <span class="ayah-text">${v.text}</span>
-          <span class="ayah-number">(${i + 1})</span>
-        `;
-        versesEl.appendChild(div);
-      });
-    } catch (err) {
-      surahTitle.textContent = "⚠️ خطأ في تحميل السورة";
-      versesEl.innerHTML = `<p style="color:red;text-align:center">لم يتم العثور على الملف المطلوب.</p>`;
-      console.error(err);
-    }
+    ayahsObj = data.verse || {};
+    ayahKeys = Object.keys(ayahsObj).sort((a, b) => {
+      const numA = parseInt(a.replace("verse_", ""));
+      const numB = parseInt(b.replace("verse_", ""));
+      return numA - numB;
+    });
+
+    await loadTranslation(langSelect.value);
+  } catch (err) {
+    surahTitle.textContent = "⚠️ خطأ في تحميل السورة";
+    versesEl.innerHTML = `<p style="color:red;text-align:center">لم يتم العثور على الملف المطلوب.</p>`;
+    console.error(err);
   }
+}
 
-  loadSurah(surahNumber);
+// تحميل الترجمة
+async function loadTranslation(lang) {
+  try {
+    const transUrl = `source/translation/${lang}/${lang}_translation_${surahNumber}.json`;
+    const transRes = await fetch(transUrl);
+    if (transRes.ok) translationData = await transRes.json();
+    else translationData = {};
+  } catch(e) { translationData = {}; }
+
+  renderVerses();
+}
+
+// عرض الآيات مع الصوت والترجمة المخفية
+function renderVerses() {
+  versesEl.innerHTML = "";
+
+  ayahKeys.forEach((key) => {
+    const text = ayahsObj[key].replace(/^\uFEFF/, '').trim();
+    const ayahNumber = key.replace("verse_", "");
+    const audioUrl = `source/audio/${String(surahNumber).padStart(3,'0')}/${String(ayahNumber).padStart(3,'0')}.mp3`;
+    const transText = translationData[key] || "";
+
+    const div = document.createElement("div");
+    div.className = "verse";
+    div.innerHTML = `
+      <span class="ayah-text">${text}</span>
+      ${ayahNumber !== "0" ? `<span class="ayah-number">(${ayahNumber})</span>` : ""}
+      <span class="play-btn" onclick="playAudio('${audioUrl}')">▶️</span>
+      <div class="translation">${transText}</div>
+    `;
+
+    // عند الضغط على نص الآية فقط، عرض/إخفاء الترجمة
+    const ayahTextSpan = div.querySelector(".ayah-text");
+    if (ayahTextSpan && transText) {
+      const transDiv = div.querySelector(".translation");
+      transDiv.style.display = "none"; // مخفية افتراضياً
+      ayahTextSpan.addEventListener("click", () => {
+        transDiv.style.display = transDiv.style.display === "block" ? "none" : "block";
+      });
+    }
+
+    versesEl.appendChild(div);
+  });
+}
+
+// تشغيل الصوت
+function playAudio(url) {
+  const audio = new Audio(url);
+  audio.play();
+}
+
+// تغيير لغة الترجمة
+langSelect.addEventListener("change", () => {
+  loadTranslation(langSelect.value);
+});
+
+loadSurah(surahNumber);
 </script>
+
+</body>
+</html>
