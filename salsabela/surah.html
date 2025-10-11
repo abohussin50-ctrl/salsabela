@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>سلسبيلا — عرض السورة</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="favicon.png">  
 <link rel="stylesheet" href="css/styles.css">
 <style>
 main {
@@ -33,6 +32,7 @@ main {
   border-bottom: 1px solid #eee;
   text-align: justify;
   position: relative;
+  transition: background-color 0.3s;
 }
 .ayah-text {
   cursor: pointer;
@@ -60,6 +60,12 @@ main {
   font-weight: 600;
 }
 .back-link:hover { text-decoration: underline; }
+
+/* تأثير الآية عند التشغيل */
+.verse.playing {
+  background-color: rgba(42, 157, 143, 0.1);
+  border-radius: 8px;
+}
 </style>
 </head>
 <body>
@@ -100,13 +106,15 @@ const langSelect = document.getElementById("translationLang");
 let ayahsObj = {};
 let ayahKeys = [];
 let translationData = {};
+let currentAudio = null;
+let currentVerse = null; // الآية التي تُشغّل حالياً
 
-// تحميل السورة من ملفاتك المحلية
+// تحميل السورة
 async function loadSurah(num) {
   try {
-    const url = `source/surah/${num}.json`; // مسار السورة المحلي
+    const url = `source/surah/surah_${num}.json`;
     const res = await fetch(url);
-    if (!res.ok) throw new Error("❌ لم يتم العثور على ملف السورة");
+    if (!res.ok) throw new Error("لم يتم العثور على الملف");
     const data = await res.json();
 
     surahTitle.textContent = `سورة ${data.name}`;
@@ -122,29 +130,24 @@ async function loadSurah(num) {
     await loadTranslation(langSelect.value);
   } catch (err) {
     surahTitle.textContent = "⚠️ خطأ في تحميل السورة";
-    versesEl.innerHTML = `<p style="color:red;text-align:center">${err.message}</p>`;
+    versesEl.innerHTML = `<p style="color:red;text-align:center">لم يتم العثور على الملف المطلوب.</p>`;
     console.error(err);
   }
 }
 
-// تحميل الترجمة من ملفاتك المحلية
+// تحميل الترجمة
 async function loadTranslation(lang) {
   try {
     const transUrl = `source/translation/${lang}/${lang}_translation_${surahNumber}.json`;
     const transRes = await fetch(transUrl);
-    if (transRes.ok) {
-      translationData = await transRes.json();
-    } else {
-      translationData = {};
-    }
-  } catch(e) {
-    translationData = {};
-  }
+    if (transRes.ok) translationData = await transRes.json();
+    else translationData = {};
+  } catch(e) { translationData = {}; }
 
   renderVerses();
 }
 
-// عرض الآيات وتشغيل الصوت وإظهار الترجمة
+// عرض الآيات مع الصوت والترجمة
 function renderVerses() {
   versesEl.innerHTML = "";
 
@@ -162,14 +165,33 @@ function renderVerses() {
       <div class="translation">${transText}</div>
     `;
 
-    // عند الضغط على الآية
     const ayahTextSpan = div.querySelector(".ayah-text");
     const transDiv = div.querySelector(".translation");
 
     ayahTextSpan.addEventListener("click", () => {
-      // تشغيل الصوت الخاص بالآية
-      const audio = new Audio(audioUrl);
-      audio.play();
+      // إيقاف الصوت السابق
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+
+      // إزالة التظليل عن الآية السابقة
+      if (currentVerse) {
+        currentVerse.classList.remove("playing");
+      }
+
+      // تشغيل الصوت الجديد
+      currentAudio = new Audio(audioUrl);
+      currentAudio.play();
+
+      // تظليل الآية الحالية
+      div.classList.add("playing");
+      currentVerse = div;
+
+      // إزالة التظليل بعد انتهاء الصوت
+      currentAudio.addEventListener("ended", () => {
+        div.classList.remove("playing");
+      });
 
       // إظهار أو إخفاء الترجمة
       if (transText) {
@@ -181,7 +203,7 @@ function renderVerses() {
   });
 }
 
-// عند تغيير اللغة
+// تغيير لغة الترجمة
 langSelect.addEventListener("change", () => {
   loadTranslation(langSelect.value);
 });
