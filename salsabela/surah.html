@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>سلسبيلا — عرض السورة</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">  
 <link rel="stylesheet" href="css/styles.css">
 <style>
 main {
@@ -32,7 +33,6 @@ main {
   border-bottom: 1px solid #eee;
   text-align: justify;
   position: relative;
-  transition: background-color 0.3s;
 }
 .ayah-text {
   cursor: pointer;
@@ -45,12 +45,15 @@ main {
 .translation {
   font-family: 'Cairo', sans-serif;
   color: #555;
-  margin-top: 5px;
+  margin-top: 2px;
   font-size: 0.9rem;
   display: none;
-  background: #f9f9f9;
-  padding: 5px 10px;
-  border-radius: 6px;
+}
+.play-btn {
+  cursor: pointer;
+  color: var(--primary, #2a9d8f);
+  margin-left: 5px;
+  font-weight: bold;
 }
 .back-link {
   display: inline-block;
@@ -60,12 +63,6 @@ main {
   font-weight: 600;
 }
 .back-link:hover { text-decoration: underline; }
-
-/* تأثير الآية عند التشغيل */
-.verse.playing {
-  background-color: rgba(42, 157, 143, 0.1);
-  border-radius: 8px;
-}
 </style>
 </head>
 <body>
@@ -106,8 +103,6 @@ const langSelect = document.getElementById("translationLang");
 let ayahsObj = {};
 let ayahKeys = [];
 let translationData = {};
-let currentAudio = null;
-let currentVerse = null; // الآية التي تُشغّل حالياً
 
 // تحميل السورة
 async function loadSurah(num) {
@@ -147,7 +142,7 @@ async function loadTranslation(lang) {
   renderVerses();
 }
 
-// عرض الآيات مع الصوت والترجمة
+// عرض الآيات مع الصوت والترجمة المخفية
 function renderVerses() {
   versesEl.innerHTML = "";
 
@@ -161,46 +156,29 @@ function renderVerses() {
     div.className = "verse";
     div.innerHTML = `
       <span class="ayah-text">${text}</span>
-      <span class="ayah-number">(${ayahNumber})</span>
+      ${ayahNumber !== "0" ? `<span class="ayah-number">(${ayahNumber})</span>` : ""}
+      <span class="play-btn" onclick="playAudio('${audioUrl}')">▶️</span>
       <div class="translation">${transText}</div>
     `;
 
+    // عند الضغط على نص الآية فقط، عرض/إخفاء الترجمة
     const ayahTextSpan = div.querySelector(".ayah-text");
-    const transDiv = div.querySelector(".translation");
-
-    ayahTextSpan.addEventListener("click", () => {
-      // إيقاف الصوت السابق
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
-
-      // إزالة التظليل عن الآية السابقة
-      if (currentVerse) {
-        currentVerse.classList.remove("playing");
-      }
-
-      // تشغيل الصوت الجديد
-      currentAudio = new Audio(audioUrl);
-      currentAudio.play();
-
-      // تظليل الآية الحالية
-      div.classList.add("playing");
-      currentVerse = div;
-
-      // إزالة التظليل بعد انتهاء الصوت
-      currentAudio.addEventListener("ended", () => {
-        div.classList.remove("playing");
-      });
-
-      // إظهار أو إخفاء الترجمة
-      if (transText) {
+    if (ayahTextSpan && transText) {
+      const transDiv = div.querySelector(".translation");
+      transDiv.style.display = "none"; // مخفية افتراضياً
+      ayahTextSpan.addEventListener("click", () => {
         transDiv.style.display = transDiv.style.display === "block" ? "none" : "block";
-      }
-    });
+      });
+    }
 
     versesEl.appendChild(div);
   });
+}
+
+// تشغيل الصوت
+function playAudio(url) {
+  const audio = new Audio(url);
+  audio.play();
 }
 
 // تغيير لغة الترجمة
