@@ -130,19 +130,34 @@ async function loadSurah(num) {
   }
 }
 
-// تحميل الترجمة
+// تحميل الترجمة (يدعم أصفار بادئة)
 async function loadTranslation(lang) {
   try {
+    // المسار بدون أصفار
     const transUrl = `source/translation/${lang}/${lang}_translation_${surahNumber}.json`;
-    const transRes = await fetch(transUrl);
-    if (transRes.ok) translationData = await transRes.json();
-    else translationData = {};
-  } catch(e) { translationData = {}; }
+    let transRes = await fetch(transUrl);
+
+    // إذا لم يوجد الملف، جرّب بالرقم بثلاثة أصفار
+    if (!transRes.ok) {
+      const padded = String(surahNumber).padStart(3, '0');
+      const altUrl = `source/translation/${lang}/${lang}_translation_${padded}.json`;
+      transRes = await fetch(altUrl);
+    }
+
+    if (transRes.ok) {
+      const transJson = await transRes.json();
+      translationData = transJson.verse || transJson || {}; // ✅ دعم كلا الشكلين
+    } else {
+      translationData = {};
+    }
+  } catch(e) {
+    translationData = {};
+  }
 
   renderVerses();
 }
 
-// عرض الآيات مع الصوت والترجمة المخفية
+// عرض الآيات مع الترجمة المخفية
 function renderVerses() {
   versesEl.innerHTML = "";
 
