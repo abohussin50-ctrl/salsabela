@@ -50,18 +50,21 @@ main {
 }
 .adhkar-item h3 {
   color: var(--primary, #2a9d8f);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
   font-size: 1.2rem;
+  text-align: center;
 }
-.adhkar-item ul {
-  margin: 0.5rem 0 0.5rem 1rem;
-  padding: 0;
-  list-style: disc;
+.adhkar-text {
+  margin-bottom: 1rem;
 }
-.adhkar-item .footnote {
-  font-size: 0.85rem;
-  color: #777;
-  margin-top: 6px;
+.adhkar-text p {
+  margin: 0.5rem 0;
+  line-height: 1.9;
+}
+.reference {
+  color: #666;
+  font-size: 0.9rem;
+  margin-right: 10px;
 }
 .back-link {
   display: inline-block;
@@ -135,19 +138,23 @@ function renderAdhkar() {
     div.className = 'adhkar-item';
 
     let textHtml = '';
-    if (Array.isArray(z.text)) {
-      textHtml = '<ul>' + z.text.map(t => `<li>${t}</li>`).join('') + '</ul>';
-    }
+    const texts = Array.isArray(z.text) ? z.text : [];
+    const refs = Array.isArray(z.footnote) ? z.footnote : [];
 
-    let footHtml = '';
-    if (Array.isArray(z.footnote)) {
-      footHtml = z.footnote.map(f => `<p class="footnote">📖 ${f}</p>`).join('');
-    }
+    // لكل ذكر، نعرض النص وتحت كل نص المرجع المقابل إن وجد
+    texts.forEach((t, i) => {
+      const ref = refs[i] ? `<div class="reference">📖 ${refs[i]}</div>` : '';
+      textHtml += `
+        <div class="adhkar-text">
+          <p>${t}</p>
+          ${ref}
+        </div>
+      `;
+    });
 
     div.innerHTML = `
       <h3>${title}</h3>
       ${textHtml}
-      ${footHtml}
     `;
 
     container.appendChild(div);
