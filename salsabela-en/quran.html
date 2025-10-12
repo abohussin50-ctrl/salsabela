@@ -37,14 +37,6 @@
       color: #fff;
       transform: translateY(-3px);
     }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 10px;
-      color: #2a9d8f;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .back-link:hover { text-decoration: underline; }
     input[type="search"] {
       width: 100%;
       padding: 10px;
@@ -52,6 +44,28 @@
       border: 1px solid #ccc;
       margin-bottom: 15px;
       font-family: 'Cairo', sans-serif;
+      position: relative;
+    }
+    /* ✅ صندوق الاقتراحات */
+    #suggestions {
+      position: absolute;
+      width: calc(100% - 2px);
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 999;
+      display: none;
+      max-height: 250px;
+      overflow-y: auto;
+      font-family: 'Cairo', sans-serif;
+    }
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
     }
   </style>
 </head>
@@ -62,7 +76,10 @@
 <main>
   <h1>📖 Index of Qur’an Chapters</h1>
 
-  <input type="search" id="search" placeholder="🔍 Search for a surah..." oninput="filterSurahs()">
+  <div style="position: relative;">
+    <input type="search" id="search" placeholder="🔍 Search for a surah...">
+    <div id="suggestions"></div>
+  </div>
 
   <div class="sura-list" id="suraList"></div>
 </main>
@@ -74,8 +91,8 @@
 <script>
   const suraList = document.getElementById("suraList");
   const searchInput = document.getElementById("search");
+  const suggestionsBox = document.getElementById("suggestions");
 
-  // Array of surah names (1–114)
   const surahNames = [
     "Al-Fatihah","Al-Baqarah","Aal Imran","An-Nisa","Al-Ma’idah","Al-An’am","Al-A’raf","Al-Anfal","At-Tawbah","Yunus",
     "Hud","Yusuf","Ar-Ra’d","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha",
@@ -91,7 +108,18 @@
     "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
   ];
 
-  // Render surah list
+  // ✅ إزالة التشكيل والرموز لتطبيع النص (بحث ذكي)
+  function normalizeText(text) {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u064B-\u0652]/g, "") // remove Arabic diacritics
+      .replace(/['’‘`´]/g, "") // remove apostrophes variations
+      .replace(/[^a-z\u0600-\u06FF\s]/g, "") // keep letters only
+      .trim();
+  }
+
+  // 🔹 عرض كل السور
   function renderSurahList() {
     suraList.innerHTML = "";
     surahNames.forEach((name, i) => {
@@ -103,13 +131,52 @@
     });
   }
 
-  // Filter surahs
-  function filterSurahs() {
-    const val = searchInput.value.trim().toLowerCase();
+  // 🔹 البحث الذكي مع اقتراحات فورية
+  searchInput.addEventListener("input", () => {
+    const query = normalizeText(searchInput.value);
+    suggestionsBox.innerHTML = "";
+
+    if (!query) {
+      suggestionsBox.style.display = "none";
+      showAll();
+      return;
+    }
+
+    const matches = surahNames
+      .map((name, i) => ({ name, index: i + 1 }))
+      .filter(item => normalizeText(item.name).includes(query))
+      .slice(0, 8);
+
+    // عرض النتائج في الاقتراحات
+    if (matches.length > 0) {
+      matches.forEach(match => {
+        const div = document.createElement("div");
+        div.className = "suggestion-item";
+        div.innerHTML = `${match.index}. ${match.name}`;
+        div.onclick = () => {
+          window.location.href = `surah.html?id=${match.index}`;
+        };
+        suggestionsBox.appendChild(div);
+      });
+      suggestionsBox.style.display = "block";
+    } else {
+      suggestionsBox.style.display = "none";
+    }
+
+    // إخفاء السور غير المطابقة
     const items = document.querySelectorAll(".sura-item");
     items.forEach(item => {
-      item.style.display = item.textContent.toLowerCase().includes(val) ? "block" : "none";
+      item.style.display = normalizeText(item.textContent).includes(query) ? "block" : "none";
     });
+  });
+
+  // عند فقدان التركيز – إخفاء الاقتراحات بعد قليل
+  searchInput.addEventListener("blur", () => {
+    setTimeout(() => (suggestionsBox.style.display = "none"), 200);
+  });
+
+  function showAll() {
+    document.querySelectorAll(".sura-item").forEach(item => item.style.display = "block");
   }
 
   renderSurahList();
