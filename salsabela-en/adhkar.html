@@ -186,17 +186,12 @@ function renderSections() {
 function renderAdhkar(index) {
   const sec = allData[index];
   content.innerHTML = `<div class="back-btn" onclick="renderSections()">← Back</div><h2>${sec.TITLE}</h2>`;
-  const saved = JSON.parse(localStorage.getItem("salsabeela-adhkar") || "{}");
   sec.TEXT.forEach(z => {
-    const id = z.ID;
-    const current = saved[id] ?? z.REPEAT ?? 1;
     const div = document.createElement("div");
     div.className = "zekr";
     div.innerHTML = `
       <div class="arabic">${z.ARABIC_TEXT || ''}</div>
       <div class="translation">${z.TRANSLATED_TEXT || ''}</div>
-      ${z.REPEAT ? `<div class="counter">🔁 Repeat: <span id="cnt-${id}">${current}</span></div>
-      <button class="counter-btn" data-id="${id}" data-repeat="${z.REPEAT}">Tap</button>` : ''}
       ${z.AUDIO ? `<audio controls src="${z.AUDIO}"></audio>` : ''}
     `;
     content.appendChild(div);
