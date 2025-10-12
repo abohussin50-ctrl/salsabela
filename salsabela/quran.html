@@ -90,7 +90,7 @@
     "المسد","الإخلاص","الفلق","الناس"
   ];
 
-  // 🔹 إزالة التشكيل والهمزات لتسهيل البحث
+  // 🔹 دالة تنقية النص العربي
   function normalizeArabic(text) {
     return text
       .toLowerCase()
@@ -103,14 +103,13 @@
       .replace(/[^ءاأإآء-ي\s]/g, "");
   }
 
-  // 🔹 حساب التشابه
+  // 🔹 تشابه بسيط بالحروف (Levenshtein distance)
   function similar(a, b) {
     if (!a || !b) return 0;
     const lenA = a.length, lenB = b.length;
     const dp = Array(lenA + 1).fill(null).map(() => Array(lenB + 1).fill(0));
     for (let i = 0; i <= lenA; i++) dp[i][0] = i;
     for (let j = 0; j <= lenB; j++) dp[0][j] = j;
-
     for (let i = 1; i <= lenA; i++) {
       for (let j = 1; j <= lenB; j++) {
         const cost = a[i - 1] === b[j - 1] ? 0 : 1;
@@ -122,11 +121,10 @@
       }
     }
     const dist = dp[lenA][lenB];
-    const maxLen = Math.max(lenA, lenB);
-    return 1 - dist / maxLen;
+    return 1 - dist / Math.max(lenA, lenB);
   }
 
-  // 🔹 عرض السور
+  // 🔹 عرض قائمة السور
   function renderSurahList(filtered = surahNames) {
     suraList.innerHTML = "";
     filtered.forEach(name => {
@@ -141,15 +139,13 @@
     }
   }
 
-  // 🔹 إنشاء عنصر قائمة الاقتراحات
+  // 🔹 صندوق الاقتراحات
   const suggestionBox = document.createElement("div");
   suggestionBox.style.position = "absolute";
   suggestionBox.style.background = "#fff";
   suggestionBox.style.border = "1px solid #ccc";
   suggestionBox.style.borderRadius = "8px";
-  suggestionBox.style.width = "95%";
-  suggestionBox.style.maxWidth = "400px";
-  suggestionBox.style.margin = "0 auto";
+  suggestionBox.style.width = "calc(100% - 20px)";
   suggestionBox.style.padding = "5px 0";
   suggestionBox.style.textAlign = "right";
   suggestionBox.style.display = "none";
@@ -157,13 +153,20 @@
   suggestionBox.style.fontFamily = "'Cairo', sans-serif";
   suggestionBox.style.fontSize = "1rem";
   suggestionBox.style.boxShadow = "0 3px 6px rgba(0,0,0,0.1)";
+  suggestionBox.style.maxHeight = "220px";
+  suggestionBox.style.overflowY = "auto";
+  suggestionBox.style.direction = "rtl";
+  searchInput.parentNode.style.position = "relative";
   searchInput.parentNode.appendChild(suggestionBox);
+
+  let currentFocus = -1;
 
   // 🔍 البحث الذكي + الاقتراحات
   function filterSurahs() {
     const val = normalizeArabic(searchInput.value.trim());
     suggestionBox.innerHTML = "";
     suggestionBox.style.display = "none";
+    currentFocus = -1;
 
     if (!val) {
       renderSurahList();
@@ -172,20 +175,20 @@
 
     const filtered = surahNames.filter(name => {
       const n = normalizeArabic(name);
-      return n.includes(val) || val.includes(n) || similar(n, val) > 0.6;
+      return n.includes(val) || similar(n, val) > 0.6;
     });
 
     renderSurahList(filtered);
 
     // 🔸 عرض الاقتراحات
-    if (filtered.length > 0 && searchInput.value.trim()) {
-      filtered.slice(0, 5).forEach(name => {
+    if (filtered.length > 0) {
+      filtered.slice(0, 7).forEach(name => {
         const item = document.createElement("div");
         item.textContent = name;
-        item.style.padding = "6px 10px";
+        item.style.padding = "8px 12px";
         item.style.cursor = "pointer";
-        item.onmouseover = () => (item.style.background = "#f0f0f0");
-        item.onmouseout = () => (item.style.background = "transparent");
+        item.onmouseover = () => highlight(item);
+        item.onmouseout = () => unhighlight(item);
         item.onclick = () => {
           searchInput.value = name;
           suggestionBox.style.display = "none";
@@ -197,8 +200,41 @@
     }
   }
 
+  // 🔹 تمييز العنصر المختار
+  function highlight(item) { item.style.background = "#f0f0f0"; }
+  function unhighlight(item) { item.style.background = "transparent"; }
+
+  // 🔹 التنقل بلوحة المفاتيح
+  searchInput.addEventListener("keydown", e => {
+    let items = suggestionBox.querySelectorAll("div");
+    if (!items.length) return;
+
+    if (e.key === "ArrowDown") {
+      currentFocus++;
+      if (currentFocus >= items.length) currentFocus = 0;
+      setActive(items);
+    } else if (e.key === "ArrowUp") {
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = items.length - 1;
+      setActive(items);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (currentFocus > -1) {
+        items[currentFocus].click();
+      }
+    }
+  });
+
+  function setActive(items) {
+    items.forEach(i => (i.style.background = "transparent"));
+    if (currentFocus >= 0) {
+      items[currentFocus].style.background = "#e0f7f3";
+      items[currentFocus].scrollIntoView({ block: "nearest" });
+    }
+  }
+
   // إخفاء الاقتراحات عند فقدان التركيز
-  searchInput.addEventListener("blur", () => setTimeout(() => (suggestionBox.style.display = "none"), 200));
+  searchInput.addEventListener("blur", () => setTimeout(() => (suggestionBox.style.display = "none"), 150));
 
   renderSurahList();
 </script>
