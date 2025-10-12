@@ -78,12 +78,9 @@ main {
 </head>
 <body>
 
-<div id="header-holder"></div>
-
 <main>
   <a href="index.html" class="back-link">← الرجوع إلى الصفحة الرئيسية</a>
-
-  <div id="adhkar-title">الأذكار اليومية</div>
+  <div id="adhkar-title">الأذكار</div>
 
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="ابحث عن ذكر أو كلمة..." />
@@ -94,23 +91,31 @@ main {
   </div>
 </main>
 
-<div id="footer-holder"></div>
-
 <script>
 const container = document.getElementById('adhkar-container');
 const searchInput = document.getElementById('searchInput');
 let allAdhkar = {};
 let currentSearch = '';
 
-const ADHKAR_URL = 'source/hisn_almuslim.json'; // المسار النسبي
+const ADHKAR_URL = 'source/hisn_almuslim.json';
 
-// تحميل الملف JSON
+// 🔹 دالة تنظيف النص العربي لجعل البحث ذكي
+function normalizeArabic(text) {
+  return text
+    .toLowerCase()
+    .replace(/[ًٌٍَُِّْـ]/g, '') // إزالة التشكيل
+    .replace(/[أإآا]/g, 'ا') // توحيد الهمزات
+    .replace(/ة/g, 'ه') // توحيد التاء المربوطة
+    .replace(/ى/g, 'ي') // توحيد الألف المقصورة
+    .replace(/[^ءاأإآبتثجحخدذرزسشصضطظعغفقكلمنهوي0-9a-z ]/gi, ''); // حذف الرموز
+}
+
+// 🔹 تحميل الملف
 async function loadAdhkar() {
   try {
     const res = await fetch(ADHKAR_URL);
     if (!res.ok) throw new Error('لم يتم العثور على الملف');
     const data = await res.json();
-
     allAdhkar = data;
     renderAdhkar();
   } catch (err) {
@@ -119,13 +124,17 @@ async function loadAdhkar() {
   }
 }
 
-// عرض الأذكار في الصفحة
+// 🔹 عرض الأذكار
 function renderAdhkar() {
   container.innerHTML = '';
 
-  const keys = Object.keys(allAdhkar).filter(key =>
-    !currentSearch || key.includes(currentSearch) || JSON.stringify(allAdhkar[key]).includes(currentSearch)
-  );
+  const keys = Object.keys(allAdhkar).filter(key => {
+    if (!currentSearch) return true;
+    const normSearch = normalizeArabic(currentSearch);
+    const normKey = normalizeArabic(key);
+    const normContent = normalizeArabic(JSON.stringify(allAdhkar[key]));
+    return normKey.includes(normSearch) || normContent.includes(normSearch);
+  });
 
   if (keys.length === 0) {
     container.innerHTML = `<p style="text-align:center;color:#888;">لا توجد أذكار مطابقة.</p>`;
@@ -141,7 +150,6 @@ function renderAdhkar() {
     const texts = Array.isArray(z.text) ? z.text : [];
     const refs = Array.isArray(z.footnote) ? z.footnote : [];
 
-    // لكل ذكر، نعرض النص وتحت كل نص المرجع المقابل إن وجد
     texts.forEach((t, i) => {
       const ref = refs[i] ? `<div class="reference">📖 ${refs[i]}</div>` : '';
       textHtml += `
@@ -152,22 +160,17 @@ function renderAdhkar() {
       `;
     });
 
-    div.innerHTML = `
-      <h3>${title}</h3>
-      ${textHtml}
-    `;
-
+    div.innerHTML = `<h3>${title}</h3>${textHtml}`;
     container.appendChild(div);
   });
 }
 
-// البحث المباشر
+// 🔹 البحث المباشر الذكي
 searchInput.addEventListener('input', e => {
   currentSearch = e.target.value.trim();
   renderAdhkar();
 });
 
-// بدء التحميل
 loadAdhkar();
 </script>
 
