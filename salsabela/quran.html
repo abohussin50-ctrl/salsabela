@@ -103,7 +103,7 @@
       .replace(/[^ءاأإآء-ي\s]/g, "");
   }
 
-  // 🔹 تشابه بسيط بالحروف (Levenshtein distance)
+  // 🔹 تشابه بالحروف (Levenshtein distance)
   function similar(a, b) {
     if (!a || !b) return 0;
     const lenA = a.length, lenB = b.length;
@@ -124,7 +124,7 @@
     return 1 - dist / Math.max(lenA, lenB);
   }
 
-  // 🔹 عرض قائمة السور
+  // 🔹 عرض السور
   function renderSurahList(filtered = surahNames) {
     suraList.innerHTML = "";
     filtered.forEach(name => {
@@ -139,34 +139,49 @@
     }
   }
 
-  // 🔹 صندوق الاقتراحات
+  // 🔹 إنشاء صندوق الاقتراحات في مكان دقيق
   const suggestionBox = document.createElement("div");
-  suggestionBox.style.position = "absolute";
-  suggestionBox.style.background = "#fff";
-  suggestionBox.style.border = "1px solid #ccc";
-  suggestionBox.style.borderRadius = "8px";
-  suggestionBox.style.width = "calc(100% - 20px)";
-  suggestionBox.style.padding = "5px 0";
-  suggestionBox.style.textAlign = "right";
-  suggestionBox.style.display = "none";
-  suggestionBox.style.zIndex = "1000";
-  suggestionBox.style.fontFamily = "'Cairo', sans-serif";
-  suggestionBox.style.fontSize = "1rem";
-  suggestionBox.style.boxShadow = "0 3px 6px rgba(0,0,0,0.1)";
-  suggestionBox.style.maxHeight = "220px";
-  suggestionBox.style.overflowY = "auto";
-  suggestionBox.style.direction = "rtl";
-  searchInput.parentNode.style.position = "relative";
-  searchInput.parentNode.appendChild(suggestionBox);
+  suggestionBox.className = "suggestion-box";
+  document.body.appendChild(suggestionBox);
+
+  Object.assign(suggestionBox.style, {
+    position: "absolute",
+    background: "#fff",
+    border: "1px solid #ccc",
+    borderRadius: "8px",
+    padding: "5px 0",
+    width: "280px",
+    textAlign: "right",
+    display: "none",
+    zIndex: "1000",
+    fontFamily: "'Cairo', sans-serif",
+    fontSize: "1rem",
+    boxShadow: "0 3px 6px rgba(0,0,0,0.1)",
+    maxHeight: "220px",
+    overflowY: "auto",
+    direction: "rtl",
+  });
+
+  function updateSuggestionPosition() {
+    const rect = searchInput.getBoundingClientRect();
+    suggestionBox.style.top = `${rect.bottom + window.scrollY + 5}px`;
+    suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+    suggestionBox.style.width = `${rect.width}px`;
+  }
+
+  window.addEventListener("resize", updateSuggestionPosition);
+  window.addEventListener("scroll", updateSuggestionPosition);
 
   let currentFocus = -1;
 
-  // 🔍 البحث الذكي + الاقتراحات
+  // 🔍 البحث الذكي
   function filterSurahs() {
     const val = normalizeArabic(searchInput.value.trim());
     suggestionBox.innerHTML = "";
     suggestionBox.style.display = "none";
     currentFocus = -1;
+
+    updateSuggestionPosition();
 
     if (!val) {
       renderSurahList();
@@ -187,8 +202,8 @@
         item.textContent = name;
         item.style.padding = "8px 12px";
         item.style.cursor = "pointer";
-        item.onmouseover = () => highlight(item);
-        item.onmouseout = () => unhighlight(item);
+        item.onmouseover = () => (item.style.background = "#f0f0f0");
+        item.onmouseout = () => (item.style.background = "transparent");
         item.onclick = () => {
           searchInput.value = name;
           suggestionBox.style.display = "none";
@@ -200,11 +215,9 @@
     }
   }
 
-  // 🔹 تمييز العنصر المختار
-  function highlight(item) { item.style.background = "#f0f0f0"; }
-  function unhighlight(item) { item.style.background = "transparent"; }
+  searchInput.addEventListener("input", filterSurahs);
+  searchInput.addEventListener("focus", filterSurahs);
 
-  // 🔹 التنقل بلوحة المفاتيح
   searchInput.addEventListener("keydown", e => {
     let items = suggestionBox.querySelectorAll("div");
     if (!items.length) return;
@@ -219,9 +232,7 @@
       setActive(items);
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (currentFocus > -1) {
-        items[currentFocus].click();
-      }
+      if (currentFocus > -1) items[currentFocus].click();
     }
   });
 
@@ -233,8 +244,9 @@
     }
   }
 
-  // إخفاء الاقتراحات عند فقدان التركيز
-  searchInput.addEventListener("blur", () => setTimeout(() => (suggestionBox.style.display = "none"), 150));
+  searchInput.addEventListener("blur", () => {
+    setTimeout(() => (suggestionBox.style.display = "none"), 150);
+  });
 
   renderSurahList();
 </script>
