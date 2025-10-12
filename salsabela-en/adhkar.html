@@ -7,46 +7,121 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Cairo', sans-serif; background-color: #f9f9f9; color: #333; }
+    main { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+    h2 { color: var(--primary, #2a9d8f); text-align: center; margin-bottom: 1.5rem; }
+    .adhkar-card {
+      background: #fff; border-radius: 12px; padding: 15px 20px;
+      margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      line-height: 1.7;
+    }
+    .adhkar-card strong { color: #2a9d8f; }
+    .arabic-text { font-size: 1.2rem; text-align: right; direction: rtl; font-weight: 600; margin-bottom: .5rem; }
+    .english-text { font-size: 1rem; color: #444; margin-bottom: .5rem; }
+    .repeat, audio { display: block; margin-top: .5rem; }
+    .adhkar-btn { background: #2a9d8f; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    .adhkar-btn:hover { background: #21867a; }
+    input[type="search"] {
+      width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ccc;
+      margin-bottom: 15px; font-family: 'Cairo', sans-serif; font-size: 1rem;
+    }
+    .suggestion-box {
+      position: absolute; background: #fff; border: 1px solid #ccc; border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1); z-index: 1000;
+      max-height: 200px; overflow-y: auto; width: 100%; display: none;
+    }
+    .suggestion-box div {
+      padding: 8px 12px; cursor: pointer;
+    }
+    .suggestion-box div:hover {
+      background-color: #e0f7f3;
+    }
+  </style>
 </head>
 <body>
+
 <div id="header-holder"></div>
-<main class="container">
+
+<main>
   <section class="card">
-    <h2>Morning and Evening Remembrances</h2>
-    <div id="adhkar-list"></div>
-    <div style="margin-top:1rem">
-      <button id="reset" class="adhkar-btn">Reset</button>
+    <h2>adhkar</h2>
+    <input type="search" id="search" placeholder="🔍 Search for a dhikr...">
+    <div id="adhkar-list">Loading...</div>
+    <div style="text-align:center; margin-top:1.5rem;">
+      <button id="reset" class="adhkar-btn">Reset Counters</button>
     </div>
   </section>
 </main>
+
 <div id="footer-holder"></div>
+
 <script src="js/common.js"></script>
 <script>
-const adhkar = [
-  {id:1, text:'Subhan Allah (Glory be to Allah)', count:33},
-  {id:2, text:'Alhamdulillah (Praise be to Allah)', count:33},
-  {id:3, text:'Allahu Akbar (Allah is the Greatest)', count:34},
-  {id:4, text:'La ilaha illa Allah, wahdahu la sharika lah (There is no deity but Allah, alone without partner)', count:1}
-];
-function renderAdhkar(){
-  const holder = document.getElementById('adhkar-list');
-  holder.innerHTML = '';
+// Normalize Arabic text for better matching
+function normalizeText(text) {
+  return text.toLowerCase()
+    .replace(/[ًٌٍَُِّْـ]/g, '')
+    .replace(/[أإآٱا]/g, 'ا')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/[^ءاأإآء-ي\w\s]/g, '');
+}
+
+let allAdhkar = [];
+const container = document.getElementById('adhkar-list');
+const searchInput = document.getElementById('search');
+const suggestionBox = document.createElement('div');
+suggestionBox.className = 'suggestion-box';
+document.body.appendChild(suggestionBox);
+
+// Position suggestion box
+function updateSuggestionPosition() {
+  const rect = searchInput.getBoundingClientRect();
+  suggestionBox.style.top = `${rect.bottom + window.scrollY + 5}px`;
+  suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+  suggestionBox.style.width = `${rect.width}px`;
+}
+window.addEventListener('resize', updateSuggestionPosition);
+window.addEventListener('scroll', updateSuggestionPosition);
+
+// Load adhkar
+async function loadAdhkar() {
+  container.textContent = 'Loading...';
+  try {
+    const response = await fetch('source/husn_en.json');
+    const data = await response.json();
+    allAdhkar = data.English.flatMap(section => section.TEXT);
+    renderAdhkar(allAdhkar);
+  } catch (e) {
+    container.textContent = '⚠️ Error loading adhkar.';
+    console.error(e);
+  }
+}
+
+// Render function
+function renderAdhkar(list) {
+  container.innerHTML = '';
   const saved = JSON.parse(localStorage.getItem('salsabeela-adhkar') || '{}');
-  adhkar.forEach(a => {
+  list.forEach(a => {
     const div = document.createElement('div');
-    div.className = 'card';
-    const current = saved[a.id] || a.count;
+    div.className = 'adhkar-card';
+    const id = a.ID;
+    const repeat = a.REPEAT || 1;
+    const current = saved[id] ?? repeat;
     div.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <strong>${a.text}</strong>
-          <div class="small">Remaining: <span id="cnt-${a.id}">${current}</span></div>
-        </div>
-        <button class="adhkar-btn" data-id="${a.id}">Tap</button>
-      </div>`;
-    holder.appendChild(div);
+      <div class="arabic-text">${a.ARABIC_TEXT}</div>
+      <div class="english-text">${a.TRANSLATED_TEXT}</div>
+      ${a.AUDIO ? `<audio controls src="${a.AUDIO}" style="width:100%"></audio>` : ''}
+      <div class="repeat">Repeat: <span id="cnt-${id}">${current}</span> ×</div>
+      <button class="adhkar-btn" data-id="${id}">Tap</button>
+    `;
+    container.appendChild(div);
   });
-  holder.querySelectorAll('.adhkar-btn').forEach(btn =>
+
+  container.querySelectorAll('.adhkar-btn').forEach(btn =>
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-id');
       const span = document.getElementById('cnt-' + id);
@@ -59,11 +134,56 @@ function renderAdhkar(){
     })
   );
 }
+
+// Search logic
+function filterAdhkar() {
+  const val = normalizeText(searchInput.value.trim());
+  suggestionBox.innerHTML = '';
+  suggestionBox.style.display = 'none';
+  updateSuggestionPosition();
+
+  if (!val) {
+    renderAdhkar(allAdhkar);
+    return;
+  }
+
+  const filtered = allAdhkar.filter(a => {
+    const ar = normalizeText(a.ARABIC_TEXT);
+    const en = normalizeText(a.TRANSLATED_TEXT);
+    return ar.includes(val) || en.includes(val);
+  });
+
+  renderAdhkar(filtered);
+
+  // Show suggestions
+  if (filtered.length > 0) {
+    filtered.slice(0, 6).forEach(a => {
+      const item = document.createElement('div');
+      item.textContent = a.TRANSLATED_TEXT.slice(0, 80) + '...';
+      item.onclick = () => {
+        searchInput.value = '';
+        suggestionBox.style.display = 'none';
+        renderAdhkar([a]);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      suggestionBox.appendChild(item);
+    });
+    suggestionBox.style.display = 'block';
+  }
+}
+
+searchInput.addEventListener('input', filterAdhkar);
+searchInput.addEventListener('focus', filterAdhkar);
+searchInput.addEventListener('blur', () => {
+  setTimeout(() => suggestionBox.style.display = 'none', 150);
+});
+
 document.getElementById('reset').addEventListener('click', () => {
   localStorage.removeItem('salsabeela-adhkar');
-  renderAdhkar();
+  renderAdhkar(allAdhkar);
 });
-renderAdhkar();
+
+loadAdhkar();
 </script>
 </body>
 </html>
