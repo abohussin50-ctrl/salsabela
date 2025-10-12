@@ -75,7 +75,6 @@
   const suraList = document.getElementById("suraList");
   const searchInput = document.getElementById("search");
 
-  // مصفوفة أسماء السور (من 1 إلى 114)
   const surahNames = [
     "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
     "هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
@@ -91,26 +90,115 @@
     "المسد","الإخلاص","الفلق","الناس"
   ];
 
-  // توليد قائمة السور
-  function renderSurahList() {
-    suraList.innerHTML = "";
-    surahNames.forEach((name, i) => {
-      const div = document.createElement("div");
-      div.className = "sura-item";
-      div.textContent = `${i + 1}. ${name}`;
-      div.onclick = () => window.location.href = `surah.html?id=${i + 1}`;
-      suraList.appendChild(div);
-    });
+  // 🔹 إزالة التشكيل والهمزات لتسهيل البحث
+  function normalizeArabic(text) {
+    return text
+      .toLowerCase()
+      .replace(/[ًٌٍَُِّْـ]/g, "")
+      .replace(/[أإآٱا]/g, "ا")
+      .replace(/ؤ/g, "و")
+      .replace(/ئ/g, "ي")
+      .replace(/ة/g, "ه")
+      .replace(/ى/g, "ي")
+      .replace(/[^ءاأإآء-ي\s]/g, "");
   }
 
-  // فلترة السور
-  function filterSurahs() {
-    const val = searchInput.value.trim();
-    const items = document.querySelectorAll(".sura-item");
-    items.forEach(item => {
-      item.style.display = item.textContent.includes(val) ? "block" : "none";
-    });
+  // 🔹 حساب التشابه
+  function similar(a, b) {
+    if (!a || !b) return 0;
+    const lenA = a.length, lenB = b.length;
+    const dp = Array(lenA + 1).fill(null).map(() => Array(lenB + 1).fill(0));
+    for (let i = 0; i <= lenA; i++) dp[i][0] = i;
+    for (let j = 0; j <= lenB; j++) dp[0][j] = j;
+
+    for (let i = 1; i <= lenA; i++) {
+      for (let j = 1; j <= lenB; j++) {
+        const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+        dp[i][j] = Math.min(
+          dp[i - 1][j] + 1,
+          dp[i][j - 1] + 1,
+          dp[i - 1][j - 1] + cost
+        );
+      }
+    }
+    const dist = dp[lenA][lenB];
+    const maxLen = Math.max(lenA, lenB);
+    return 1 - dist / maxLen;
   }
+
+  // 🔹 عرض السور
+  function renderSurahList(filtered = surahNames) {
+    suraList.innerHTML = "";
+    filtered.forEach(name => {
+      const div = document.createElement("div");
+      div.className = "sura-item";
+      div.textContent = `${surahNames.indexOf(name) + 1}. ${name}`;
+      div.onclick = () => window.location.href = `surah.html?id=${surahNames.indexOf(name) + 1}`;
+      suraList.appendChild(div);
+    });
+    if (filtered.length === 0) {
+      suraList.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#777;">لا توجد سورة مطابقة 🔍</p>`;
+    }
+  }
+
+  // 🔹 إنشاء عنصر قائمة الاقتراحات
+  const suggestionBox = document.createElement("div");
+  suggestionBox.style.position = "absolute";
+  suggestionBox.style.background = "#fff";
+  suggestionBox.style.border = "1px solid #ccc";
+  suggestionBox.style.borderRadius = "8px";
+  suggestionBox.style.width = "95%";
+  suggestionBox.style.maxWidth = "400px";
+  suggestionBox.style.margin = "0 auto";
+  suggestionBox.style.padding = "5px 0";
+  suggestionBox.style.textAlign = "right";
+  suggestionBox.style.display = "none";
+  suggestionBox.style.zIndex = "1000";
+  suggestionBox.style.fontFamily = "'Cairo', sans-serif";
+  suggestionBox.style.fontSize = "1rem";
+  suggestionBox.style.boxShadow = "0 3px 6px rgba(0,0,0,0.1)";
+  searchInput.parentNode.appendChild(suggestionBox);
+
+  // 🔍 البحث الذكي + الاقتراحات
+  function filterSurahs() {
+    const val = normalizeArabic(searchInput.value.trim());
+    suggestionBox.innerHTML = "";
+    suggestionBox.style.display = "none";
+
+    if (!val) {
+      renderSurahList();
+      return;
+    }
+
+    const filtered = surahNames.filter(name => {
+      const n = normalizeArabic(name);
+      return n.includes(val) || val.includes(n) || similar(n, val) > 0.6;
+    });
+
+    renderSurahList(filtered);
+
+    // 🔸 عرض الاقتراحات
+    if (filtered.length > 0 && searchInput.value.trim()) {
+      filtered.slice(0, 5).forEach(name => {
+        const item = document.createElement("div");
+        item.textContent = name;
+        item.style.padding = "6px 10px";
+        item.style.cursor = "pointer";
+        item.onmouseover = () => (item.style.background = "#f0f0f0");
+        item.onmouseout = () => (item.style.background = "transparent");
+        item.onclick = () => {
+          searchInput.value = name;
+          suggestionBox.style.display = "none";
+          renderSurahList([name]);
+        };
+        suggestionBox.appendChild(item);
+      });
+      suggestionBox.style.display = "block";
+    }
+  }
+
+  // إخفاء الاقتراحات عند فقدان التركيز
+  searchInput.addEventListener("blur", () => setTimeout(() => (suggestionBox.style.display = "none"), 200));
 
   renderSurahList();
 </script>
