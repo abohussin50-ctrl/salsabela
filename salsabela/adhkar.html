@@ -78,8 +78,11 @@ main {
 </head>
 <body>
 
+<div id="header-holder"></div>
+
 <main>
   <a href="index.html" class="back-link">← الرجوع إلى الصفحة الرئيسية</a>
+
   <div id="adhkar-title">الأذكار</div>
 
   <div class="search-box">
@@ -91,31 +94,34 @@ main {
   </div>
 </main>
 
+<div id="footer-holder"></div>
+
 <script>
 const container = document.getElementById('adhkar-container');
 const searchInput = document.getElementById('searchInput');
 let allAdhkar = {};
 let currentSearch = '';
 
-const ADHKAR_URL = 'source/hisn_almuslim.json';
+const ADHKAR_URL = 'source/hisn_almuslim.json'; // المسار النسبي
 
-// 🔹 دالة تنظيف النص العربي لجعل البحث ذكي
+// ✅ دالة لتطبيع النص العربي (إزالة التشكيل والهمزات)
 function normalizeArabic(text) {
   return text
     .toLowerCase()
-    .replace(/[ًٌٍَُِّْـ]/g, '') // إزالة التشكيل
-    .replace(/[أإآا]/g, 'ا') // توحيد الهمزات
+    .replace(/[ًٌٍَُِّْـ]/g, '') // إزالة الحركات والتنوين
+    .replace(/[أإآٱا]/g, 'ا') // توحيد الهمزات
     .replace(/ة/g, 'ه') // توحيد التاء المربوطة
     .replace(/ى/g, 'ي') // توحيد الألف المقصورة
-    .replace(/[^ءاأإآبتثجحخدذرزسشصضطظعغفقكلمنهوي0-9a-z ]/gi, ''); // حذف الرموز
+    .replace(/[^ءاأإآابتثجحخدذرزسشصضطظعغفقكلمنهوي0-9a-z ]/gi, ''); // إزالة الرموز
 }
 
-// 🔹 تحميل الملف
+// تحميل الملف JSON
 async function loadAdhkar() {
   try {
     const res = await fetch(ADHKAR_URL);
     if (!res.ok) throw new Error('لم يتم العثور على الملف');
     const data = await res.json();
+
     allAdhkar = data;
     renderAdhkar();
   } catch (err) {
@@ -124,15 +130,18 @@ async function loadAdhkar() {
   }
 }
 
-// 🔹 عرض الأذكار
+// عرض الأذكار في الصفحة
 function renderAdhkar() {
   container.innerHTML = '';
 
+  const normSearch = normalizeArabic(currentSearch);
+
   const keys = Object.keys(allAdhkar).filter(key => {
-    if (!currentSearch) return true;
-    const normSearch = normalizeArabic(currentSearch);
+    if (!normSearch) return true;
+
     const normKey = normalizeArabic(key);
     const normContent = normalizeArabic(JSON.stringify(allAdhkar[key]));
+
     return normKey.includes(normSearch) || normContent.includes(normSearch);
   });
 
@@ -150,6 +159,7 @@ function renderAdhkar() {
     const texts = Array.isArray(z.text) ? z.text : [];
     const refs = Array.isArray(z.footnote) ? z.footnote : [];
 
+    // لكل ذكر، نعرض النص والمرجع المقابل له مباشرة
     texts.forEach((t, i) => {
       const ref = refs[i] ? `<div class="reference">📖 ${refs[i]}</div>` : '';
       textHtml += `
@@ -160,17 +170,21 @@ function renderAdhkar() {
       `;
     });
 
-    div.innerHTML = `<h3>${title}</h3>${textHtml}`;
+    div.innerHTML = `
+      <h3>${title}</h3>
+      ${textHtml}
+    `;
     container.appendChild(div);
   });
 }
 
-// 🔹 البحث المباشر الذكي
+// البحث المباشر
 searchInput.addEventListener('input', e => {
   currentSearch = e.target.value.trim();
   renderAdhkar();
 });
 
+// بدء التحميل
 loadAdhkar();
 </script>
 
