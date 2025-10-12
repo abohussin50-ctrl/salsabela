@@ -130,13 +130,12 @@ main {
 const container = document.getElementById('adhkar-container');
 const buttons = document.querySelectorAll('.filters button');
 const searchInput = document.getElementById('searchInput');
-
 let allAdhkar = [];
 let currentFilter = 'all';
 let currentSearch = '';
 
-// 🔗 يمكنك استخدام الملف المحلي أو رابط GitHub
-const ADHKAR_URL = 'https://raw.githubusercontent.com/abohussin50-ctrl/salsabela/refs/heads/main/salsabela/source/hisn_almuslim.json';
+// المسار النسبي للملف (داخل مجلد المشروع)
+const ADHKAR_URL = 'source/hisn_almuslim.json';
 
 // تحميل الملف JSON
 async function loadAdhkar() {
@@ -144,21 +143,11 @@ async function loadAdhkar() {
     const res = await fetch(ADHKAR_URL);
     if (!res.ok) throw new Error('لم يتم العثور على الملف');
     const data = await res.json();
-
-    // تحويل البنية إلى قائمة واحدة من الأذكار
-    allAdhkar = data.flatMap(section =>
-      section.array.map(item => ({
-        category: section.category,
-        zekr: item.zekr,
-        count: item.count,
-        reference: item.reference
-      }))
-    );
-
+    allAdhkar = data || [];
     renderAdhkar();
   } catch (err) {
-    container.innerHTML = `<p style="color:red;text-align:center">حدث خطأ أثناء تحميل الأذكار.<br>لم يتم تحميل الاذكار.</p>`;
-    console.error(err);
+    container.innerHTML = `<p style="color:red;text-align:center">حدث خطأ أثناء تحميل الأذكار.<br>${err.message}</p>`;
+    console.error('خطأ:', err);
   }
 }
 
