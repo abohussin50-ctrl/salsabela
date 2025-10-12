@@ -6,6 +6,7 @@
   <title>Salsabela — Adhkar</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
   <style>
     body {
       font-family: 'Cairo', sans-serif;
@@ -98,15 +99,26 @@
     .suggestions div:hover {
       background: #e8f7f4;
     }
-    .no-results {
-      text-align: center;
-      color: #888;
-      font-size: 1rem;
-      margin-top: 20px;
+    .counter-btn {
+      background: #2a9d8f;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .counter-btn:hover {
+      background: #24897f;
+    }
+    .counter {
+      color: #555;
+      margin-top: 6px;
     }
   </style>
 </head>
 <body>
+<div id="header-holder"></div>
 <main>
   <h2>Adhkar</h2>
   <div style="position: relative;">
@@ -115,14 +127,16 @@
   </div>
   <div id="content">Loading...</div>
 </main>
+<div id="footer-holder"></div>
 
+<script src="js/common.js"></script>
 <script>
 const content = document.getElementById("content");
 const searchBox = document.getElementById("searchBox");
 const suggestionBox = document.getElementById("suggestions");
 let allData = [];
 
-// 🔹 Normalize text (remove tashkeel, hamzat, etc.)
+// 🔹 Normalize Arabic text
 function normalizeText(text) {
   return text
     .toLowerCase()
@@ -136,7 +150,7 @@ function normalizeText(text) {
     .trim();
 }
 
-// 🔹 Load JSON file
+// 🔹 Load JSON
 async function loadAdhkar() {
   try {
     const res = await fetch("source/husn_en.json");
@@ -144,12 +158,11 @@ async function loadAdhkar() {
     allData = data.English;
     renderSections();
   } catch (err) {
-    console.error(err);
     content.innerHTML = `<p style="color:red;text-align:center">⚠️ Error loading adhkar file.</p>`;
   }
 }
 
-// 🔹 Render list of sections
+// 🔹 Render sections
 function renderSections() {
   suggestionBox.style.display = "none";
   content.innerHTML = "";
@@ -162,28 +175,47 @@ function renderSections() {
   });
 }
 
-// 🔹 Render Adhkar in a section
+// 🔹 Render adhkar of section
 function renderAdhkar(index) {
   const sec = allData[index];
-  suggestionBox.style.display = "none";
   content.innerHTML = `
     <div class="back-btn" onclick="renderSections()">← Back</div>
     <h2>${sec.TITLE}</h2>
   `;
+
+  const saved = JSON.parse(localStorage.getItem("salsabeela-adhkar") || "{}");
+
   sec.TEXT.forEach(z => {
+    const id = z.ID;
+    const current = saved[id] ?? z.REPEAT ?? 1;
     const div = document.createElement("div");
     div.className = "zekr";
     div.innerHTML = `
       <div class="arabic">${z.ARABIC_TEXT || ''}</div>
       <div class="translation">${z.TRANSLATED_TEXT || ''}</div>
-      ${z.REPEAT ? `<div style="margin-top:6px;color:#888;">🔁 Repeat: ${z.REPEAT} times</div>` : ''}
+      ${z.REPEAT ? `<div class="counter">🔁 Repeat: <span id="cnt-${id}">${current}</span></div>
+      <button class="counter-btn" data-id="${id}" data-repeat="${z.REPEAT}">Tap</button>` : ''}
       ${z.AUDIO ? `<audio controls src="${z.AUDIO}"></audio>` : ''}
     `;
     content.appendChild(div);
   });
+
+  document.querySelectorAll(".counter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-id");
+      const span = document.getElementById("cnt-" + id);
+      let val = parseInt(span.textContent);
+      if (val > 0) val--;
+      span.textContent = val;
+
+      const store = JSON.parse(localStorage.getItem("salsabeela-adhkar") || "{}");
+      store[id] = val;
+      localStorage.setItem("salsabeela-adhkar", JSON.stringify(store));
+    });
+  });
 }
 
-// 🔹 Smart search with suggestions
+// 🔹 Smart search
 searchBox.addEventListener("input", () => {
   const query = normalizeText(searchBox.value);
   suggestionBox.innerHTML = "";
@@ -200,12 +232,6 @@ searchBox.addEventListener("input", () => {
     });
   });
 
-  if (matches.length === 0) {
-    suggestionBox.style.display = "none";
-    renderSearchResults([]);
-    return;
-  }
-
   suggestionBox.innerHTML = "";
   matches.slice(0, 8).forEach(m => {
     const item = document.createElement("div");
@@ -217,32 +243,10 @@ searchBox.addEventListener("input", () => {
     };
     suggestionBox.appendChild(item);
   });
-  suggestionBox.style.display = "block";
-  renderSearchResults(matches);
+  suggestionBox.style.display = matches.length ? "block" : "none";
 });
 
-// 🔹 Full search result display
-function renderSearchResults(matches) {
-  if (matches.length === 0) {
-    content.innerHTML = `<div class="no-results">No results found 🔍</div>`;
-    return;
-  }
-  content.innerHTML = "";
-  const shown = new Set();
-  matches.forEach(m => {
-    if (!shown.has(m.index)) {
-      const sec = allData[m.index];
-      const div = document.createElement("div");
-      div.className = "section-card";
-      div.textContent = sec.TITLE;
-      div.onclick = () => renderAdhkar(m.index);
-      content.appendChild(div);
-      shown.add(m.index);
-    }
-  });
-}
-
-// 🔹 Hide suggestions when focus lost
+// Hide suggestions when unfocused
 searchBox.addEventListener("blur", () => {
   setTimeout(() => suggestionBox.style.display = "none", 200);
 });
