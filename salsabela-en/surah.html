@@ -130,19 +130,33 @@ async function loadSurah(num) {
   }
 }
 
-// Load Translation
+// Load Translation (supports zero-padded file names)
 async function loadTranslation(lang) {
   try {
     const transUrl = `source/translation/${lang}/${lang}_translation_${surahNumber}.json`;
-    const transRes = await fetch(transUrl);
-    if (transRes.ok) translationData = await transRes.json();
-    else translationData = {};
-  } catch(e) { translationData = {}; }
+    let transRes = await fetch(transUrl);
+
+    // Try zero-padded filename if not found
+    if (!transRes.ok) {
+      const padded = String(surahNumber).padStart(3, '0');
+      const altUrl = `source/translation/${lang}/${lang}_translation_${padded}.json`;
+      transRes = await fetch(altUrl);
+    }
+
+    if (transRes.ok) {
+      const transJson = await transRes.json();
+      translationData = transJson.verse || transJson || {};
+    } else {
+      translationData = {};
+    }
+  } catch (e) {
+    translationData = {};
+  }
 
   renderVerses();
 }
 
-// Render verses with audio and hidden translation
+// Render verses with optional translation
 function renderVerses() {
   versesEl.innerHTML = "";
 
@@ -161,11 +175,11 @@ function renderVerses() {
       <div class="translation">${transText}</div>
     `;
 
-    // Toggle translation visibility when clicking on the verse text
+    // Show/hide translation on click
     const ayahTextSpan = div.querySelector(".ayah-text");
     if (ayahTextSpan && transText) {
       const transDiv = div.querySelector(".translation");
-      transDiv.style.display = "none"; // Hidden by default
+      transDiv.style.display = "none";
       ayahTextSpan.addEventListener("click", () => {
         transDiv.style.display = transDiv.style.display === "block" ? "none" : "block";
       });
