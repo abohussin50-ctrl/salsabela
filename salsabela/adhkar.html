@@ -1,37 +1,201 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>سلسبيلا — الأذكار</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="favicon.png">  
-<link rel="stylesheet" href="css/styles.css"></head><body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سلسبيلا — الأذكار</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 1rem;
+  font-family: 'Cairo', sans-serif;
+}
+#adhkar-title {
+  background-color: var(--primary, #2a9d8f);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.filters {
+  text-align: center;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+.filters button {
+  background: var(--primary, #2a9d8f);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.filters button.active,
+.filters button:hover {
+  background: #21867a;
+}
+.search-box {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.search-box input {
+  width: 90%;
+  max-width: 400px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+}
+.adhkar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.adhkar-item {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 1rem;
+  background: #fafafa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.adhkar-item h3 {
+  color: var(--primary, #2a9d8f);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.adhkar-item p {
+  margin: 0.3rem 0;
+  line-height: 1.8;
+}
+.adhkar-item .count {
+  color: #666;
+  font-size: 0.9rem;
+}
+.adhkar-item .reference {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 4px;
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #2a9d8f;
+  text-decoration: none;
+  font-weight: 600;
+}
+.back-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
 <div id="header-holder"></div>
-<main class="container">
-  <section class="card">
-    <h2>أذكار الصباح والمساء</h2>
-    <div id="adhkar-list"></div>
-    <div style="margin-top:1rem"><button id="reset" class="adhkar-btn">إعادة التهيئة</button></div>
-  </section>
+
+<main>
+  <a href="index.html" class="back-link">← الرجوع إلى الصفحة الرئيسية</a>
+
+  <div id="adhkar-title">الأذكار اليومية</div>
+
+  <div class="filters">
+    <button data-filter="all" class="active">الكل</button>
+    <button data-filter="أذكار الصباح">أذكار الصباح</button>
+    <button data-filter="أذكار المساء">أذكار المساء</button>
+    <button data-filter="أذكار بعد الصلاة">أذكار بعد الصلاة</button>
+    <button data-filter="أذكار عامة">أذكار عامة</button>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="ابحث عن ذكر أو كلمة..." />
+  </div>
+
+  <div id="adhkar-container" class="adhkar-list">
+    <p style="text-align:center;color:#777;">جارٍ تحميل الأذكار...</p>
+  </div>
 </main>
+
 <div id="footer-holder"></div>
+
 <script src="js/common.js"></script>
 <script>
-const adhkar = [
-  {id:1,text:'سبحان الله',count:33},
-  {id:2,text:'الحمد لله',count:33},
-  {id:3,text:'الله أكبر',count:34},
-  {id:4,text:'لا إله إلا الله وحده لا شريك له',count:1}
-];
-function renderAdhkar(){
-  const holder = document.getElementById('adhkar-list'); holder.innerHTML='';
-  const saved = JSON.parse(localStorage.getItem('salsabeela-adhkar')||'{}');
-  adhkar.forEach(a=>{
-    const div=document.createElement('div'); div.className='card';
-    const current = saved[a.id] || a.count;
-    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div><strong>${a.text}</strong><div class="small">المتبقي: <span id="cnt-${a.id}">${current}</span></div></div><button class="adhkar-btn" data-id="${a.id}">اضغط</button></div>`;
-    holder.appendChild(div);
-  });
-  holder.querySelectorAll('.adhkar-btn').forEach(btn=> btn.addEventListener('click', ()=>{ const id=btn.getAttribute('data-id'); const span=document.getElementById('cnt-'+id); let val=parseInt(span.textContent); if(val>0) val--; span.textContent=val; const obj=JSON.parse(localStorage.getItem('salsabeela-adhkar')||'{}'); obj[id]=val; localStorage.setItem('salsabeela-adhkar', JSON.stringify(obj)); }));
+const container = document.getElementById('adhkar-container');
+const buttons = document.querySelectorAll('.filters button');
+const searchInput = document.getElementById('searchInput');
+let allAdhkar = [];
+let currentFilter = 'all';
+let currentSearch = '';
+
+// تحميل الملف JSON
+async function loadAdhkar() {
+  try {
+    const res = await fetch('source/hisn_almuslim.json');
+    if (!res.ok) throw new Error('لم يتم العثور على الملف');
+    const data = await res.json();
+
+    allAdhkar = data || [];
+    renderAdhkar();
+  } catch (err) {
+    container.innerHTML = `<p style="color:red;text-align:center">حدث خطأ أثناء تحميل الأذكار.</p>`;
+    console.error(err);
+  }
 }
-document.getElementById('reset').addEventListener('click', ()=>{ localStorage.removeItem('salsabeela-adhkar'); renderAdhkar(); });
-renderAdhkar();
-</script></body></html>
+
+// عرض الأذكار بناءً على الفلتر والبحث
+function renderAdhkar() {
+  container.innerHTML = '';
+
+  const filtered = allAdhkar.filter(z => {
+    const matchesFilter = currentFilter === 'all' || (z.category || '').includes(currentFilter);
+    const matchesSearch = !currentSearch || (z.zekr || '').includes(currentSearch) || (z.category || '').includes(currentSearch);
+    return matchesFilter && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<p style="text-align:center;color:#888;">لا توجد أذكار مطابقة.</p>`;
+    return;
+  }
+
+  filtered.forEach(z => {
+    const div = document.createElement('div');
+    div.className = 'adhkar-item';
+    div.innerHTML = `
+      <h3>${z.category || 'ذكر عام'}</h3>
+      <p>${z.zekr || ''}</p>
+      ${z.count ? `<p class="count">🔁 التكرار: ${z.count}</p>` : ''}
+      ${z.reference ? `<p class="reference">📖 ${z.reference}</p>` : ''}
+    `;
+    container.appendChild(div);
+  });
+}
+
+// التعامل مع الأزرار
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderAdhkar();
+  });
+});
+
+// البحث المباشر
+searchInput.addEventListener('input', e => {
+  currentSearch = e.target.value.trim();
+  renderAdhkar();
+});
+
+// بدء التحميل
+loadAdhkar();
+</script>
+
+</body>
+</html>
