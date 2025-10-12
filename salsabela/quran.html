@@ -8,10 +8,16 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
   <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8faf9;
+      margin: 0;
+    }
     main {
       max-width: 850px;
       margin: auto;
       padding: 1rem;
+      position: relative;
     }
     h1 {
       text-align: center;
@@ -37,21 +43,36 @@
       color: #fff;
       transform: translateY(-3px);
     }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 10px;
-      color: #2a9d8f;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .back-link:hover { text-decoration: underline; }
     input[type="search"] {
       width: 100%;
       padding: 10px;
       border-radius: 10px;
       border: 1px solid #ccc;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
       font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+    }
+    .suggestion-box {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 5px 0;
+      text-align: right;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      z-index: 9999;
+      max-height: 220px;
+      overflow-y: auto;
+      direction: rtl;
+      width: 100%;
+      display: none;
+    }
+    .suggestion-box div {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .suggestion-box div:hover {
+      background-color: #f0f0f0;
     }
   </style>
 </head>
@@ -62,18 +83,21 @@
 <main>
   <h1>📖 فهرس سور القرآن الكريم</h1>
 
-  <input type="search" id="search" placeholder="🔍 ابحث عن سورة..." oninput="filterSurahs()">
+  <div style="position: relative;">
+    <input type="search" id="search" placeholder="🔍 ابحث عن سورة..." autocomplete="off">
+    <div id="suggestionBox" class="suggestion-box"></div>
+  </div>
 
   <div class="sura-list" id="suraList"></div>
 </main>
 
 <div id="footer-holder"></div>
 <script src="js/common.js"></script>
-<script src="js/main.js"></script>
 
 <script>
   const suraList = document.getElementById("suraList");
   const searchInput = document.getElementById("search");
+  const suggestionBox = document.getElementById("suggestionBox");
 
   const surahNames = [
     "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
@@ -90,10 +114,8 @@
     "المسد","الإخلاص","الفلق","الناس"
   ];
 
-  // 🔹 دالة تنقية النص العربي
   function normalizeArabic(text) {
-    return text
-      .toLowerCase()
+    return text.toLowerCase()
       .replace(/[ًٌٍَُِّْـ]/g, "")
       .replace(/[أإآٱا]/g, "ا")
       .replace(/ؤ/g, "و")
@@ -103,11 +125,10 @@
       .replace(/[^ءاأإآء-ي\s]/g, "");
   }
 
-  // 🔹 تشابه بالحروف (Levenshtein distance)
   function similar(a, b) {
     if (!a || !b) return 0;
     const lenA = a.length, lenB = b.length;
-    const dp = Array(lenA + 1).fill(null).map(() => Array(lenB + 1).fill(0));
+    const dp = Array(lenA + 1).fill().map(() => Array(lenB + 1).fill(0));
     for (let i = 0; i <= lenA; i++) dp[i][0] = i;
     for (let j = 0; j <= lenB; j++) dp[0][j] = j;
     for (let i = 1; i <= lenA; i++) {
@@ -124,7 +145,6 @@
     return 1 - dist / Math.max(lenA, lenB);
   }
 
-  // 🔹 عرض السور
   function renderSurahList(filtered = surahNames) {
     suraList.innerHTML = "";
     filtered.forEach(name => {
@@ -134,80 +154,31 @@
       div.onclick = () => window.location.href = `surah.html?id=${surahNames.indexOf(name) + 1}`;
       suraList.appendChild(div);
     });
-    if (filtered.length === 0) {
+    if (filtered.length === 0)
       suraList.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#777;">لا توجد سورة مطابقة 🔍</p>`;
-    }
   }
 
-  // 🔹 إنشاء صندوق الاقتراحات في مكان دقيق
-  const suggestionBox = document.createElement("div");
-  suggestionBox.className = "suggestion-box";
-  document.body.appendChild(suggestionBox);
-
-  Object.assign(suggestionBox.style, {
-    position: "absolute",
-    background: "#fff",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    padding: "5px 0",
-    width: "280px",
-    textAlign: "right",
-    display: "none",
-    zIndex: "1000",
-    fontFamily: "'Cairo', sans-serif",
-    fontSize: "1rem",
-    boxShadow: "0 3px 6px rgba(0,0,0,0.1)",
-    maxHeight: "220px",
-    overflowY: "auto",
-    direction: "rtl",
-  });
-
-  function updateSuggestionPosition() {
-    const rect = searchInput.getBoundingClientRect();
-    suggestionBox.style.top = `${rect.bottom + window.scrollY + 5}px`;
-    suggestionBox.style.left = `${rect.left + window.scrollX}px`;
-    suggestionBox.style.width = `${rect.width}px`;
-  }
-
-  window.addEventListener("resize", updateSuggestionPosition);
-  window.addEventListener("scroll", updateSuggestionPosition);
-
-  let currentFocus = -1;
-
-  // 🔍 البحث الذكي
   function filterSurahs() {
     const val = normalizeArabic(searchInput.value.trim());
     suggestionBox.innerHTML = "";
     suggestionBox.style.display = "none";
-    currentFocus = -1;
 
-    updateSuggestionPosition();
-
-    if (!val) {
-      renderSurahList();
-      return;
-    }
+    if (!val) { renderSurahList(); return; }
 
     const filtered = surahNames.filter(name => {
       const n = normalizeArabic(name);
-      return n.includes(val) || similar(n, val) > 0.6;
+      return n.includes(val) || similar(n, val) > 0.65;
     });
 
     renderSurahList(filtered);
 
-    // 🔸 عرض الاقتراحات
     if (filtered.length > 0) {
-      filtered.slice(0, 7).forEach(name => {
+      filtered.slice(0, 6).forEach(name => {
         const item = document.createElement("div");
         item.textContent = name;
-        item.style.padding = "8px 12px";
-        item.style.cursor = "pointer";
-        item.onmouseover = () => (item.style.background = "#f0f0f0");
-        item.onmouseout = () => (item.style.background = "transparent");
         item.onclick = () => {
-          searchInput.value = name;
-          suggestionBox.style.display = "none";
-          renderSurahList([name]);
+          const index = surahNames.indexOf(name) + 1;
+          window.location.href = `surah.html?id=${index}`;
         };
         suggestionBox.appendChild(item);
       });
@@ -217,35 +188,8 @@
 
   searchInput.addEventListener("input", filterSurahs);
   searchInput.addEventListener("focus", filterSurahs);
-
-  searchInput.addEventListener("keydown", e => {
-    let items = suggestionBox.querySelectorAll("div");
-    if (!items.length) return;
-
-    if (e.key === "ArrowDown") {
-      currentFocus++;
-      if (currentFocus >= items.length) currentFocus = 0;
-      setActive(items);
-    } else if (e.key === "ArrowUp") {
-      currentFocus--;
-      if (currentFocus < 0) currentFocus = items.length - 1;
-      setActive(items);
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (currentFocus > -1) items[currentFocus].click();
-    }
-  });
-
-  function setActive(items) {
-    items.forEach(i => (i.style.background = "transparent"));
-    if (currentFocus >= 0) {
-      items[currentFocus].style.background = "#e0f7f3";
-      items[currentFocus].scrollIntoView({ block: "nearest" });
-    }
-  }
-
   searchInput.addEventListener("blur", () => {
-    setTimeout(() => (suggestionBox.style.display = "none"), 150);
+    setTimeout(() => suggestionBox.style.display = "none", 200);
   });
 
   renderSurahList();
