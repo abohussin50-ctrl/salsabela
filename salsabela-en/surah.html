@@ -54,6 +54,10 @@ main {
   color: var(--primary, #2a9d8f);
   margin-left: 5px;
   font-weight: bold;
+  transition: 0.2s;
+}
+.play-btn:hover {
+  color: #21867a;
 }
 .back-link {
   display: inline-block;
@@ -103,6 +107,8 @@ const langSelect = document.getElementById("translationLang");
 let ayahsObj = {};
 let ayahKeys = [];
 let translationData = {};
+let currentAudio = null;
+let currentButton = null;
 
 // Load Surah
 async function loadSurah(num) {
@@ -130,13 +136,12 @@ async function loadSurah(num) {
   }
 }
 
-// Load Translation (supports zero-padded file names)
+// Load Translation
 async function loadTranslation(lang) {
   try {
     const transUrl = `source/translation/${lang}/${lang}_translation_${surahNumber}.json`;
     let transRes = await fetch(transUrl);
 
-    // Try zero-padded filename if not found
     if (!transRes.ok) {
       const padded = String(surahNumber).padStart(3, '0');
       const altUrl = `source/translation/${lang}/${lang}_translation_${padded}.json`;
@@ -156,7 +161,7 @@ async function loadTranslation(lang) {
   renderVerses();
 }
 
-// Render verses with optional translation
+// Render verses
 function renderVerses() {
   versesEl.innerHTML = "";
 
@@ -171,28 +176,59 @@ function renderVerses() {
     div.innerHTML = `
       <span class="ayah-text">${text}</span>
       ${ayahNumber !== "0" ? `<span class="ayah-number">(${ayahNumber})</span>` : ""}
-      <span class="play-btn" onclick="playAudio('${audioUrl}')">▶️</span>
+      <span class="play-btn" data-audio="${audioUrl}">▶️</span>
       <div class="translation">${transText}</div>
     `;
 
-    // Show/hide translation on click
+    // Toggle translation on click
     const ayahTextSpan = div.querySelector(".ayah-text");
+    const transDiv = div.querySelector(".translation");
     if (ayahTextSpan && transText) {
-      const transDiv = div.querySelector(".translation");
       transDiv.style.display = "none";
       ayahTextSpan.addEventListener("click", () => {
         transDiv.style.display = transDiv.style.display === "block" ? "none" : "block";
       });
     }
 
+    // Add play button logic
+    const playBtn = div.querySelector(".play-btn");
+    playBtn.addEventListener("click", () => togglePlay(playBtn));
+
     versesEl.appendChild(div);
   });
 }
 
-// Play audio
-function playAudio(url) {
-  const audio = new Audio(url);
-  audio.play();
+// Toggle play/pause for each ayah
+function togglePlay(btn) {
+  const audioUrl = btn.getAttribute("data-audio");
+
+  // If the same button is clicked again
+  if (currentAudio && currentButton === btn) {
+    if (currentAudio.paused) {
+      currentAudio.play();
+      btn.textContent = "⏸️";
+    } else {
+      currentAudio.pause();
+      btn.textContent = "▶️";
+    }
+    return;
+  }
+
+  // Stop any previous audio
+  if (currentAudio) {
+    currentAudio.pause();
+    if (currentButton) currentButton.textContent = "▶️";
+  }
+
+  // Play the new audio
+  currentAudio = new Audio(audioUrl);
+  currentButton = btn;
+  btn.textContent = "⏸️";
+  currentAudio.play();
+
+  currentAudio.addEventListener("ended", () => {
+    btn.textContent = "▶️";
+  });
 }
 
 // Change translation language
