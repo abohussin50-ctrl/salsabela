@@ -8,64 +8,103 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
   <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8faf9;
+      margin: 0;
+    }
+
     main {
       max-width: 850px;
       margin: auto;
       padding: 1rem;
+      position: relative;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 1rem;
-      color: var(--primary, #2a9d8f);
+      color: #2a9d8f;
+      font-weight: 700;
     }
+
+    /* 🔍 تصميم محرك البحث البيضاوي الذكي */
+    .search-container {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    #search {
+      width: 100%;
+      padding: 16px 55px 16px 18px;
+      border-radius: 50px; /* الشكل البيضاوي */
+      border: 2px solid #2a9d8f33;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.05rem;
+      background: #fff url('data:image/svg+xml;utf8,<svg fill="%232a9d8f" height="22" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>') no-repeat 97% center;
+      background-size: 24px;
+      box-shadow: 0 4px 12px rgba(42, 157, 143, 0.12);
+      transition: all 0.3s ease;
+    }
+
+    #search:focus {
+      outline: none;
+      border-color: #2a9d8f;
+      box-shadow: 0 5px 16px rgba(42, 157, 143, 0.25);
+      background-color: #fefefe;
+    }
+
+    /* ✅ صندوق الاقتراحات الذكي */
+    #suggestions {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      max-height: 230px;
+      overflow-y: auto;
+      z-index: 1000;
+      width: 100%;
+      display: none;
+      top: 100%;
+      margin-top: 6px;
+    }
+
+    .suggestion-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: 0.25s;
+      border-bottom: 1px solid #f2f2f2;
+    }
+
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover {
+      background: #e8f7f4;
+      color: #2a9d8f;
+    }
+
+    /* 🕋 فهرس السور */
     .sura-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 10px;
     }
+
     .sura-item {
       background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
       text-align: center;
       transition: 0.3s;
       cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
+
     .sura-item:hover {
-      background-color: var(--primary, #2a9d8f);
-      color: #fff;
-      transform: translateY(-3px);
-    }
-    input[type="search"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      margin-bottom: 15px;
-      font-family: 'Cairo', sans-serif;
-      position: relative;
-    }
-    /* ✅ صندوق الاقتراحات */
-    #suggestions {
-      position: absolute;
-      width: calc(100% - 2px);
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      z-index: 999;
-      display: none;
-      max-height: 250px;
-      overflow-y: auto;
-      font-family: 'Cairo', sans-serif;
-    }
-    .suggestion-item {
-      padding: 10px;
-      cursor: pointer;
-    }
-    .suggestion-item:hover {
-      background-color: #f0f0f0;
+      background-color: #e8f7f4;
+      color: #2a9d8f;
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -76,8 +115,8 @@
 <main>
   <h1>📖 Index of Qur’an Chapters</h1>
 
-  <div style="position: relative;">
-    <input type="search" id="search" placeholder="🔍 Search for a surah...">
+  <div class="search-container">
+    <input type="search" id="search" placeholder="Search for a surah..." autocomplete="off">
     <div id="suggestions"></div>
   </div>
 
@@ -86,7 +125,6 @@
 
 <div id="footer-holder"></div>
 <script src="js/common.js"></script>
-<script src="js/main.js"></script>
 
 <script>
   const suraList = document.getElementById("suraList");
@@ -108,18 +146,16 @@
     "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
   ];
 
-  // ✅ إزالة التشكيل والرموز لتطبيع النص (بحث ذكي)
   function normalizeText(text) {
     return text
       .toLowerCase()
       .normalize("NFD")
-      .replace(/[\u064B-\u0652]/g, "") // remove Arabic diacritics
-      .replace(/['’‘`´]/g, "") // remove apostrophes variations
-      .replace(/[^a-z\u0600-\u06FF\s]/g, "") // keep letters only
+      .replace(/[\u064B-\u0652]/g, "")
+      .replace(/['’‘`´]/g, "")
+      .replace(/[^a-z\u0600-\u06FF\s]/g, "")
       .trim();
   }
 
-  // 🔹 عرض كل السور
   function renderSurahList() {
     suraList.innerHTML = "";
     surahNames.forEach((name, i) => {
@@ -147,7 +183,6 @@
       .filter(item => normalizeText(item.name).includes(query))
       .slice(0, 8);
 
-    // عرض النتائج في الاقتراحات
     if (matches.length > 0) {
       matches.forEach(match => {
         const div = document.createElement("div");
@@ -163,14 +198,12 @@
       suggestionsBox.style.display = "none";
     }
 
-    // إخفاء السور غير المطابقة
     const items = document.querySelectorAll(".sura-item");
     items.forEach(item => {
       item.style.display = normalizeText(item.textContent).includes(query) ? "block" : "none";
     });
   });
 
-  // عند فقدان التركيز – إخفاء الاقتراحات بعد قليل
   searchInput.addEventListener("blur", () => {
     setTimeout(() => (suggestionsBox.style.display = "none"), 200);
   });
