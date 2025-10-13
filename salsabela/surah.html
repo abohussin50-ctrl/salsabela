@@ -54,6 +54,10 @@ main {
   color: var(--primary, #2a9d8f);
   margin-left: 5px;
   font-weight: bold;
+  transition: 0.2s;
+}
+.play-btn:hover {
+  color: #21867a;
 }
 .back-link {
   display: inline-block;
@@ -103,6 +107,8 @@ const langSelect = document.getElementById("translationLang");
 let ayahsObj = {};
 let ayahKeys = [];
 let translationData = {};
+let currentAudio = null; // 🔊 لتتبع الصوت الحالي
+let currentButton = null; // 🎛️ لتتبع الزر الحالي
 
 // تحميل السورة
 async function loadSurah(num) {
@@ -130,14 +136,12 @@ async function loadSurah(num) {
   }
 }
 
-// تحميل الترجمة (يدعم أصفار بادئة)
+// تحميل الترجمة
 async function loadTranslation(lang) {
   try {
-    // المسار بدون أصفار
     const transUrl = `source/translation/${lang}/${lang}_translation_${surahNumber}.json`;
     let transRes = await fetch(transUrl);
 
-    // إذا لم يوجد الملف، جرّب بالرقم بثلاثة أصفار
     if (!transRes.ok) {
       const padded = String(surahNumber).padStart(3, '0');
       const altUrl = `source/translation/${lang}/${lang}_translation_${padded}.json`;
@@ -146,7 +150,7 @@ async function loadTranslation(lang) {
 
     if (transRes.ok) {
       const transJson = await transRes.json();
-      translationData = transJson.verse || transJson || {}; // ✅ دعم كلا الشكلين
+      translationData = transJson.verse || transJson || {};
     } else {
       translationData = {};
     }
@@ -157,7 +161,7 @@ async function loadTranslation(lang) {
   renderVerses();
 }
 
-// عرض الآيات مع الترجمة المخفية
+// عرض الآيات
 function renderVerses() {
   versesEl.innerHTML = "";
 
@@ -172,31 +176,63 @@ function renderVerses() {
     div.innerHTML = `
       <span class="ayah-text">${text}</span>
       ${ayahNumber !== "0" ? `<span class="ayah-number">(${ayahNumber})</span>` : ""}
-      <span class="play-btn" onclick="playAudio('${audioUrl}')">▶️</span>
+      <span class="play-btn" data-audio="${audioUrl}">▶️</span>
       <div class="translation">${transText}</div>
     `;
 
-    // عند الضغط على نص الآية فقط، عرض/إخفاء الترجمة
+    // عرض الترجمة عند الضغط على نص الآية
     const ayahTextSpan = div.querySelector(".ayah-text");
+    const transDiv = div.querySelector(".translation");
     if (ayahTextSpan && transText) {
-      const transDiv = div.querySelector(".translation");
-      transDiv.style.display = "none"; // مخفية افتراضياً
+      transDiv.style.display = "none";
       ayahTextSpan.addEventListener("click", () => {
         transDiv.style.display = transDiv.style.display === "block" ? "none" : "block";
       });
     }
 
+    // زر التشغيل
+    const playBtn = div.querySelector(".play-btn");
+    playBtn.addEventListener("click", () => togglePlay(playBtn));
+
     versesEl.appendChild(div);
   });
 }
 
-// تشغيل الصوت
-function playAudio(url) {
-  const audio = new Audio(url);
-  audio.play();
+// تشغيل/إيقاف الصوت مع تبديل الزر
+function togglePlay(btn) {
+  const audioUrl = btn.getAttribute("data-audio");
+
+  // إذا كان نفس الزر الحالي
+  if (currentAudio && currentButton === btn) {
+    if (currentAudio.paused) {
+      currentAudio.play();
+      btn.textContent = "⏸️";
+    } else {
+      currentAudio.pause();
+      btn.textContent = "▶️";
+    }
+    return;
+  }
+
+  // إيقاف أي صوت آخر
+  if (currentAudio) {
+    currentAudio.pause();
+    if (currentButton) currentButton.textContent = "▶️";
+  }
+
+  // إنشاء وتشغيل الصوت الجديد
+  currentAudio = new Audio(audioUrl);
+  currentButton = btn;
+  btn.textContent = "⏸️";
+  currentAudio.play();
+
+  // عند انتهاء الصوت، إعادة الزر إلى ▶️
+  currentAudio.addEventListener("ended", () => {
+    btn.textContent = "▶️";
+  });
 }
 
-// تغيير لغة الترجمة
+// تغيير الترجمة
 langSelect.addEventListener("change", () => {
   loadTranslation(langSelect.value);
 });
