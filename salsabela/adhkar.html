@@ -1,193 +1,225 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>سلسبيلا — الأذكار</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="stylesheet" href="css/styles.css">
-<style>
-main {
-  max-width: 900px;
-  margin: auto;
-  padding: 1rem;
-  font-family: 'Cairo', sans-serif;
-}
-#adhkar-title {
-  background-color: var(--primary, #2a9d8f);
-  color: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-.search-box {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.search-box input {
-  width: 90%;
-  max-width: 400px;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  text-align: center;
-}
-.adhkar-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.adhkar-item {
-  border: 1px solid #eee;
-  border-radius: 10px;
-  padding: 1rem;
-  background: #fafafa;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.adhkar-item h3 {
-  color: var(--primary, #2a9d8f);
-  margin-bottom: 0.8rem;
-  font-size: 1.2rem;
-  text-align: center;
-}
-.adhkar-text {
-  margin-bottom: 1rem;
-}
-.adhkar-text p {
-  margin: 0.5rem 0;
-  line-height: 1.9;
-}
-.reference {
-  color: #666;
-  font-size: 0.9rem;
-  margin-right: 10px;
-}
-.back-link {
-  display: inline-block;
-  margin-bottom: 10px;
-  color: #2a9d8f;
-  text-decoration: none;
-  font-weight: 600;
-}
-.back-link:hover { text-decoration: underline; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سلسبيلا — الأذكار</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    main {
+      max-width: 900px;
+      margin: auto;
+      position: relative;
+    }
+    h2 {
+      color: #2a9d8f;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* 🌟 صندوق البحث */
+    .search-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    #searchBox {
+      width: 100%;
+      padding: 14px 45px 14px 14px;
+      border-radius: 15px;
+      border: 2px solid #2a9d8f40;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      background: #fff url('data:image/svg+xml;utf8,<svg fill="%232a9d8f" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>') no-repeat 98% center;
+      background-size: 22px;
+      box-shadow: 0 3px 10px rgba(42, 157, 143, 0.15);
+      transition: all 0.3s ease;
+    }
+    #searchBox:focus {
+      outline: none;
+      border-color: #2a9d8f;
+      box-shadow: 0 4px 12px rgba(42, 157, 143, 0.25);
+      background-color: #fefefe;
+    }
+
+    .suggestions {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 1000;
+      width: 100%;
+      display: none;
+      top: 100%;
+      margin-top: 5px;
+    }
+    .suggestions div {
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: 0.25s;
+      border-bottom: 1px solid #f2f2f2;
+    }
+    .suggestions div:last-child { border-bottom: none; }
+    .suggestions div:hover {
+      background: #e8f7f4;
+      color: #2a9d8f;
+    }
+
+    .section-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .section-card:hover { background: #e8f7f4; }
+
+    .zekr {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+    .arabic {
+      font-family: 'Amiri', serif;
+      font-size: 1.2rem;
+      color: #000;
+      direction: rtl;
+      text-align: right;
+      margin-bottom: 8px;
+    }
+    .translation {
+      color: #444;
+      font-size: 0.95rem;
+      border-top: 1px solid #eee;
+      padding-top: 6px;
+    }
+    .counter-btn {
+      background: #2a9d8f;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .counter-btn:hover { background: #24897f; }
+    .counter { color: #555; margin-top: 6px; }
+    .back-btn {
+      display: inline-block;
+      background: #2a9d8f;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .back-btn:hover { background: #24897f; }
+  </style>
 </head>
 <body>
-
 <div id="header-holder"></div>
-<script src="js/common.js"></script>  
+
+<script src="js/common.js"></script>
 
 <main>
-  <a href="index.html" class="back-link">← الرجوع إلى الصفحة الرئيسية</a>
-
-  <div id="adhkar-title">الأذكار</div>
-
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="ابحث عن ذكر أو كلمة..." />
+  <h2>الأذكار</h2>
+  <div class="search-container">
+    <input type="search" id="searchBox" placeholder="ابحث عن ذكر أو كلمة..." autocomplete="off">
+    <div id="suggestions" class="suggestions"></div>
   </div>
-
-  <div id="adhkar-container" class="adhkar-list">
-    <p style="text-align:center;color:#777;">جارٍ تحميل الأذكار...</p>
-  </div>
+  <div id="content">جارٍ التحميل...</div>
 </main>
-
 <div id="footer-holder"></div>
 
 <script>
-const container = document.getElementById('adhkar-container');
-const searchInput = document.getElementById('searchInput');
-let allAdhkar = {};
-let currentSearch = '';
+let allData = [];
+const content = document.getElementById("content");
+const searchBox = document.getElementById("searchBox");
+const suggestionBox = document.getElementById("suggestions");
 
-const ADHKAR_URL = 'source/hisn_almuslim.json'; // المسار النسبي
-
-// ✅ دالة لتطبيع النص العربي (إزالة التشكيل والهمزات)
-function normalizeArabic(text) {
-  return text
-    .toLowerCase()
-    .replace(/[ًٌٍَُِّْـ]/g, '') // إزالة الحركات والتنوين
-    .replace(/[أإآٱا]/g, 'ا') // توحيد الهمزات
-    .replace(/ة/g, 'ه') // توحيد التاء المربوطة
-    .replace(/ى/g, 'ي') // توحيد الألف المقصورة
-    .replace(/[^ءاأإآابتثجحخدذرزسشصضطظعغفقكلمنهوي0-9a-z ]/gi, ''); // إزالة الرموز
+function normalizeText(text) {
+  return text.toLowerCase().replace(/[ًٌٍَُِّْـ،؛؟]/g, "")
+  .replace(/[أإآٱ]/g,"ا").replace(/ؤ/g,"و").replace(/ئ/g,"ي")
+  .replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[^a-zء-ي0-9\s]/gi," ").trim();
 }
 
-// تحميل الملف JSON
 async function loadAdhkar() {
   try {
-    const res = await fetch(ADHKAR_URL);
-    if (!res.ok) throw new Error('لم يتم العثور على الملف');
+    const res = await fetch("source/hisn_ar.json");
     const data = await res.json();
-
-    allAdhkar = data;
-    renderAdhkar();
-  } catch (err) {
-    container.innerHTML = `<p style="color:red;text-align:center">حدث خطأ أثناء تحميل الأذكار.<br>${err.message}</p>`;
-    console.error('❌ خطأ:', err);
+    allData = data.Arabic || data.English; // ← يعتمد على مصدر البيانات
+    renderSections();
+  } catch {
+    content.innerHTML = `<p style="color:red;text-align:center">⚠️ حدث خطأ أثناء تحميل الملف.</p>`;
   }
 }
 
-// عرض الأذكار في الصفحة
-function renderAdhkar() {
-  container.innerHTML = '';
-
-  const normSearch = normalizeArabic(currentSearch);
-
-  const keys = Object.keys(allAdhkar).filter(key => {
-    if (!normSearch) return true;
-
-    const normKey = normalizeArabic(key);
-    const normContent = normalizeArabic(JSON.stringify(allAdhkar[key]));
-
-    return normKey.includes(normSearch) || normContent.includes(normSearch);
+function renderSections() {
+  suggestionBox.style.display = "none";
+  content.innerHTML = "";
+  allData.forEach((sec, i) => {
+    const div = document.createElement("div");
+    div.className = "section-card";
+    div.textContent = sec.TITLE;
+    div.onclick = () => renderAdhkar(i);
+    content.appendChild(div);
   });
+}
 
-  if (keys.length === 0) {
-    container.innerHTML = `<p style="text-align:center;color:#888;">لا توجد أذكار مطابقة.</p>`;
-    return;
-  }
-
-  keys.forEach(title => {
-    const z = allAdhkar[title];
-    const div = document.createElement('div');
-    div.className = 'adhkar-item';
-
-    let textHtml = '';
-    const texts = Array.isArray(z.text) ? z.text : [];
-    const refs = Array.isArray(z.footnote) ? z.footnote : [];
-
-    // لكل ذكر، نعرض النص والمرجع المقابل له مباشرة
-    texts.forEach((t, i) => {
-      const ref = refs[i] ? `<div class="reference">📖 ${refs[i]}</div>` : '';
-      textHtml += `
-        <div class="adhkar-text">
-          <p>${t}</p>
-          ${ref}
-        </div>
-      `;
-    });
-
+function renderAdhkar(index) {
+  const sec = allData[index];
+  content.innerHTML = `<div class="back-btn" onclick="renderSections()">← رجوع</div><h2>${sec.TITLE}</h2>`;
+  sec.TEXT.forEach(z => {
+    const div = document.createElement("div");
+    div.className = "zekr";
     div.innerHTML = `
-      <h3>${title}</h3>
-      ${textHtml}
+      <div class="arabic">${z.ARABIC_TEXT || ''}</div>
+      <div class="translation">${z.TRANSLATED_TEXT || ''}</div>
+      ${z.AUDIO ? `<audio controls src="${z.AUDIO}"></audio>` : ''}
     `;
-    container.appendChild(div);
+    content.appendChild(div);
   });
 }
 
-// البحث المباشر
-searchInput.addEventListener('input', e => {
-  currentSearch = e.target.value.trim();
-  renderAdhkar();
+searchBox.addEventListener("input", () => {
+  const query = normalizeText(searchBox.value);
+  suggestionBox.innerHTML = "";
+  if (!query) { suggestionBox.style.display = "none"; renderSections(); return; }
+
+  const matches = [];
+  allData.forEach((sec, idx) => {
+    const title = normalizeText(sec.TITLE);
+    if (title.includes(query)) matches.push({ name: sec.TITLE, index: idx });
+  });
+
+  suggestionBox.innerHTML = "";
+  matches.slice(0, 8).forEach(m => {
+    const item = document.createElement("div");
+    item.textContent = m.name;
+    item.onclick = () => {
+      suggestionBox.style.display = "none";
+      searchBox.value = m.name;
+      renderAdhkar(m.index);
+    };
+    suggestionBox.appendChild(item);
+  });
+  suggestionBox.style.display = matches.length ? "block" : "none";
 });
 
-// بدء التحميل
+searchBox.addEventListener("blur", () => setTimeout(() => suggestionBox.style.display = "none", 200));
 loadAdhkar();
 </script>
-
 </body>
 </html>
