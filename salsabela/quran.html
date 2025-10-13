@@ -13,66 +13,99 @@
       background-color: #f8faf9;
       margin: 0;
     }
+
     main {
-      max-width: 850px;
+      max-width: 900px;
       margin: auto;
       padding: 1rem;
       position: relative;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 1rem;
-      color: var(--primary, #2a9d8f);
+      color: #2a9d8f;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
-    .sura-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
+
+    /* 🔍 تصميم محرك البحث العصري */
+    .search-container {
+      position: relative;
+      margin-bottom: 20px;
     }
-    .sura-item {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    .sura-item:hover {
-      background-color: var(--primary, #2a9d8f);
-      color: #fff;
-      transform: translateY(-3px);
-    }
-    input[type="search"] {
+
+    #search {
       width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      margin-bottom: 5px;
+      padding: 14px 45px 14px 14px;
+      border-radius: 15px;
+      border: 2px solid #2a9d8f40;
       font-family: 'Cairo', sans-serif;
       font-size: 1rem;
+      background: #fff url('data:image/svg+xml;utf8,<svg fill="%232a9d8f" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>') no-repeat 98% center;
+      background-size: 22px;
+      box-shadow: 0 3px 10px rgba(42, 157, 143, 0.15);
+      transition: all 0.3s ease;
     }
+
+    #search:focus {
+      outline: none;
+      border-color: #2a9d8f;
+      box-shadow: 0 4px 12px rgba(42, 157, 143, 0.25);
+      background-color: #fefefe;
+    }
+
+    /* 💡 صندوق الاقتراحات الذكي */
     .suggestion-box {
       position: absolute;
       background: #fff;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 10px;
-      padding: 5px 0;
-      text-align: right;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      z-index: 9999;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
       max-height: 220px;
       overflow-y: auto;
-      direction: rtl;
+      z-index: 1000;
       width: 100%;
       display: none;
+      top: 100%;
+      margin-top: 5px;
     }
+
     .suggestion-box div {
-      padding: 8px 12px;
+      padding: 10px 14px;
       cursor: pointer;
+      transition: 0.25s;
+      border-bottom: 1px solid #f2f2f2;
     }
+
+    .suggestion-box div:last-child { border-bottom: none; }
     .suggestion-box div:hover {
-      background-color: #f0f0f0;
+      background: #e8f7f4;
+      color: #2a9d8f;
+    }
+
+    /* 🕋 فهرس السور */
+    .sura-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .sura-item {
+      background-color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .sura-item:hover {
+      background-color: #e8f7f4;
+      color: #2a9d8f;
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -83,8 +116,8 @@
 <main>
   <h1>📖 فهرس سور القرآن الكريم</h1>
 
-  <div style="position: relative;">
-    <input type="search" id="search" placeholder="🔍 ابحث عن سورة..." autocomplete="off">
+  <div class="search-container">
+    <input type="search" id="search" placeholder="ابحث عن سورة بالاسم..." autocomplete="off">
     <div id="suggestionBox" class="suggestion-box"></div>
   </div>
 
@@ -125,6 +158,7 @@
       .replace(/[^ءاأإآء-ي\s]/g, "");
   }
 
+  // ⚡ خوارزمية الذكاء التقاربي (قياس التشابه)
   function similar(a, b) {
     if (!a || !b) return 0;
     const lenA = a.length, lenB = b.length;
@@ -167,7 +201,7 @@
 
     const filtered = surahNames.filter(name => {
       const n = normalizeArabic(name);
-      return n.includes(val) || similar(n, val) > 0.65;
+      return n.includes(val) || similar(n, val) > 0.7;
     });
 
     renderSurahList(filtered);
