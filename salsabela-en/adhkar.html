@@ -21,15 +21,15 @@
       letter-spacing: 0.5px;
     }
 
-    /* 🌟 صندوق البحث الجديد */
+    /* 🌟 Oval Search Box */
     .search-container {
       position: relative;
       margin-bottom: 20px;
     }
     #searchBox {
       width: 100%;
-      padding: 14px 45px 14px 14px;
-      border-radius: 15px;
+      padding: 14px 50px 14px 20px;
+      border-radius: 999px; /* Fully oval */
       border: 2px solid #2a9d8f40;
       font-family: 'Cairo', sans-serif;
       font-size: 1rem;
@@ -103,17 +103,6 @@
       border-top: 1px solid #eee;
       padding-top: 6px;
     }
-    .counter-btn {
-      background: #2a9d8f;
-      color: #fff;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .counter-btn:hover { background: #24897f; }
-    .counter { color: #555; margin-top: 6px; }
     .back-btn {
       display: inline-block;
       background: #2a9d8f;
@@ -136,7 +125,7 @@
 <main>
   <h2>Adhkar</h2>
   <div class="search-container">
-    <input type="search" id="searchBox" placeholder="Search by Arabic or English..." autocomplete="off">
+    <input type="search" id="searchBox" placeholder="Search in Arabic or English..." autocomplete="off">
     <div id="suggestions" class="suggestions"></div>
   </div>
   <div id="content">Loading...</div>
@@ -145,6 +134,7 @@
 
 <script>
 let allData = [];
+let currentSection = null; // 🔹 Track current open section
 const content = document.getElementById("content");
 const searchBox = document.getElementById("searchBox");
 const suggestionBox = document.getElementById("suggestions");
@@ -167,6 +157,7 @@ async function loadAdhkar() {
 }
 
 function renderSections() {
+  currentSection = null;
   suggestionBox.style.display = "none";
   content.innerHTML = "";
   allData.forEach((sec, i) => {
@@ -180,6 +171,7 @@ function renderSections() {
 
 function renderAdhkar(index) {
   const sec = allData[index];
+  currentSection = index;
   content.innerHTML = `<div class="back-btn" onclick="renderSections()">← Back</div><h2>${sec.TITLE}</h2>`;
   sec.TEXT.forEach(z => {
     const div = document.createElement("div");
@@ -191,30 +183,33 @@ function renderAdhkar(index) {
     `;
     content.appendChild(div);
   });
-  document.querySelectorAll(".counter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-id");
-      const span = document.getElementById("cnt-" + id);
-      let val = parseInt(span.textContent);
-      if (val > 0) val--;
-      span.textContent = val;
-      const store = JSON.parse(localStorage.getItem("salsabeela-adhkar") || "{}");
-      store[id] = val;
-      localStorage.setItem("salsabeela-adhkar", JSON.stringify(store));
-    });
-  });
 }
 
 searchBox.addEventListener("input", () => {
   const query = normalizeText(searchBox.value);
   suggestionBox.innerHTML = "";
-  if (!query) { suggestionBox.style.display = "none"; renderSections(); return; }
+  if (!query) {
+    suggestionBox.style.display = "none";
+    if (currentSection === null) renderSections();
+    else renderAdhkar(currentSection);
+    return;
+  }
 
   const matches = [];
-  allData.forEach((sec, idx) => {
-    const title = normalizeText(sec.TITLE);
-    if (title.includes(query)) matches.push({ name: sec.TITLE, index: idx });
-  });
+  if (currentSection === null) {
+    // 🔍 Search in section titles
+    allData.forEach((sec, idx) => {
+      const title = normalizeText(sec.TITLE);
+      if (title.includes(query)) matches.push({ name: sec.TITLE, index: idx });
+    });
+  } else {
+    // 🔍 Search inside current section's adhkar
+    const sec = allData[currentSection];
+    sec.TEXT.forEach((z, i) => {
+      const text = normalizeText((z.ARABIC_TEXT || '') + ' ' + (z.TRANSLATED_TEXT || ''));
+      if (text.includes(query)) matches.push({ name: z.ARABIC_TEXT || z.TRANSLATED_TEXT, index: i });
+    });
+  }
 
   suggestionBox.innerHTML = "";
   matches.slice(0, 8).forEach(m => {
@@ -223,7 +218,21 @@ searchBox.addEventListener("input", () => {
     item.onclick = () => {
       suggestionBox.style.display = "none";
       searchBox.value = m.name;
-      renderAdhkar(m.index);
+      if (currentSection === null) renderAdhkar(m.index);
+      else {
+        // Display only the matched dhikr
+        const sec = allData[currentSection];
+        const z = sec.TEXT[m.index];
+        content.innerHTML = `<div class="back-btn" onclick="renderAdhkar(${currentSection})">← Back</div><h2>${sec.TITLE}</h2>`;
+        const div = document.createElement("div");
+        div.className = "zekr";
+        div.innerHTML = `
+          <div class="arabic">${z.ARABIC_TEXT || ''}</div>
+          <div class="translation">${z.TRANSLATED_TEXT || ''}</div>
+          ${z.AUDIO ? `<audio controls src="${z.AUDIO}"></audio>` : ''}
+        `;
+        content.appendChild(div);
+      }
     };
     suggestionBox.appendChild(item);
   });
