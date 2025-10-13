@@ -21,15 +21,15 @@
       letter-spacing: 0.5px;
     }
 
-    /* 🌟 صندوق البحث */
+    /* 🌟 صندوق البحث بيضاوي */
     .search-container {
       position: relative;
       margin-bottom: 20px;
     }
     #searchBox {
       width: 100%;
-      padding: 14px 45px 14px 14px;
-      border-radius: 15px;
+      padding: 14px 50px 14px 20px;
+      border-radius: 999px; /* لجعله بيضاوي تمامًا */
       border: 2px solid #2a9d8f40;
       font-family: 'Cairo', sans-serif;
       font-size: 1rem;
@@ -103,17 +103,6 @@
       border-top: 1px solid #eee;
       padding-top: 6px;
     }
-    .counter-btn {
-      background: #2a9d8f;
-      color: #fff;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .counter-btn:hover { background: #24897f; }
-    .counter { color: #555; margin-top: 6px; }
     .back-btn {
       display: inline-block;
       background: #2a9d8f;
@@ -145,6 +134,7 @@
 
 <script>
 let allData = [];
+let currentSection = null; // 🔹 لتتبع القسم الحالي عند الفتح
 const content = document.getElementById("content");
 const searchBox = document.getElementById("searchBox");
 const suggestionBox = document.getElementById("suggestions");
@@ -159,7 +149,7 @@ async function loadAdhkar() {
   try {
     const res = await fetch("source/hisn_ar.json");
     const data = await res.json();
-    allData = data.Arabic || data.English; // ← يعتمد على مصدر البيانات
+    allData = data.Arabic || data.English;
     renderSections();
   } catch {
     content.innerHTML = `<p style="color:red;text-align:center">⚠️ حدث خطأ أثناء تحميل الملف.</p>`;
@@ -167,6 +157,7 @@ async function loadAdhkar() {
 }
 
 function renderSections() {
+  currentSection = null;
   suggestionBox.style.display = "none";
   content.innerHTML = "";
   allData.forEach((sec, i) => {
@@ -180,6 +171,7 @@ function renderSections() {
 
 function renderAdhkar(index) {
   const sec = allData[index];
+  currentSection = index; // 🔹 تحديد القسم الحالي
   content.innerHTML = `<div class="back-btn" onclick="renderSections()">← رجوع</div><h2>${sec.TITLE}</h2>`;
   sec.TEXT.forEach(z => {
     const div = document.createElement("div");
@@ -196,13 +188,28 @@ function renderAdhkar(index) {
 searchBox.addEventListener("input", () => {
   const query = normalizeText(searchBox.value);
   suggestionBox.innerHTML = "";
-  if (!query) { suggestionBox.style.display = "none"; renderSections(); return; }
+  if (!query) {
+    suggestionBox.style.display = "none";
+    if (currentSection === null) renderSections();
+    else renderAdhkar(currentSection);
+    return;
+  }
 
   const matches = [];
-  allData.forEach((sec, idx) => {
-    const title = normalizeText(sec.TITLE);
-    if (title.includes(query)) matches.push({ name: sec.TITLE, index: idx });
-  });
+  if (currentSection === null) {
+    // 🔍 البحث في أسماء الأقسام فقط
+    allData.forEach((sec, idx) => {
+      const title = normalizeText(sec.TITLE);
+      if (title.includes(query)) matches.push({ name: sec.TITLE, index: idx });
+    });
+  } else {
+    // 🔍 البحث داخل الأذكار في القسم الحالي فقط
+    const sec = allData[currentSection];
+    sec.TEXT.forEach((z, i) => {
+      const text = normalizeText(z.ARABIC_TEXT || '');
+      if (text.includes(query)) matches.push({ name: z.ARABIC_TEXT, index: i });
+    });
+  }
 
   suggestionBox.innerHTML = "";
   matches.slice(0, 8).forEach(m => {
@@ -211,7 +218,22 @@ searchBox.addEventListener("input", () => {
     item.onclick = () => {
       suggestionBox.style.display = "none";
       searchBox.value = m.name;
-      renderAdhkar(m.index);
+
+      if (currentSection === null) renderAdhkar(m.index);
+      else {
+        // عرض الذكر المطلوب فقط داخل القسم الحالي
+        const sec = allData[currentSection];
+        const z = sec.TEXT[m.index];
+        content.innerHTML = `<div class="back-btn" onclick="renderAdhkar(${currentSection})">← رجوع</div><h2>${sec.TITLE}</h2>`;
+        const div = document.createElement("div");
+        div.className = "zekr";
+        div.innerHTML = `
+          <div class="arabic">${z.ARABIC_TEXT || ''}</div>
+          <div class="translation">${z.TRANSLATED_TEXT || ''}</div>
+          ${z.AUDIO ? `<audio controls src="${z.AUDIO}"></audio>` : ''}
+        `;
+        content.appendChild(div);
+      }
     };
     suggestionBox.appendChild(item);
   });
