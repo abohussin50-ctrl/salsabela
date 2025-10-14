@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Salsabela — Quran Radio</title>
+  <title>Salsabila — Holy Quran Radio</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
@@ -55,19 +55,28 @@
 <body>
 <div id="header-holder"></div>
 <main>
-  <h1>📻 Quran Radio</h1>
-  <p>Listen to live Quran recitations broadcast from various radio stations around the world.</p>
+  <h1>📻 Holy Quran Radio</h1>
+  <p>Listen to live broadcasts of Quran recitations from various stations around the world.</p>
 
   <div>
     <label for="radioSelect">Choose a station:</label><br>
     <select id="radioSelect">
       <option value="">-- Select a station --</option>
-      <option value="https://qurango.net/radio/tarateel">📖 Quran Recitation (Tarateel)</option>
-      <option value="https://backup.qurango.net/radio/mohammed_siddiq_alminshawi/%D8%A3%D8%AB%D9%8A%D8%B1%20%D8%B1%D8%A7%D8%AF%D9%8A%D9%88.mp3">🎙️ Al-Minshawi Radio</option>
-      <option value="https://server03.quran-uni.com:7007/;*.mp3">🎧 Al-Husary Radio</option>
-      <option value="https://qurango.net/radio/mishary_alafasi.mp3">🕋 Al-Afasy Radio</option>
-      <option value="http://stream.radiojar.com/0tpy1h0kxtzuv">📡 Saudi Quran Radio</option>
-      <option value="https://stream.radiojar.com/8s5u5tpdtwzuv">🇪🇬 Egypt Quran Radio</option>
+      <option value="https://qurango.net/radio/tarateel">Tarteel Quran Radio</option>
+      <option value="https://stream.radiojar.com/8s5u5tpdtwzuv">Holy Quran Radio - Cairo</option>
+      <option value="http://stream.radiojar.com/0tpy1h0kxtzuv">Holy Quran Radio - Saudi Arabia</option>
+      <option value="https://backup.qurango.net/radio/mohammed_siddiq_alminshawi/%D8%A3%D8%AB%D9%8A%D8%B1%20%D8%B1%D8%A7%D8%AF%D9%8A%D9%88.mp3">Al-Minshawi Radio</option>
+      <option value="https://server03.quran-uni.com:7007/;*.mp3">Al-Husary Radio</option>
+      <option value="https://qurango.net/radio/mahmoud_ali__albanna_mojawwad.mp3">Sheikh Mahmoud Ali Al-Banna Radio</option>
+      <option value="https://server03.quran-uni.com:7132/;*.mp3">Sheikh Mustafa Ismail Radio</option>
+      <option value="https://qurango.net/radio/abdulbasit_abdulsamad_mojawwad.mp3">Sheikh Abdulbasit Abdulsamad Radio</option>
+      <option value="https://qurango.net/radio/yasser_aldosari.mp3">Sheikh Yasser Al-Dosari Radio</option>
+      <option value="https://server03.quran-uni.com:7005/;*.mp3">Sheikh Maher Al-Muaiqly Radio</option>
+      <option value="https://qurango.net/radio/abdulrahman_alsudaes.mp3">Sheikh Abdulrahman Al-Sudais Radio</option>
+      <option value="https://qurango.net/radio/ahmad_alajmy.mp3">Sheikh Ahmed Al-Ajmi Radio</option>
+      <option value="https://qurango.net/radio/saad_alghamdi.mp3">Sheikh Saad Al-Ghamdi Radio</option>
+      <option value="https://server03.quran-uni.com:7032/;*.mp3">Sheikh Abdullah Awad Al-Juhani Radio</option>
+      <option value="https://qurango.net/radio/mishary_alafasi.mp3">Al-Afasy Radio</option>
     </select>
   </div>
 
@@ -90,7 +99,7 @@ btn.addEventListener("click", () => {
   const url = select.value;
   const name = select.options[select.selectedIndex].text;
   if (!url) {
-    alert("Please select a station first 🎧");
+    alert("Please select a radio station first 🎧");
     return;
   }
   player.src = url;
