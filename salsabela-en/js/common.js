@@ -4,11 +4,9 @@ function buildHeader() {
   <header class="site-header">
     <div class="header-inner">
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
-      <div class="brand">
-        <link rel="icon" type="image/png" href="favicon.png">
-        <span>Salsabela</span>
+        <div class="brand">salsabela</div>
       </div>
-    </div>
+
 
     <!-- Sidebar menu -->
     <nav class="side-menu" id="sideMenu" aria-label="Main navigation">
