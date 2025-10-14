@@ -152,4 +152,28 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);margi
 body {
   padding-top: 70px; /* اضبط الرقم حسب ارتفاع الهيدر */
 }
+#backToTop {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #29a3e1;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 22px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+#backToTop:hover {
+  background-color: #1b91cc;
+  transform: translateY(-3px);
+}
 
