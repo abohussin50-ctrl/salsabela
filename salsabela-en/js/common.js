@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (headerHolder) headerHolder.innerHTML = buildHeader();
   if (footerHolder) footerHolder.innerHTML = buildFooter();
 
+  // ⏳ Ensure DOM is ready before attaching events
   setTimeout(() => {
     const toggle = document.getElementById("menuToggle");
     const sideMenu = document.getElementById("sideMenu");
@@ -63,9 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sideClose) sideClose.addEventListener("click", closeMenu);
     if (overlay) overlay.addEventListener("click", closeMenu);
 
-    sideMenu.querySelectorAll("a").forEach(a => {
-      a.addEventListener("click", () => closeMenu());
-    });
+    sideMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMenu));
 
     window.addEventListener("resize", () => {
       if (window.innerWidth > 768) {
@@ -74,4 +73,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }, 50);
+
+  // ✅ Back to Top Button (auto-added to all pages)
+  const backToTop = document.createElement("button");
+  backToTop.id = "backToTop";
+  backToTop.title = "Back to top";
+  backToTop.innerHTML = "↑";
+  document.body.appendChild(backToTop);
+
+  // Show or hide on scroll
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      backToTop.style.display = "flex";
+    } else {
+      backToTop.style.display = "none";
+    }
+  });
+
+  // Smooth scroll to top
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 });
