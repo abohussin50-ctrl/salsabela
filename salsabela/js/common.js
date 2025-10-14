@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // عند التمرير يظهر أو يختفي
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
+    if (window.scrollY > 250) {
       backToTop.style.display = "flex";
     } else {
       backToTop.style.display = "none";
