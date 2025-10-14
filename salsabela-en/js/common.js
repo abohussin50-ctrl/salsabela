@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Show or hide on scroll
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
+    if (window.scrollY > 250) {
       backToTop.style.display = "flex";
     } else {
       backToTop.style.display = "none";
@@ -95,3 +95,4 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+
