@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (footerHolder) footerHolder.innerHTML = buildFooter();
 
   // بعد الإدراج نربط الأحداث
-  // استخدم timeout صغير للتأكد أن الـ DOM تم ادراجه
   setTimeout(() => {
     const toggle = document.getElementById("menuToggle");
     const sideMenu = document.getElementById("sideMenu");
@@ -46,16 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function openMenu() {
       sideMenu.classList.add("active");
-      // عرض overlay فقط على الشاشات الصغيرة
       if (window.innerWidth <= 768 && overlay) overlay.classList.add("show");
-      // منع تمرير الخلفية عندما تكون القائمة مفتوحة على الموبايل
       if (window.innerWidth <= 768) document.body.style.overflow = "hidden";
     }
 
     function closeMenu() {
       sideMenu.classList.remove("active");
       if (overlay) overlay.classList.remove("show");
-      document.body.style.overflow = ""; // اعادة التمرير
+      document.body.style.overflow = "";
     }
 
     toggle.addEventListener("click", () => {
@@ -65,21 +62,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (sideClose) sideClose.addEventListener("click", closeMenu);
     if (overlay) overlay.addEventListener("click", closeMenu);
+    sideMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMenu));
 
-    // إغلاق القائمة عند الضغط على أي رابط داخلها
-    sideMenu.querySelectorAll("a").forEach(a => {
-      a.addEventListener("click", () => {
-        closeMenu();
-      });
-    });
-
-    // عند تغيير حجم الشاشة: إذا تم تكبير الشاشة وأُغلق overlay سابقًا، نزيل الانطباع
     window.addEventListener("resize", () => {
       if (window.innerWidth > 768) {
-        // لا نريد overlay على الشاشات الكبيرة
         if (overlay) overlay.classList.remove("show");
         document.body.style.overflow = "";
       }
     });
   }, 50);
+
+  // ✅ زر الرجوع للأعلى (يضاف تلقائيًا)
+  const backToTop = document.createElement("button");
+  backToTop.id = "backToTop";
+  backToTop.title = "الرجوع للأعلى";
+  backToTop.innerHTML = "↑"; // يمكنك استبدالها بأيقونة SVG إذا رغبت
+  document.body.appendChild(backToTop);
+
+  // عند التمرير يظهر أو يختفي
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      backToTop.style.display = "flex";
+    } else {
+      backToTop.style.display = "none";
+    }
+  });
+
+  // عند الضغط يصعد للأعلى
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 });
