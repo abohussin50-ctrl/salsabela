@@ -4,9 +4,8 @@ function buildHeader() {
   <header class="site-header">
     <div class="header-inner">
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
-        <div class="brand">salsabela</div>
-      </div>
-
+      <div class="brand">Salsabela</div>
+    </div>
 
     <!-- Sidebar menu -->
     <nav class="side-menu" id="sideMenu" aria-label="Main navigation">
@@ -17,8 +16,6 @@ function buildHeader() {
       <a href="adhkar.html">🌙 Adhkar</a>
       <a href="radio.html">📻 Radio</a>
       <a href="books.html">📕 Books</a>
-      <a href="about.html">ℹ️ About</a>
-      <a href="contact.html">📩 Contact</a>
     </nav>
 
     <div id="overlay"></div>
@@ -27,7 +24,22 @@ function buildHeader() {
 }
 
 function buildFooter() {
-  return `<footer class="footer"><div class="container">© ${new Date().getFullYear()} — Salsabela · All rights reserved</div></footer>`;
+  return `
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-copy">
+        © ${new Date().getFullYear()} — <span class="footer-brand">Salsabela</span> · All rights reserved
+      </div>
+    </div>
+  </footer>
+  `;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -36,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (headerHolder) headerHolder.innerHTML = buildHeader();
   if (footerHolder) footerHolder.innerHTML = buildFooter();
 
-  // ⏳ Ensure DOM is ready before attaching events
+  // ⏳ Sidebar menu functionality
   setTimeout(() => {
     const toggle = document.getElementById("menuToggle");
     const sideMenu = document.getElementById("sideMenu");
@@ -64,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (sideClose) sideClose.addEventListener("click", closeMenu);
     if (overlay) overlay.addEventListener("click", closeMenu);
-
     sideMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMenu));
 
     window.addEventListener("resize", () => {
@@ -75,26 +86,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, 50);
 
-  // ✅ Back to Top Button (auto-added to all pages)
+  // ✅ Back to Top Button
   const backToTop = document.createElement("button");
   backToTop.id = "backToTop";
   backToTop.title = "Back to top";
   backToTop.innerHTML = "↑";
   document.body.appendChild(backToTop);
 
-  // Show or hide on scroll
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 250) {
-      backToTop.style.display = "flex";
-    } else {
-      backToTop.style.display = "none";
-    }
+    backToTop.style.display = window.scrollY > 250 ? "flex" : "none";
   });
 
-  // Smooth scroll to top
   backToTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
-
-
