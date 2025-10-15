@@ -7,6 +7,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #fafafa;
+      padding: 2rem;
+    }
+    main.container {
+      max-width: 600px;
+      margin: auto;
+    }
+    section.card {
+      background: #fff;
+      padding: 1.5rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label { font-weight: 600; display: block; margin-bottom: .3rem; }
+    input, textarea {
+      width: 100%;
+      padding: .7rem;
+      margin-bottom: .9rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: 'Cairo', sans-serif;
+    }
+    button.adhkar-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: .8rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button.adhkar-btn:hover { background: #0056b3; }
+  </style>
 </head>
 <body>
 <div id="header-holder"></div>
@@ -14,15 +50,15 @@
 <main class="container">
   <section class="card">
     <h2>Contact Us</h2>
-    <form id="contact-form" method="POST" action="send_mail.php">
+    <form id="contact-form">
       <label>Name</label>
-      <input name="name" required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
+      <input name="name" required>
       
       <label>Email</label>
-      <input type="email" name="email" required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
+      <input type="email" name="email" required>
       
       <label>Message</label>
-      <textarea name="message" required style="width:100%;padding:.6rem;margin-bottom:.6rem"></textarea>
+      <textarea name="message" required></textarea>
       
       <button class="adhkar-btn" type="submit">Send</button>
     </form>
@@ -32,5 +68,27 @@
 <div id="footer-holder"></div>
 
 <script src="js/common.js"></script>
+
+<!-- مكتبة EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  // ✅ ضع هنا مفاتيحك من EmailJS
+  (function(){
+    emailjs.init("S8WuJDoo-0jDRnmpY"); 
+  })();
+
+  // إرسال النموذج عبر EmailJS
+  document.getElementById("contact-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    emailjs.sendForm("service_g1xtjht", "template_ghgbwzc", this)
+      .then(() => {
+        alert("✅ Message sent successfully!");
+        this.reset();
+      }, (error) => {
+        alert("❌ Error sending message: " + JSON.stringify(error));
+      });
+  });
+</script>
 </body>
 </html>
