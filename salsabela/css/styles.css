@@ -177,3 +177,56 @@ body {
   transform: translateY(-3px);
 }
 
+.footer {
+  background: #071526;
+  color: #fff;
+  text-align: center;
+  padding: 1.8rem 1rem;
+  margin-top: 2rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4rem;
+}
+
+.footer-links a {
+  color: #cfe9ff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.footer-divider {
+  width: 75%;
+  height: 1px;
+  background: rgba(255,255,255,0.25);
+  margin: 0.5rem auto;
+}
+
+.footer-copy {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+
+.footer-brand {
+  color: #00c4ff;
+  font-weight: 800;
+}
