@@ -14,15 +14,15 @@
 <main class="container">
   <section class="card">
     <h2>Contact Us</h2>
-    <form id="contact-form">
+    <form id="contact-form" method="POST" action="send_mail.php">
       <label>Name</label>
-      <input required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
+      <input name="name" required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
       
       <label>Email</label>
-      <input type="email" required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
+      <input type="email" name="email" required style="width:100%;padding:.6rem;margin-bottom:.6rem"/>
       
       <label>Message</label>
-      <textarea required style="width:100%;padding:.6rem;margin-bottom:.6rem"></textarea>
+      <textarea name="message" required style="width:100%;padding:.6rem;margin-bottom:.6rem"></textarea>
       
       <button class="adhkar-btn" type="submit">Send</button>
     </form>
@@ -32,12 +32,5 @@
 <div id="footer-holder"></div>
 
 <script src="js/common.js"></script>
-<script>
-  document.getElementById('contact-form').addEventListener('submit', e => {
-    e.preventDefault();
-    alert('Message sent (demo)');
-    e.target.reset();
-  });
-</script>
 </body>
 </html>
