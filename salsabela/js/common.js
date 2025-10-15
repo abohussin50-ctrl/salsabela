@@ -15,8 +15,6 @@ function buildHeader() {
       <a href="adhkar.html">🌙 الأذكار</a>
       <a href="radio.html">📻 الإذاعة</a>
       <a href="books.html">📕 الكتب</a>
-      <a href="about.html">ℹ️ من نحن</a>
-      <a href="contact.html">📩 تواصل</a>
     </nav>
 
     <div id="overlay"></div>
@@ -25,7 +23,23 @@ function buildHeader() {
 }
 
 function buildFooter() {
-  return `<footer class="footer"><div class="container">© ${new Date().getFullYear()} — سلسبيلا · جميع الحقوق محفوظة</div></footer>`;
+  return `
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-links">
+        <a href="about.html">من نحن</a>
+        <a href="contact.html">اتصل بنا</a>
+        <a href="privacy.html">سياسة الخصوصية</a>
+        <a href="terms.html">شروط الاستخدام</a>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-copy">
+        © ${new Date().getFullYear()} —
+        <span class="footer-brand">سلسبيلا</span> · جميع الحقوق محفوظة
+      </div>
+    </div>
+  </footer>
+  `;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (headerHolder) headerHolder.innerHTML = buildHeader();
   if (footerHolder) footerHolder.innerHTML = buildFooter();
 
-  // بعد الإدراج نربط الأحداث
+  // ✅ القائمة الجانبية
   setTimeout(() => {
     const toggle = document.getElementById("menuToggle");
     const sideMenu = document.getElementById("sideMenu");
@@ -72,23 +86,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, 50);
 
-  // ✅ زر الرجوع للأعلى (يضاف تلقائيًا)
+  // ✅ زر الرجوع للأعلى
   const backToTop = document.createElement("button");
   backToTop.id = "backToTop";
   backToTop.title = "الرجوع للأعلى";
-  backToTop.innerHTML = "↑"; // يمكنك استبدالها بأيقونة SVG إذا رغبت
+  backToTop.innerHTML = "↑";
   document.body.appendChild(backToTop);
 
-  // عند التمرير يظهر أو يختفي
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 250) {
-      backToTop.style.display = "flex";
-    } else {
-      backToTop.style.display = "none";
-    }
+    backToTop.style.display = window.scrollY > 250 ? "flex" : "none";
   });
 
-  // عند الضغط يصعد للأعلى
   backToTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
