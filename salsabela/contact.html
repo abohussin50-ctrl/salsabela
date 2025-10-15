@@ -1,1 +1,141 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>تواصل — سلسبيلا</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/png" href="favicon.png"><link rel="stylesheet" href="css/styles.css"></head><body><div id="header-holder"></div><main class="container"><section class="card"><h2>تواصل معنا</h2><form id="contact-form"><label>الاسم</label><input required style="width:100%;padding:.6rem;margin-bottom:.6rem"/><label>البريد الإلكتروني</label><input type="email" required style="width:100%;padding:.6rem;margin-bottom:.6rem"/><label>الرسالة</label><textarea required style="width:100%;padding:.6rem;margin-bottom:.6rem"></textarea><button class="adhkar-btn" type="submit">إرسال</button></form></section></main><div id="footer-holder"></div><script src="js/common.js"></script><script>document.getElementById('contact-form').addEventListener('submit', e=>{e.preventDefault();alert('تم إرسال الرسالة (تجريبي)'); e.target.reset();});</script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تواصل — سلسبيلا</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- مكتبة EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("S8WuJDoo-0jDRnmpY"); 
+    })();
+  </script>
+
+  <style>
+    main.container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+
+    label {
+      display: block;
+      margin-bottom: .4rem;
+      color: #444;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: .6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .adhkar-btn {
+      background-color: #008080;
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .adhkar-btn:hover {
+      background-color: #006666;
+    }
+
+    #form-status {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header-holder"></div>
+
+  <main class="container">
+    <section class="card">
+      <h2>تواصل معنا</h2>
+
+      <form id="contact-form">
+        <label>الاسم</label>
+        <input name="name" placeholder="اكتب اسمك الكامل" required>
+
+        <label>البريد الإلكتروني</label>
+        <input type="email" name="email" placeholder="example@email.com" required>
+
+        <label>الرسالة</label>
+        <textarea name="message" placeholder="اكتب رسالتك هنا..." required></textarea>
+
+        <button class="adhkar-btn" type="submit">إرسال</button>
+      </form>
+
+      <p id="form-status"></p>
+    </section>
+  </main>
+
+  <div id="footer-holder"></div>
+
+  <script src="js/common.js"></script>
+
+  <script>
+    // عند إرسال النموذج
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const status = document.getElementById('form-status');
+      status.textContent = "جارٍ إرسال الرسالة...";
+      status.style.color = "#555";
+
+      emailjs.send("service_g1xtjht", "template_ghgbwzc", {
+        from_name: this.name.value,
+        from_email: this.email.value,
+        message: this.message.value
+      })
+      .then(() => {
+        status.textContent = "✅ تم إرسال الرسالة بنجاح!";
+        status.style.color = "green";
+        this.reset();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        status.textContent = "❌ حدث خطأ أثناء الإرسال. حاول مرة أخرى.";
+        status.style.color = "red";
+      });
+    });
+  </script>
+</body>
+</html>
