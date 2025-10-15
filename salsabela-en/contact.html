@@ -7,83 +7,135 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- EmailJS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("S8WuJDoo-0jDRnmpY"); 
+    })();
+  </script>
+
   <style>
     main.container {
       max-width: 600px;
-      margin: auto;
+      margin: 80px auto;
+      padding: 1.5rem;
     }
-    section.card {
-      background: #fff;
-      padding: 1.5rem 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-    label { font-weight: 600; display: block; margin-bottom: .3rem; }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+
+    label {
+      display: block;
+      margin-bottom: .4rem;
+      color: #444;
+      font-weight: 600;
+    }
+
     input, textarea {
       width: 100%;
-      padding: .7rem;
-      margin-bottom: .9rem;
+      padding: .6rem;
+      margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-family: 'Cairo', sans-serif;
-    }
-    button.adhkar-btn {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: .8rem 1.5rem;
-      border-radius: 6px;
-      cursor: pointer;
       font-size: 1rem;
+      box-sizing: border-box;
     }
-    button.adhkar-btn:hover { background: #0056b3; }
+
+    textarea {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .adhkar-btn {
+      background-color: #008080;
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .adhkar-btn:hover {
+      background-color: #006666;
+    }
+
+    #form-status {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
   </style>
 </head>
+
 <body>
-<div id="header-holder"></div>
+  <div id="header-holder"></div>
 
-<main class="container">
-  <section class="card">
-    <h2>Contact Us</h2>
-    <form id="contact-form">
-      <label>Name</label>
-      <input name="name" required>
-      
-      <label>Email</label>
-      <input type="email" name="email" required>
-      
-      <label>Message</label>
-      <textarea name="message" required></textarea>
-      
-      <button class="adhkar-btn" type="submit">Send</button>
-    </form>
-  </section>
-</main>
+  <main class="container">
+    <section class="card">
+      <h2>Contact Us</h2>
 
-<div id="footer-holder"></div>
+      <form id="contact-form">
+        <label>Name</label>
+        <input name="name" placeholder="Enter your full name" required>
 
-<script src="js/common.js"></script>
+        <label>Email</label>
+        <input type="email" name="email" placeholder="example@email.com" required>
 
-<!-- مكتبة EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  // ✅ ضع هنا مفاتيحك من EmailJS
-  (function(){
-    emailjs.init("S8WuJDoo-0jDRnmpY"); 
-  })();
+        <label>Message</label>
+        <textarea name="message" placeholder="Write your message here..." required></textarea>
 
-  // إرسال النموذج عبر EmailJS
-  document.getElementById("contact-form").addEventListener("submit", function(event) {
-    event.preventDefault();
+        <button class="adhkar-btn" type="submit">Send</button>
+      </form>
 
-    emailjs.sendForm("service_g1xtjht", "template_ghgbwzc", this)
+      <p id="form-status"></p>
+    </section>
+  </main>
+
+  <div id="footer-holder"></div>
+
+  <script src="js/common.js"></script>
+
+  <script>
+    // Handle form submission
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const status = document.getElementById('form-status');
+      status.textContent = "Sending message...";
+      status.style.color = "#555";
+
+      emailjs.send("service_g1xtjht", "template_ghgbwzc", {
+        from_name: this.name.value,
+        from_email: this.email.value,
+        message: this.message.value
+      })
       .then(() => {
-        alert("✅ Message sent successfully!");
+        status.textContent = "✅ Message sent successfully!";
+        status.style.color = "green";
         this.reset();
-      }, (error) => {
-        alert("❌ Error sending message: " + JSON.stringify(error));
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        status.textContent = "❌ An error occurred while sending. Please try again.";
+        status.style.color = "red";
       });
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
