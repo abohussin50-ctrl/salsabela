@@ -12,7 +12,6 @@ function buildHeader() {
       <button class="side-close" id="sideClose" aria-label="Close menu">✖</button>
       <a href="index.html">🏠 Home</a>
       <a href="quran.html">📖 Quran</a>
-      <a href="tafsir.html">📚 Tafsir</a>
       <a href="adhkar.html">🌙 Adhkar</a>
       <a href="radio.html">📻 Radio</a>
       <a href="books.html">📕 Books</a>
@@ -101,3 +100,4 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+
