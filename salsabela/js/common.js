@@ -14,6 +14,7 @@ function buildHeader() {
       <a href="adhkar.html">🌙 الأذكار</a>
       <a href="radio.html">📻 الإذاعة</a>
       <a href="books.html">📕 الكتب</a>
+      <a href="asmaulhusna.html">🕋 أسماء الله الحسنى</a>
     </nav>
 
     <div id="overlay"></div>
