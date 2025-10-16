@@ -6,100 +6,219 @@
   <title>سلسبيلا — أسماء الله الحسنى</title>
   <meta name="description" content="اكتشف أسماء الله الحسنى ومعانيها بالعربية والإنجليزية مع شرح جميل لكل اسم. صفحة من موقع سلسبيلا تعرض أسماء الله الحسنى كاملة مع الترجمة والتفسير لتأمل صفات الله تعالى وفهمها بطريقة مبسطة.">
   <meta name="keywords" content="أسماء الله الحسنى, اسماء الله الحسنى ومعانيها, معاني أسماء الله الحسنى, Asmaul Husna, 99 Names of Allah, Allah Names with meanings, أسماء الله الحسنى كاملة, أسماء الله الحسنى بالعربية والإنجليزية, شرح أسماء الله الحسنى, تفسير أسماء الله الحسنى, أسماء الله الحسنى mp3, أسماء الله الحسنى بالترجمة, أسماء الله الحسنى موقع سلسبيلا, صفات الله الحسنى, أسماء الله الحسنى ومعناها بالعربية, أسماء الله الحسنى ومعناها بالإنجليزية, أسماء الله الحسنى للاطفال, اسماء الله الحسنى بالتشكيل, أسماء الله الحسنى مكتوبة, 99 اسم من أسماء الله, Asmaul Husna meanings, Beautiful Names of Allah">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
+
   <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: #f5f7fa;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #008080;
-      color: #fff;
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 15px;
-      padding: 20px;
-      max-width: 1200px;
+    main {
+      max-width: 1000px;
       margin: auto;
+      position: relative;
     }
-    .card {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+
+    h2 {
+      color: #2a9d8f;
       text-align: center;
-      transition: transform 0.3s;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
+
+    /* 🌟 صندوق البحث بيضاوي */
+    .search-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    #searchBox {
+      width: 100%;
+      padding: 14px 50px 14px 20px;
+      border-radius: 999px;
+      border: 2px solid #2a9d8f40;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      background: #fff url('data:image/svg+xml;utf8,<svg fill="%232a9d8f" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>') no-repeat 98% center;
+      background-size: 22px;
+      box-shadow: 0 3px 10px rgba(42, 157, 143, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    #searchBox:focus {
+      outline: none;
+      border-color: #2a9d8f;
+      box-shadow: 0 4px 12px rgba(42, 157, 143, 0.25);
+      background-color: #fefefe;
+    }
+
+    /* 🎴 تصميم البطاقة */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      transition: 0.3s;
+      cursor: default;
+    }
+
     .card:hover {
-      transform: translateY(-5px);
+      background: #e8f7f4;
+      transform: translateY(-3px);
     }
+
     .name-ar {
+      font-family: 'Amiri', serif;
       font-size: 1.8rem;
-      color: #008080;
-      margin-bottom: 5px;
+      color: #2a9d8f;
       font-weight: bold;
+      margin-bottom: 8px;
     }
+
     .transliteration {
-      color: #444;
+      color: #555;
+      font-size: 1.1rem;
       font-weight: 600;
     }
+
     .translation {
-      color: #555;
-      font-style: italic;
+      color: #2a9d8f;
+      font-weight: 600;
+      margin-top: 4px;
       margin-bottom: 10px;
     }
+
     .explanation {
-      color: #333;
       font-size: 0.95rem;
+      color: #333;
       line-height: 1.6;
+      border-top: 1px solid #eee;
+      padding-top: 6px;
+    }
+
+    .explanation-en {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .suggestions {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 1000;
+      width: 100%;
+      display: none;
+      top: 100%;
+      margin-top: 5px;
+    }
+
+    .suggestions div {
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: 0.25s;
+      border-bottom: 1px solid #f2f2f2;
+    }
+
+    .suggestions div:hover {
+      background: #e8f7f4;
+      color: #2a9d8f;
     }
   </style>
 </head>
 <body>
-  <div id="header-holder"></div>
-  
-  <header>أسماء الله الحسنى</header>
-  <div class="container" id="namesContainer"></div>
+<div id="header-holder"></div>
+<script src="js/common.js"></script>
 
-  <div id="footer-holder"></div>
+<main>
+  <h2>أسماء الله الحسنى</h2>
 
-  <script src="js/common.js"></script>
-  
-  <script>
-    async function loadNames() {
-      try {
-        // ✅ المسار الجديد للملف داخل مجلد source
-        const response = await fetch('source/asmaulhusna.json');
-        const data = await response.json();
-        const container = document.getElementById('namesContainer');
-        container.innerHTML = '';
+  <div class="search-container">
+    <input type="search" id="searchBox" placeholder="ابحث عن اسم أو معنى..." autocomplete="off">
+    <div id="suggestions" class="suggestions"></div>
+  </div>
 
-        data.forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'card';
-          div.innerHTML = `
-            <div class="name-ar">${item.name_ar}</div>
-            <div class="transliteration">${item.transliteration}</div>
-            <div class="translation">${item.translation_en}</div>
-            <div class="explanation">${item.explanation_ar}</div>
-          `;
-          container.appendChild(div);
-        });
-      } catch (error) {
-        console.error('Error loading Asmaul Husna:', error);
-      }
-    }
-    loadNames();
-  </script>
+  <div id="content">جارٍ التحميل...</div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script>
+let allNames = [];
+const content = document.getElementById("content");
+const searchBox = document.getElementById("searchBox");
+const suggestionBox = document.getElementById("suggestions");
+
+function normalizeText(text) {
+  return text.toLowerCase().replace(/[ًٌٍَُِّْـ،؛؟]/g, "")
+  .replace(/[أإآٱ]/g,"ا").replace(/ؤ/g,"و").replace(/ئ/g,"ي")
+  .replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[^a-zء-ي0-9\s]/gi," ").trim();
+}
+
+async function loadNames() {
+  try {
+    const res = await fetch("source/asmaulhusna.json");
+    allNames = await res.json();
+    renderNames(allNames);
+  } catch {
+    content.innerHTML = `<p style="color:red;text-align:center">⚠️ حدث خطأ أثناء تحميل الملف.</p>`;
+  }
+}
+
+function renderNames(names) {
+  content.innerHTML = "";
+  names.forEach(n => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <div class="name-ar">${n.name_ar}</div>
+      <div class="transliteration">${n.transliteration}</div>
+      <div class="translation">${n.translation_en}</div>
+      <div class="explanation">${n.explanation_ar}</div>
+      <div class="explanation-en">${n.explanation_en}</div>
+    `;
+    content.appendChild(div);
+  });
+}
+
+searchBox.addEventListener("input", () => {
+  const query = normalizeText(searchBox.value);
+  suggestionBox.innerHTML = "";
+  if (!query) {
+    suggestionBox.style.display = "none";
+    renderNames(allNames);
+    return;
+  }
+
+  const matches = allNames.filter(n =>
+    normalizeText(n.name_ar).includes(query) ||
+    normalizeText(n.transliteration).includes(query) ||
+    normalizeText(n.translation_en).includes(query) ||
+    normalizeText(n.explanation_ar).includes(query)
+  );
+
+  suggestionBox.innerHTML = "";
+  matches.slice(0, 8).forEach(m => {
+    const item = document.createElement("div");
+    item.textContent = m.name_ar + " — " + m.translation_en;
+    item.onclick = () => {
+      suggestionBox.style.display = "none";
+      searchBox.value = m.name_ar;
+      renderNames([m]);
+    };
+    suggestionBox.appendChild(item);
+  });
+  suggestionBox.style.display = matches.length ? "block" : "none";
+});
+
+searchBox.addEventListener("blur", () => setTimeout(() => suggestionBox.style.display = "none", 200));
+
+loadNames();
+</script>
 </body>
 </html>
