@@ -11,7 +11,6 @@ function buildHeader() {
       <button class="side-close" id="sideClose" aria-label="إغلاق القائمة">✖</button>
       <a href="index.html">🏠 الرئيسية</a>
       <a href="quran.html">📖 المصحف</a>
-      <a href="tafsir.html">📚 التفسير</a>
       <a href="adhkar.html">🌙 الأذكار</a>
       <a href="radio.html">📻 الإذاعة</a>
       <a href="books.html">📕 الكتب</a>
