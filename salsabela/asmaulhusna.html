@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سلسبيلا — أسماء الله الحسنى</title>
+  <meta name="description" content="اكتشف أسماء الله الحسنى ومعانيها بالعربية والإنجليزية مع شرح جميل لكل اسم. صفحة من موقع سلسبيلا تعرض أسماء الله الحسنى كاملة مع الترجمة والتفسير لتأمل صفات الله تعالى وفهمها بطريقة مبسطة.">
+  <meta name="keywords" content="أسماء الله الحسنى, اسماء الله الحسنى ومعانيها, معاني أسماء الله الحسنى, Asmaul Husna, 99 Names of Allah, Allah Names with meanings, أسماء الله الحسنى كاملة, أسماء الله الحسنى بالعربية والإنجليزية, شرح أسماء الله الحسنى, تفسير أسماء الله الحسنى, أسماء الله الحسنى mp3, أسماء الله الحسنى بالترجمة, أسماء الله الحسنى موقع سلسبيلا, صفات الله الحسنى, أسماء الله الحسنى ومعناها بالعربية, أسماء الله الحسنى ومعناها بالإنجليزية, أسماء الله الحسنى للاطفال, اسماء الله الحسنى بالتشكيل, أسماء الله الحسنى مكتوبة, 99 اسم من أسماء الله, Asmaul Husna meanings, Beautiful Names of Allah">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #008080;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .name-ar {
+      font-size: 1.8rem;
+      color: #008080;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .transliteration {
+      color: #444;
+      font-weight: 600;
+    }
+    .translation {
+      color: #555;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    .explanation {
+      color: #333;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div id="header-holder"></div>
+  
+  <header>أسماء الله الحسنى</header>
+  <div class="container" id="namesContainer"></div>
+
+  <div id="footer-holder"></div>
+
+  <script src="js/common.js"></script>
+  
+  <script>
+    async function loadNames() {
+      try {
+        // ✅ المسار الجديد للملف داخل مجلد source
+        const response = await fetch('source/asmaulhusna.json');
+        const data = await response.json();
+        const container = document.getElementById('namesContainer');
+        container.innerHTML = '';
+
+        data.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'card';
+          div.innerHTML = `
+            <div class="name-ar">${item.name_ar}</div>
+            <div class="transliteration">${item.transliteration}</div>
+            <div class="translation">${item.translation_en}</div>
+            <div class="explanation">${item.explanation_ar}</div>
+          `;
+          container.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Error loading Asmaul Husna:', error);
+      }
+    }
+    loadNames();
+  </script>
+</body>
+</html>
