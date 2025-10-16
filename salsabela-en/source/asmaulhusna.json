@@ -1,0 +1,794 @@
+[
+  {
+    "index": 1,
+    "name_ar": "اللَّه",
+    "transliteration": "Allah",
+    "translation_en": "The God",
+    "explanation_ar": "الاسم الجامع لكل معاني الألوهية؛ هو الإله الحق المستحق للعبادة.",
+    "explanation_en": "The name encompassing all meanings of divinity; the true God worthy of worship."
+  },
+  {
+    "index": 2,
+    "name_ar": "الرَّحْمَنُ",
+    "transliteration": "Ar-Rahmān",
+    "translation_en": "The Most Gracious",
+    "explanation_ar": "الذي وسعت رحمته كل شيء وشملت جميع الخلق.",
+    "explanation_en": "The One whose mercy encompasses everything and extends to all creation."
+  },
+  {
+    "index": 3,
+    "name_ar": "الرَّحِيمُ",
+    "transliteration": "Ar-Rahīm",
+    "translation_en": "The Most Merciful",
+    "explanation_ar": "الرحيم بعباده المؤمنين رحمة دائمة في الدنيا والآخرة.",
+    "explanation_en": "The One who is especially merciful to His believers, granting continuous mercy in this world and the next."
+  },
+  {
+    "index": 4,
+    "name_ar": "الْمَلِكُ",
+    "transliteration": "Al-Malik",
+    "translation_en": "The King",
+    "explanation_ar": "المالك لكل شيء والمتصرف في خلقه بأمره وحكمته.",
+    "explanation_en": "The true owner of everything, who rules over creation by His command and wisdom."
+  },
+  {
+    "index": 5,
+    "name_ar": "الْقُدُّوسُ",
+    "transliteration": "Al-Quddūs",
+    "translation_en": "The Most Holy",
+    "explanation_ar": "المنزه عن كل نقص وعيب والمطهر عن كل سوء.",
+    "explanation_en": "The One free from all imperfections, pure from all evil and deficiency."
+  },
+  {
+    "index": 6,
+    "name_ar": "السَّلَامُ",
+    "transliteration": "As-Salām",
+    "translation_en": "The Source of Peace",
+    "explanation_ar": "الذي سلم من كل عيب ويمنح السلام لعباده.",
+    "explanation_en": "The One who is free from all defects and grants peace and safety to His creation."
+  },
+  {
+    "index": 7,
+    "name_ar": "الْمُؤْمِنُ",
+    "transliteration": "Al-Mu’min",
+    "translation_en": "The Giver of Faith",
+    "explanation_ar": "الذي يؤمن عباده من الخوف ويصدق وعده.",
+    "explanation_en": "The One who grants security and faith to His servants and fulfills His promises."
+  },
+  {
+    "index": 8,
+    "name_ar": "الْمُهَيْمِنُ",
+    "transliteration": "Al-Muhaymin",
+    "translation_en": "The Protector",
+    "explanation_ar": "الذي يراقب ويحفظ كل شيء ولا يغيب عنه شيء.",
+    "explanation_en": "The One who watches over and protects all things; nothing escapes His knowledge."
+  },
+  {
+    "index": 9,
+    "name_ar": "الْعَزِيزُ",
+    "transliteration": "Al-‘Azīz",
+    "translation_en": "The Almighty",
+    "explanation_ar": "ذو العزة الذي لا يُغلب ولا يُقهر.",
+    "explanation_en": "The All-Powerful who cannot be overcome or defeated."
+  },
+  {
+    "index": 10,
+    "name_ar": "الْجَبَّارُ",
+    "transliteration": "Al-Jabbār",
+    "translation_en": "The Compeller",
+    "explanation_ar": "الذي يجبر كسر الضعفاء ويقهر الجبابرة الظالمين.",
+    "explanation_en": "The One who mends the broken and subdues the arrogant oppressors."
+  },
+  {
+    "index": 11,
+    "name_ar": "الْمُتَكَبِّرُ",
+    "transliteration": "Al-Mutakabbir",
+    "translation_en": "The Supremely Great",
+    "explanation_ar": "الذي له الكبرياء والعظمة، المتعالي عن صفات المخلوقين.",
+    "explanation_en": "The One who possesses greatness and majesty, exalted above the attributes of creation."
+  },
+  {
+    "index": 12,
+    "name_ar": "الْخَالِقُ",
+    "transliteration": "Al-Khāliq",
+    "translation_en": "The Creator",
+    "explanation_ar": "الذي أوجد الأشياء جميعها من العدم على غير مثال سابق.",
+    "explanation_en": "The One who brings all things into existence from nothing, without precedent."
+  },
+  {
+    "index": 13,
+    "name_ar": "الْبَارِئُ",
+    "transliteration": "Al-Bāri’",
+    "translation_en": "The Evolver",
+    "explanation_ar": "الذي خلق الخلق على هيئاتهم المختلفة دون تفاوت.",
+    "explanation_en": "The One who forms and fashions creation in perfect order and proportion."
+  },
+  {
+    "index": 14,
+    "name_ar": "الْمُصَوِّرُ",
+    "transliteration": "Al-Musawwir",
+    "translation_en": "The Fashioner",
+    "explanation_ar": "الذي أعطى كل مخلوق صورته وهيئته المميزة.",
+    "explanation_en": "The One who gives every creation its distinct form and appearance."
+  },
+  {
+    "index": 15,
+    "name_ar": "الْغَفَّارُ",
+    "transliteration": "Al-Ghaffār",
+    "translation_en": "The All-Forgiving",
+    "explanation_ar": "الذي يكثر من مغفرة الذنوب لعباده مع سترها.",
+    "explanation_en": "The One who repeatedly forgives sins and covers faults."
+  },
+  {
+    "index": 16,
+    "name_ar": "الْقَهَّارُ",
+    "transliteration": "Al-Qahhār",
+    "translation_en": "The Subduer",
+    "explanation_ar": "الذي يقهر الجبابرة والمتكبرين بعظمته وسلطانه.",
+    "explanation_en": "The One who subdues tyrants and compels creation by His majesty and power."
+  },
+  {
+    "index": 17,
+    "name_ar": "الْوَهَّابُ",
+    "transliteration": "Al-Wahhāb",
+    "translation_en": "The Bestower",
+    "explanation_ar": "الذي يهب العطايا بلا عوض ويمنّ بالنعم بلا حساب.",
+    "explanation_en": "The One who bestows gifts freely and grants blessings without limit."
+  },
+  {
+    "index": 18,
+    "name_ar": "الرَّزَّاقُ",
+    "transliteration": "Ar-Razzāq",
+    "translation_en": "The Provider",
+    "explanation_ar": "الذي يرزق خلقه جميعاً ما يحتاجونه، وييسر لهم أسباب الرزق.",
+    "explanation_en": "The One who provides sustenance for all His creatures and facilitates their means of livelihood."
+  },
+  {
+    "index": 19,
+    "name_ar": "الْفَتَّاحُ",
+    "transliteration": "Al-Fattāh",
+    "translation_en": "The Opener",
+    "explanation_ar": "الذي يفتح أبواب الرحمة والرزق، ويفصل بين عباده بالحق.",
+    "explanation_en": "The One who opens the doors of mercy and provision and judges between His servants in truth."
+  },
+  {
+    "index": 20,
+    "name_ar": "الْعَلِيمُ",
+    "transliteration": "Al-‘Alīm",
+    "translation_en": "The All-Knowing",
+    "explanation_ar": "الذي يعلم كل شيء، لا يخفى عليه شيء في الأرض ولا في السماء.",
+    "explanation_en": "The One who knows everything; nothing is hidden from Him in the heavens or the earth."
+  },
+  {
+    "index": 21,
+    "name_ar": "الْقَابِضُ",
+    "transliteration": "Al-Qābid",
+    "translation_en": "The Withholder",
+    "explanation_ar": "الذي يقبض الرزق والنعم عن من يشاء بحكمته وعدله.",
+    "explanation_en": "The One who withholds sustenance and blessings from whom He wills, in His wisdom and justice."
+  },
+  {
+    "index": 22,
+    "name_ar": "الْبَاسِطُ",
+    "transliteration": "Al-Bāsit",
+    "translation_en": "The Expander",
+    "explanation_ar": "الذي يبسط الرزق والرحمة لعباده برحمته وفضله.",
+    "explanation_en": "The One who expands provision and mercy to His servants out of His grace."
+  },
+  {
+    "index": 23,
+    "name_ar": "الْخَافِضُ",
+    "transliteration": "Al-Khāfid",
+    "translation_en": "The Abaser",
+    "explanation_ar": "الذي يخفض الجبابرة والمتكبرين ويذلهم بعد عز.",
+    "explanation_en": "The One who lowers the arrogant and the tyrants, bringing them down from their pride."
+  },
+  {
+    "index": 24,
+    "name_ar": "الرَّافِعُ",
+    "transliteration": "Ar-Rāfi‘",
+    "translation_en": "The Exalter",
+    "explanation_ar": "الذي يرفع أولياءه بالطاعة ويعلي قدرهم في الدنيا والآخرة.",
+    "explanation_en": "The One who raises His righteous servants through obedience and elevates their ranks in this world and the next."
+  },
+  {
+    "index": 25,
+    "name_ar": "الْمُعِزُّ",
+    "transliteration": "Al-Mu‘izz",
+    "translation_en": "The Honorer",
+    "explanation_ar": "الذي يمنح العز لمن يشاء من عباده بطاعته وكرامته.",
+    "explanation_en": "The One who grants honor and dignity to whom He wills among His servants."
+  },
+  {
+    "index": 26,
+    "name_ar": "الْمُذِلُّ",
+    "transliteration": "Al-Mudhill",
+    "translation_en": "The Dishonorer",
+    "explanation_ar": "الذي يذل من يشاء من عباده ويهينه بعدل حكمته.",
+    "explanation_en": "The One who humiliates whom He wills, bringing disgrace with His perfect justice."
+  },
+  {
+    "index": 27,
+    "name_ar": "السَّمِيعُ",
+    "transliteration": "As-Samī‘",
+    "translation_en": "The All-Hearing",
+    "explanation_ar": "الذي يسمع كل الأصوات على اختلاف لغاتها وحاجاتها.",
+    "explanation_en": "The One who hears all sounds, in every language and at every moment."
+  },
+  {
+    "index": 28,
+    "name_ar": "الْبَصِيرُ",
+    "transliteration": "Al-Basīr",
+    "translation_en": "The All-Seeing",
+    "explanation_ar": "الذي يرى كل شيء ظاهرًا وباطنًا لا تخفى عليه خافية.",
+    "explanation_en": "The One who sees everything, both the visible and the hidden; nothing escapes His sight."
+  },
+  {
+    "index": 29,
+    "name_ar": "الْحَكَمُ",
+    "transliteration": "Al-Hakam",
+    "translation_en": "The Judge",
+    "explanation_ar": "الذي يحكم بين خلقه بالعدل ولا يظلم أحدًا.",
+    "explanation_en": "The One who judges between His creation with justice and never wrongs anyone."
+  },
+  {
+    "index": 30,
+    "name_ar": "الْعَدْلُ",
+    "transliteration": "Al-‘Adl",
+    "translation_en": "The Just",
+    "explanation_ar": "الذي لا يجور في حكمه ويضع الأمور مواضعها بالحق.",
+    "explanation_en": "The One who is perfectly just, placing everything in its proper place and never wronging anyone."
+  },
+  {
+    "index": 31,
+    "name_ar": "اللَّطِيفُ",
+    "transliteration": "Al-Latīf",
+    "translation_en": "The Subtle, The Kind",
+    "explanation_ar": "الذي يلطف بعباده في أمورهم، وييسر لهم مصالحهم من حيث لا يشعرون.",
+    "explanation_en": "The One who is kind and gentle with His servants, making things easy for them in unseen ways."
+  },
+  {
+    "index": 32,
+    "name_ar": "الْخَبِيرُ",
+    "transliteration": "Al-Khabīr",
+    "translation_en": "The All-Aware",
+    "explanation_ar": "العالم بخفايا الأمور ودقائق الأشياء لا تخفى عليه خافية.",
+    "explanation_en": "The One fully aware of all things, knowing the inner and hidden aspects of everything."
+  },
+  {
+    "index": 33,
+    "name_ar": "الْحَلِيمُ",
+    "transliteration": "Al-Halīm",
+    "translation_en": "The Forbearing",
+    "explanation_ar": "الذي لا يعجل على عباده بالعقوبة مع قدرته عليهم.",
+    "explanation_en": "The One who is patient and does not hasten punishment despite being fully capable of doing so."
+  },
+  {
+    "index": 34,
+    "name_ar": "الْعَظِيمُ",
+    "transliteration": "Al-‘Azīm",
+    "translation_en": "The Magnificent",
+    "explanation_ar": "الذي له العظمة والكبرياء في ذاته وصفاته وأفعاله.",
+    "explanation_en": "The One whose greatness and majesty belong to His essence, attributes, and actions."
+  },
+  {
+    "index": 35,
+    "name_ar": "الْغَفُورُ",
+    "transliteration": "Al-Ghafūr",
+    "translation_en": "The Most Forgiving",
+    "explanation_ar": "الذي يغفر الذنوب جميعاً لمن تاب وأناب.",
+    "explanation_en": "The One who forgives all sins for those who repent and return to Him."
+  },
+  {
+    "index": 36,
+    "name_ar": "الشَّكُورُ",
+    "transliteration": "Ash-Shakūr",
+    "translation_en": "The Most Appreciative",
+    "explanation_ar": "الذي يثيب على العمل القليل أجراً عظيماً ويشكر عباده على طاعتهم.",
+    "explanation_en": "The One who rewards even the smallest deeds with abundant blessings and appreciates His servants’ obedience."
+  },
+  {
+    "index": 37,
+    "name_ar": "الْعَلِيُّ",
+    "transliteration": "Al-‘Aliyy",
+    "translation_en": "The Most High",
+    "explanation_ar": "الذي علا بذاته وصفاته فوق كل شيء.",
+    "explanation_en": "The One exalted above everything in His essence and attributes."
+  },
+  {
+    "index": 38,
+    "name_ar": "الْكَبِيرُ",
+    "transliteration": "Al-Kabīr",
+    "translation_en": "The Most Great",
+    "explanation_ar": "الذي كبُر في ذاته وصفاته فلا شيء أعظم منه.",
+    "explanation_en": "The One whose greatness surpasses all things; nothing is greater than Him."
+  },
+  {
+    "index": 39,
+    "name_ar": "الْحَفِيظُ",
+    "transliteration": "Al-Hafīz",
+    "translation_en": "The Preserver",
+    "explanation_ar": "الذي يحفظ خلقه ويصونهم من السوء والضياع.",
+    "explanation_en": "The One who protects and preserves His creation from harm and loss."
+  },
+  {
+    "index": 40,
+    "name_ar": "الْمُقِيتُ",
+    "transliteration": "Al-Muqīt",
+    "translation_en": "The Sustainer",
+    "explanation_ar": "الذي يوصل إلى كل مخلوق ما يقوته ويحفظ عليه حياته.",
+    "explanation_en": "The One who provides every creature with what sustains and maintains its existence."
+  },
+  {
+    "index": 41,
+    "name_ar": "الْحَسِيبُ",
+    "transliteration": "Al-Hasīb",
+    "translation_en": "The Reckoner",
+    "explanation_ar": "الذي يكفي عباده ويحاسبهم بعدله على أعمالهم.",
+    "explanation_en": "The One who is sufficient for His servants and who holds them accountable with perfect justice."
+  },
+  {
+    "index": 42,
+    "name_ar": "الْجَلِيلُ",
+    "transliteration": "Al-Jalīl",
+    "translation_en": "The Majestic",
+    "explanation_ar": "الذي له صفات الجلال والعظمة والكمال.",
+    "explanation_en": "The One who possesses majesty, greatness, and perfection."
+  },
+  {
+    "index": 43,
+    "name_ar": "الْكَرِيمُ",
+    "transliteration": "Al-Karīm",
+    "translation_en": "The Generous",
+    "explanation_ar": "الذي يعطي بلا حدود ويكرم عباده بفضله وجوده.",
+    "explanation_en": "The One who gives endlessly and honors His servants with His bounty and grace."
+  },
+  {
+    "index": 44,
+    "name_ar": "الرَّقِيبُ",
+    "transliteration": "Ar-Raqīb",
+    "translation_en": "The Watchful",
+    "explanation_ar": "الذي يراقب أحوال خلقه ولا يغيب عنه شيء.",
+    "explanation_en": "The One who watches over all creation; nothing escapes His observation."
+  },
+  {
+    "index": 45,
+    "name_ar": "الْمُجِيبُ",
+    "transliteration": "Al-Mujīb",
+    "translation_en": "The Responsive",
+    "explanation_ar": "الذي يجيب دعاء عباده إذا دعوه ويقضي حاجاتهم.",
+    "explanation_en": "The One who answers the prayers of His servants and fulfills their needs."
+  },
+  {
+    "index": 46,
+    "name_ar": "الْوَاسِعُ",
+    "transliteration": "Al-Wāsi‘",
+    "translation_en": "The All-Encompassing",
+    "explanation_ar": "الذي وسع علمه ورحمته كل شيء.",
+    "explanation_en": "The One whose knowledge and mercy encompass everything."
+  },
+  {
+    "index": 47,
+    "name_ar": "الْحَكِيمُ",
+    "transliteration": "Al-Hakīm",
+    "translation_en": "The Most Wise",
+    "explanation_ar": "الذي يضع الأشياء في مواضعها بحكمة بالغة.",
+    "explanation_en": "The One who places everything in its proper place with perfect wisdom."
+  },
+  {
+    "index": 48,
+    "name_ar": "الْوَدُودُ",
+    "transliteration": "Al-Wadūd",
+    "translation_en": "The Loving",
+    "explanation_ar": "الذي يحب عباده المؤمنين ويحبونه.",
+    "explanation_en": "The One who loves His righteous servants and is loved by them."
+  },
+  {
+    "index": 49,
+    "name_ar": "الْمَجِيدُ",
+    "transliteration": "Al-Majīd",
+    "translation_en": "The Most Glorious",
+    "explanation_ar": "ذو المجد والشرف الكامل في ذاته وصفاته وأفعاله.",
+    "explanation_en": "The One full of glory, honor, and perfection in His essence, attributes, and actions."
+  },
+  {
+    "index": 50,
+    "name_ar": "الْبَاعِثُ",
+    "transliteration": "Al-Bā‘ith",
+    "translation_en": "The Resurrector",
+    "explanation_ar": "الذي يبعث الخلق يوم القيامة ويحييهم بعد الموت.",
+    "explanation_en": "The One who will resurrect creation on the Day of Judgment and bring them back to life."
+  },
+  {
+    "index": 51,
+    "name_ar": "الشَّهِيدُ",
+    "transliteration": "Ash-Shahīd",
+    "translation_en": "The Witness",
+    "explanation_ar": "الذي لا يغيب عنه شيء، يشهد على خلقه بما يعملون.",
+    "explanation_en": "The One who is ever-present and witnesses everything His creation does."
+  },
+  {
+    "index": 52,
+    "name_ar": "الْحَقُّ",
+    "transliteration": "Al-Haqq",
+    "translation_en": "The Truth",
+    "explanation_ar": "الذي هو حق في ذاته وصفاته وأفعاله، ووعده حق.",
+    "explanation_en": "The One whose existence, attributes, and promises are absolute truth."
+  },
+  {
+    "index": 53,
+    "name_ar": "الْوَكِيلُ",
+    "transliteration": "Al-Wakīl",
+    "translation_en": "The Trustee",
+    "explanation_ar": "الذي يُفوَّض إليه الأمر كله، وهو الكفيل بأرزاق العباد وشؤونهم.",
+    "explanation_en": "The One who is entrusted with all matters and manages the affairs of His creation."
+  },
+  {
+    "index": 54,
+    "name_ar": "الْقَوِيُّ",
+    "transliteration": "Al-Qawiyy",
+    "translation_en": "The All-Strong",
+    "explanation_ar": "الذي لا يُغلب ولا يعجزه شيء، وهو مصدر القوة كلها.",
+    "explanation_en": "The One who is never overcome, whose strength is absolute and unmatched."
+  },
+  {
+    "index": 55,
+    "name_ar": "الْمَتِينُ",
+    "transliteration": "Al-Matīn",
+    "translation_en": "The Firm",
+    "explanation_ar": "الثابت القوي الذي لا يتزعزع سلطانه ولا يتغير.",
+    "explanation_en": "The One who is firm and steadfast; His power never weakens or falters."
+  },
+  {
+    "index": 56,
+    "name_ar": "الْوَلِيُّ",
+    "transliteration": "Al-Waliyy",
+    "translation_en": "The Protecting Friend",
+    "explanation_ar": "الذي يتولى عباده المؤمنين بالنصر والهداية والرعاية.",
+    "explanation_en": "The One who protects, guides, and supports His faithful servants."
+  },
+  {
+    "index": 57,
+    "name_ar": "الْحَمِيدُ",
+    "transliteration": "Al-Hamīd",
+    "translation_en": "The Praiseworthy",
+    "explanation_ar": "المحمود على كل حال، المستحق للحمد والثناء على صفاته وأفعاله.",
+    "explanation_en": "The One deserving of all praise for His attributes, actions, and decrees."
+  },
+  {
+    "index": 58,
+    "name_ar": "الْمُحْصِي",
+    "transliteration": "Al-Muhsī",
+    "translation_en": "The Reckoner of All",
+    "explanation_ar": "الذي أحصى كل شيء عدداً ولا يغيب عنه شيء.",
+    "explanation_en": "The One who knows and records everything in exact detail; nothing escapes His count."
+  },
+  {
+    "index": 59,
+    "name_ar": "الْمُبْدِئُ",
+    "transliteration": "Al-Mubdi’",
+    "translation_en": "The Originator",
+    "explanation_ar": "الذي أنشأ الخلق من العدم وابتدأهم بقدرته.",
+    "explanation_en": "The One who originates all creation from nothing by His power."
+  },
+  {
+    "index": 60,
+    "name_ar": "الْمُعِيدُ",
+    "transliteration": "Al-Mu‘īd",
+    "translation_en": "The Restorer",
+    "explanation_ar": "الذي يعيد الخلق بعد موتهم كما بدأهم أول مرة.",
+    "explanation_en": "The One who restores creation after death, just as He originated them the first time."
+  },
+  {
+    "index": 61,
+    "name_ar": "الْمُحْيِي",
+    "transliteration": "Al-Muḥyī",
+    "translation_en": "The Giver of Life",
+    "explanation_ar": "الذي يحيي الأجساد بعد موتها، ويحيي القلوب بنوره وهدايته.",
+    "explanation_en": "The One who gives life to bodies after death and enlightens hearts with His guidance."
+  },
+  {
+    "index": 62,
+    "name_ar": "اَلْمُمِيتُ",
+    "transliteration": "Al-Mumīt",
+    "translation_en": "The Creator of Death",
+    "explanation_ar": "الذي يميت الأحياء بقدرته متى شاء وكيف شاء.",
+    "explanation_en": "The One who causes death to His creation whenever and however He wills."
+  },
+  {
+    "index": 63,
+    "name_ar": "الْحَيُّ",
+    "transliteration": "Al-Ḥayy",
+    "translation_en": "The Ever-Living",
+    "explanation_ar": "الذي له الحياة الكاملة الأبدية التي لا يعتريها موت ولا فناء.",
+    "explanation_en": "The One who possesses complete and eternal life, unaffected by death or decay."
+  },
+  {
+    "index": 64,
+    "name_ar": "الْقَيُّومُ",
+    "transliteration": "Al-Qayyūm",
+    "translation_en": "The Sustainer",
+    "explanation_ar": "القائم بنفسه المقيم لغيره، الذي يقوم عليه كل شيء.",
+    "explanation_en": "The Self-Existing One who sustains and upholds all creation."
+  },
+  {
+    "index": 65,
+    "name_ar": "الْوَاجِدُ",
+    "transliteration": "Al-Wājid",
+    "translation_en": "The Perceiver",
+    "explanation_ar": "الذي لا يعزب عنه شيء، ولا يحتاج إلى وسيلة ليعلم أو يجد.",
+    "explanation_en": "The One who perceives and knows everything without need or effort."
+  },
+  {
+    "index": 66,
+    "name_ar": "الْمَاجِدُ",
+    "transliteration": "Al-Mājid",
+    "translation_en": "The Noble",
+    "explanation_ar": "ذو المجد والكرم والعظمة، كثير الخير والإحسان.",
+    "explanation_en": "The One full of glory, generosity, and greatness; abundant in goodness."
+  },
+  {
+    "index": 67,
+    "name_ar": "الْوَاحِدُ",
+    "transliteration": "Al-Wāḥid",
+    "translation_en": "The One",
+    "explanation_ar": "الذي لا شريك له في ذاته ولا صفاته ولا أفعاله.",
+    "explanation_en": "The One without partner in His essence, attributes, or actions."
+  },
+  {
+    "index": 68,
+    "name_ar": "الصَّمَدُ",
+    "transliteration": "As-Ṣamad",
+    "translation_en": "The Eternal Refuge",
+    "explanation_ar": "الذي يُقصد في الحوائج، الغني عن كل ما سواه.",
+    "explanation_en": "The One who is sought for all needs and is self-sufficient from all creation."
+  },
+  {
+    "index": 69,
+    "name_ar": "الْقَادِرُ",
+    "transliteration": "Al-Qādir",
+    "translation_en": "The Able",
+    "explanation_ar": "الذي يقدر على كل شيء ولا يعجزه شيء في الأرض ولا في السماء.",
+    "explanation_en": "The One who has full power over everything; nothing can overpower or limit Him."
+  },
+  {
+    "index": 70,
+    "name_ar": "الْمُقْتَدِرُ",
+    "transliteration": "Al-Muqtadir",
+    "translation_en": "The All-Powerful",
+    "explanation_ar": "الذي لا يعجزه شيء، قدَّر الأشياء وأحكمها بقدرته.",
+    "explanation_en": "The One who is able to do all things and has power over everything with perfect control."
+  },
+  {
+    "index": 71,
+    "name_ar": "الْمُقَدِّمُ",
+    "transliteration": "Al-Muqaddim",
+    "translation_en": "The Advancer",
+    "explanation_ar": "الذي يُقدِّم من يشاء بفضله، ويقرّب الطائعين.",
+    "explanation_en": "The One who brings forward whomever He wills and draws His servants near by His grace."
+  },
+  {
+    "index": 72,
+    "name_ar": "الْمُؤَخِّرُ",
+    "transliteration": "Al-Mu’akhkhir",
+    "translation_en": "The Delayer",
+    "explanation_ar": "الذي يؤخر من يشاء بحكمته وعدله، ويؤجل الأمور في الوقت المناسب.",
+    "explanation_en": "The One who delays or withholds by His wisdom and justice, and grants in due time."
+  },
+  {
+    "index": 73,
+    "name_ar": "الأوَّلُ",
+    "transliteration": "Al-Awwal",
+    "translation_en": "The First",
+    "explanation_ar": "الذي ليس قبله شيء، الموجود أزلاً بلا بداية.",
+    "explanation_en": "The One before whom there was nothing; the eternal without beginning."
+  },
+  {
+    "index": 74,
+    "name_ar": "الآخِرُ",
+    "transliteration": "Al-Ākhir",
+    "translation_en": "The Last",
+    "explanation_ar": "الذي ليس بعده شيء، الباقي أبدًا بلا نهاية.",
+    "explanation_en": "The One after whom there is nothing; the everlasting without end."
+  },
+  {
+    "index": 75,
+    "name_ar": "الظَّاهِرُ",
+    "transliteration": "Az-Ẓāhir",
+    "translation_en": "The Manifest",
+    "explanation_ar": "الذي ظهر وجوده للعقول بآثاره وأدلته، ولا شيء فوقه.",
+    "explanation_en": "The One whose existence is evident through His signs; nothing is above Him."
+  },
+  {
+    "index": 76,
+    "name_ar": "الْبَاطِنُ",
+    "transliteration": "Al-Bāṭin",
+    "translation_en": "The Hidden",
+    "explanation_ar": "الذي لا تُدركه الأبصار ولا العقول، ولا شيء دونه.",
+    "explanation_en": "The One who is hidden from sight and beyond human comprehension; nothing is closer than Him."
+  },
+  {
+    "index": 77,
+    "name_ar": "الْوَالِي",
+    "transliteration": "Al-Wālī",
+    "translation_en": "The Governor",
+    "explanation_ar": "الذي يتولى أمر خلقه ويدبر شؤونهم بحكمته.",
+    "explanation_en": "The One who manages and governs the affairs of creation with wisdom."
+  },
+  {
+    "index": 78,
+    "name_ar": "الْمُتَعَالِي",
+    "transliteration": "Al-Muta‘ālī",
+    "translation_en": "The Exalted",
+    "explanation_ar": "الذي تعالى عن صفات المخلوقين، وارتفع فوق كل نقص.",
+    "explanation_en": "The One who is far above the attributes of creation and exalted beyond all imperfections."
+  },
+  {
+    "index": 79,
+    "name_ar": "الْبَرُّ",
+    "transliteration": "Al-Barr",
+    "translation_en": "The Source of All Goodness",
+    "explanation_ar": "الذي يحسن إلى عباده برحمة ولطف، ويمتنّ عليهم بفضله.",
+    "explanation_en": "The One who is kind and gracious to His creation, bestowing upon them goodness and mercy."
+  },
+  {
+    "index": 80,
+    "name_ar": "التَّوَّابُ",
+    "transliteration": "At-Tawwāb",
+    "translation_en": "The Accepter of Repentance",
+    "explanation_ar": "الذي يوفق عباده للتوبة ويقبلها منهم مهما عظمت ذنوبهم.",
+    "explanation_en": "The One who enables His servants to repent and accepts their repentance no matter how great their sins."
+  },
+  {
+    "index": 81,
+    "name_ar": "الْمُنْتَقِمُ",
+    "transliteration": "Al-Muntaqim",
+    "translation_en": "The Avenger",
+    "explanation_ar": "الذي ينتقم من الظالمين بعدله في الوقت الذي يشاء.",
+    "explanation_en": "The One who justly punishes the oppressors and wrongdoers in due time."
+  },
+  {
+    "index": 82,
+    "name_ar": "العَفُوُّ",
+    "transliteration": "Al-‘Afūw",
+    "translation_en": "The Pardoner",
+    "explanation_ar": "الذي يمحو الذنوب ويتجاوز عن السيئات بكرمه ولطفه.",
+    "explanation_en": "The One who erases sins and pardons the faults of His servants with generosity."
+  },
+  {
+    "index": 83,
+    "name_ar": "الرَّؤُوفُ",
+    "transliteration": "Ar-Ra’ūf",
+    "translation_en": "The Compassionate",
+    "explanation_ar": "الذي بلغ في رحمته ولطفه غاية الكمال بعباده.",
+    "explanation_en": "The One whose mercy and gentleness toward His servants reach the utmost degree of perfection."
+  },
+  {
+    "index": 84,
+    "name_ar": "مَالِكُ الْمُلْكِ",
+    "transliteration": "Mālik al-Mulk",
+    "translation_en": "The Owner of All Sovereignty",
+    "explanation_ar": "الذي له ملك السماوات والأرض، يتصرف فيهما كما يشاء.",
+    "explanation_en": "The One who owns and rules over all dominion and disposes of it as He wills."
+  },
+  {
+    "index": 85,
+    "name_ar": "ذُو الْجَلَالِ وَالإِكْرَامِ",
+    "transliteration": "Dhū al-Jalāl wa al-Ikrām",
+    "translation_en": "The Lord of Majesty and Generosity",
+    "explanation_ar": "ذو العظمة والكمال والجود والكرم على عباده.",
+    "explanation_en": "The One who possesses majesty, perfection, and generosity toward His creation."
+  },
+  {
+    "index": 86,
+    "name_ar": "الْمُقْسِطُ",
+    "transliteration": "Al-Muqsiṭ",
+    "translation_en": "The Equitable",
+    "explanation_ar": "الذي يقيم العدل في خلقه ولا يظلم أحداً.",
+    "explanation_en": "The One who establishes justice among His creation and never wrongs anyone."
+  },
+  {
+    "index": 87,
+    "name_ar": "الْجَامِعُ",
+    "transliteration": "Al-Jāmi‘",
+    "translation_en": "The Gatherer",
+    "explanation_ar": "الذي يجمع الخلائق ليوم لا ريب فيه، ويجمع الأمور المتفرقة بحكمته.",
+    "explanation_en": "The One who gathers creation on the Day of Judgment and brings together scattered things by His wisdom."
+  },
+  {
+    "index": 88,
+    "name_ar": "الْغَنِيُّ",
+    "transliteration": "Al-Ghaniyy",
+    "translation_en": "The Self-Sufficient",
+    "explanation_ar": "الذي لا يحتاج إلى أحد، وكل الخلق فقراء إليه.",
+    "explanation_en": "The One who is free of all needs, while all creation depends on Him."
+  },
+  {
+    "index": 89,
+    "name_ar": "الْمُغْنِي",
+    "transliteration": "Al-Mughnī",
+    "translation_en": "The Enricher",
+    "explanation_ar": "الذي يغني من يشاء من عباده ويكفيهم بفضله.",
+    "explanation_en": "The One who enriches whomever He wills and suffices them by His bounty."
+  },
+  {
+    "index": 90,
+    "name_ar": "الْمَانِعُ",
+    "transliteration": "Al-Māni‘",
+    "translation_en": "The Withholder",
+    "explanation_ar": "الذي يمنع البلاء أو العطاء لحكمةٍ يعلمها، ويمنع الشر عن عباده.",
+    "explanation_en": "The One who prevents harm or withholding of provision out of His wisdom and mercy."
+  },
+  {
+    "index": 91,
+    "name_ar": "الضَّارُّ",
+    "transliteration": "Ad-Ḍārr",
+    "translation_en": "The Distresser",
+    "explanation_ar": "الذي بيده الضر والنفع، يبتلي من يشاء بعدله.",
+    "explanation_en": "The One who allows harm or adversity to occur by His justice and wisdom."
+  },
+  {
+    "index": 92,
+    "name_ar": "النَّافِعُ",
+    "transliteration": "An-Nāfi‘",
+    "translation_en": "The Benefactor",
+    "explanation_ar": "الذي يمنح الخير والنفع لعباده وييسر لهم أسباب الرحمة.",
+    "explanation_en": "The One who grants benefit and goodness to His creation and facilitates mercy for them."
+  },
+  {
+    "index": 93,
+    "name_ar": "النُّورُ",
+    "transliteration": "An-Nūr",
+    "translation_en": "The Light",
+    "explanation_ar": "الذي بنوره اهتدى المهتدون، وهو منوّر السماوات والأرض.",
+    "explanation_en": "The One by whose light the believers are guided; He is the illuminator of the heavens and the earth."
+  },
+  {
+    "index": 94,
+    "name_ar": "الْهَادِي",
+    "transliteration": "Al-Hādī",
+    "translation_en": "The Guide",
+    "explanation_ar": "الذي يهدي القلوب إلى الحق ويوفق عباده إلى الصراط المستقيم.",
+    "explanation_en": "The One who guides hearts to truth and directs His servants to the straight path."
+  },
+  {
+    "index": 95,
+    "name_ar": "الْبَدِيعُ",
+    "transliteration": "Al-Badī‘",
+    "translation_en": "The Incomparable Originator",
+    "explanation_ar": "الذي خلق الخلق على غير مثال سابق، ولا شبيه له.",
+    "explanation_en": "The One who created creation without precedent and has no equal or likeness."
+  },
+  {
+    "index": 96,
+    "name_ar": "اَلْبَاقِي",
+    "transliteration": "Al-Bāqī",
+    "translation_en": "The Everlasting",
+    "explanation_ar": "الذي لا يزول ولا يفنى، الدائم الباقي بعد فناء الخلق.",
+    "explanation_en": "The One who remains and never perishes; the everlasting after all creation has ceased."
+  },
+  {
+    "index": 97,
+    "name_ar": "الْوَارِثُ",
+    "transliteration": "Al-Wārith",
+    "translation_en": "The Inheritor",
+    "explanation_ar": "الذي يرث الأرض ومن عليها، ويبقى بعد فناء جميع الخلق.",
+    "explanation_en": "The One who remains after all creation perishes and to whom all possessions return."
+  },
+  {
+    "index": 98,
+    "name_ar": "الرَّشِيدُ",
+    "transliteration": "Ar-Rashīd",
+    "translation_en": "The Guide to the Right Path",
+    "explanation_ar": "الذي يرشد عباده إلى الصواب، ويهديهم إلى ما فيه صلاحهم.",
+    "explanation_en": "The One who guides His servants toward righteousness and directs them to what benefits them."
+  },
+  {
+  "index": 99,
+  "name_ar": "ٱلصَّبُورُ",
+  "transliteration": "As-Ṣabūr",
+  "translation_en": "The Patient",
+  "explanation_ar": "الذي لا يعجل على عباده بالعقوبة، بل يمهلهم برحمته ويصبر على معاصيهم.",
+  "explanation_en": "The One who does not hasten punishment for His servants but grants them time and shows immense patience despite their disobedience."
+  }
+]
