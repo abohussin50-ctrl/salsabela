@@ -23,7 +23,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* 🌟 Oval Search Box */
+    /* 🌟 Search Box */
     .search-container {
       position: relative;
       margin-bottom: 20px;
@@ -31,7 +31,7 @@
     #searchBox {
       width: 100%;
       padding: 14px 50px 14px 20px;
-      border-radius: 999px; /* Fully oval */
+      border-radius: 999px;
       border: 2px solid #2a9d8f40;
       font-family: 'Cairo', sans-serif;
       font-size: 1rem;
@@ -67,7 +67,6 @@
       transition: 0.25s;
       border-bottom: 1px solid #f2f2f2;
     }
-    .suggestions div:last-child { border-bottom: none; }
     .suggestions div:hover {
       background: #e8f7f4;
       color: #2a9d8f;
@@ -90,6 +89,7 @@
       padding: 16px;
       margin-bottom: 15px;
       box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      position: relative;
     }
     .arabic {
       font-family: 'Amiri', serif;
@@ -104,6 +104,44 @@
       font-size: 0.95rem;
       border-top: 1px solid #eee;
       padding-top: 6px;
+    }
+    .counter-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+    .count {
+      background-color: #2a9d8f;
+      color: white;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+    .count:active {
+      transform: scale(1.1);
+    }
+    .reset-btn {
+      background-color: #e63946;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .reset-btn:hover {
+      background-color: #c1121f;
     }
     .back-btn {
       display: inline-block;
@@ -136,7 +174,7 @@
 
 <script>
 let allData = [];
-let currentSection = null; // 🔹 Track current open section
+let currentSection = null;
 const content = document.getElementById("content");
 const searchBox = document.getElementById("searchBox");
 const suggestionBox = document.getElementById("suggestions");
@@ -175,16 +213,32 @@ function renderAdhkar(index) {
   const sec = allData[index];
   currentSection = index;
   content.innerHTML = `<div class="back-btn" onclick="renderSections()">← Back</div><h2>${sec.TITLE}</h2>`;
-  sec.TEXT.forEach(z => {
+  sec.TEXT.forEach((z, i) => {
     const div = document.createElement("div");
     div.className = "zekr";
     div.innerHTML = `
       <div class="arabic">${z.ARABIC_TEXT || ''}</div>
       <div class="translation">${z.TRANSLATED_TEXT || ''}</div>
       ${z.AUDIO ? `<audio controls src="${z.AUDIO}"></audio>` : ''}
+      <div class="counter-box">
+        <div class="count" id="count-${index}-${i}">0</div>
+        <button class="reset-btn" onclick="resetCount('${index}-${i}')">Reset</button>
+      </div>
     `;
     content.appendChild(div);
   });
+
+  // Add click listeners for counters
+  document.querySelectorAll(".count").forEach(el => {
+    el.addEventListener("click", () => {
+      el.textContent = parseInt(el.textContent) + 1;
+    });
+  });
+}
+
+function resetCount(id) {
+  const el = document.getElementById("count-" + id);
+  if (el) el.textContent = "0";
 }
 
 searchBox.addEventListener("input", () => {
@@ -199,13 +253,11 @@ searchBox.addEventListener("input", () => {
 
   const matches = [];
   if (currentSection === null) {
-    // 🔍 Search in section titles
     allData.forEach((sec, idx) => {
       const title = normalizeText(sec.TITLE);
       if (title.includes(query)) matches.push({ name: sec.TITLE, index: idx });
     });
   } else {
-    // 🔍 Search inside current section's adhkar
     const sec = allData[currentSection];
     sec.TEXT.forEach((z, i) => {
       const text = normalizeText((z.ARABIC_TEXT || '') + ' ' + (z.TRANSLATED_TEXT || ''));
@@ -222,7 +274,6 @@ searchBox.addEventListener("input", () => {
       searchBox.value = m.name;
       if (currentSection === null) renderAdhkar(m.index);
       else {
-        // Display only the matched dhikr
         const sec = allData[currentSection];
         const z = sec.TEXT[m.index];
         content.innerHTML = `<div class="back-btn" onclick="renderAdhkar(${currentSection})">← Back</div><h2>${sec.TITLE}</h2>`;
@@ -232,8 +283,16 @@ searchBox.addEventListener("input", () => {
           <div class="arabic">${z.ARABIC_TEXT || ''}</div>
           <div class="translation">${z.TRANSLATED_TEXT || ''}</div>
           ${z.AUDIO ? `<audio controls src="${z.AUDIO}"></audio>` : ''}
+          <div class="counter-box">
+            <div class="count" id="count-single">0</div>
+            <button class="reset-btn" onclick="document.getElementById('count-single').textContent='0'">Reset</button>
+          </div>
         `;
         content.appendChild(div);
+
+        document.getElementById("count-single").addEventListener("click", (e) => {
+          e.target.textContent = parseInt(e.target.textContent) + 1;
+        });
       }
     };
     suggestionBox.appendChild(item);
