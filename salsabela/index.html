@@ -1,28 +1,290 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>سلسبيلا</title>
-<meta name="description" content="منصة سلسبيلا — موقع قرآني شامل لقراءة القرآن الكريم بالرسم العثماني، الاستماع لتلاوات كبار القراء، تصفح التفاسير والأذكار والكتب الإسلامية، عبر تجربة مميزة وسهلة الاستخدام.">
-<meta name="keywords" content="القرآن الكريم، موقع سلسبيلا، تلاوات قرآنية، تفسير ابن كثير، ترجمة معاني القرآن، الأذكار اليومية، إذاعة القرآن الكريم، كتب دينية، موقع قرآني شامل، منصة تلاوة وتفسير القرآن">  
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="favicon.png">  
-<link rel="stylesheet" href="css/styles.css"></head><body>
-<div id="header-holder"></div>
-<main class="container">
-  <section class="hero card"><h1>سلسبيلا</h1><p class="small">مصدر منظم للقرآن والتفسير والأذكار مع تلاوات لقرّاء مشهورين.</p>
-  <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap">
-    <a class="adhkar-btn" href="quran.html">المصحف</a>
-    <a class="adhkar-btn" href="radio.html">الراديو</a>
-    <a class="adhkar-btn" href="adhkar.html">الأذكار</a>
-  </div></section>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>سلسبيلا</title>
+  <meta name="description" content="منصة سلسبيلا — موقع قرآني شامل لقراءة القرآن الكريم بالرسم العثماني، الاستماع لتلاوات كبار القراء، تصفح التفاسير والأذكار والكتب الإسلامية، عبر تجربة مميزة وسهلة الاستخدام.">
+  <meta name="keywords" content="القرآن الكريم، موقع سلسبيلا، تلاوات قرآنية، تفسير ابن كثير، ترجمة معاني القرآن، الأذكار اليومية، إذاعة القرآن الكريم، كتب دينية، موقع قرآني شامل، منصة تلاوة وتفسير القرآن">
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
 
-  <section class="section card">
-    <h2>لماذا سلسبيلا؟</h2>
-    <ul>
-      <li>كل صفحة مستقلة لسرعة التحميل والتنقل.</li>
-      <li>تشغيل التلاوات من الإنترنت للحفاظ على حجم الموقع صغير.</li>
-      <li>دعم التفسير، البحث، والمفضلات محليًا عبر المتصفح.</li>
-    </ul>
+  <style>
+    :root{
+      --accent: #2b9edb;
+      --gold: #d4af37;
+      --bg-gradient: linear-gradient(180deg,#f9fcff 0%,#e8f3ff 100%);
+      --card-glass: rgba(255,255,255,0.45);
+      --shadow: rgba(0,0,0,0.08);
+    }
+
+    body{
+      font-family:'Cairo',sans-serif;
+      background: var(--bg-gradient);
+      color: #0b2540;
+      margin:0;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* HERO */
+    .hero{
+      text-align:center;
+      padding:5rem 1rem 6rem;
+      /* استعملت صورة من Unsplash (مجاناً) — يمكنك استبدالها برابطك */
+      background: url('https://img.pikbest.com/backgrounds/20250112/an-islamic-background-featuring-a-glowing-quran-on-wooden-stand_11379211.jpg%21sw800') no-repeat center/cover;
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(43,158,219,0.92), rgba(43,158,219,0.6));
+      z-index:0;
+    }
+    .hero-content{
+      position:relative;
+      z-index:2;
+      max-width:900px;
+      margin:auto;
+      padding:0 1rem;
+    }
+    .hero h1{
+      font-size:2.6rem;
+      font-weight:800;
+      margin-bottom:1rem;
+      color:#fff;
+      letter-spacing:1px;
+    }
+    .hero p{
+      font-size:1.05rem;
+      line-height:1.9;
+      color:#f0f6ff;
+      margin-bottom:1.6rem;
+    }
+    .hero .buttons{ display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+
+    .btn-main{
+      background:#fff;
+      color:var(--accent);
+      padding:0.8rem 1.6rem;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:1.02rem;
+      transition:all .25s ease;
+      box-shadow:0 6px 20px rgba(0,0,0,0.12);
+    }
+    .btn-main:hover{ transform:translateY(-3px); background:var(--gold); color:#fff; }
+
+    /* MAIN / CARDS */
+    main{ padding:3rem 1rem 5rem; max-width:1200px; margin:auto; }
+    .sections{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.6rem; }
+
+    .card{
+      background:var(--card-glass);
+      border-radius:16px;
+      padding:1.6rem 1.2rem;
+      text-align:center;
+      box-shadow:0 10px 30px var(--shadow);
+      transition:transform .35s ease, box-shadow .35s ease;
+      position:relative;
+      overflow:hidden;
+      /* تطبيق Blur داخل البطاقة إن وُجد دعم */
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+    .card:hover{ transform:translateY(-8px); box-shadow:0 14px 40px rgba(0,0,0,0.12); }
+    .card::after{ content:""; position:absolute; top:0; left:0; width:100%; height:5px; background:linear-gradient(90deg,var(--accent),var(--gold)); border-radius:8px 8px 0 0; }
+    .card h3{ color:var(--accent); font-size:1.25rem; margin-bottom:.6rem; }
+    .card p{ color:#333; font-size:0.95rem; line-height:1.7; margin-bottom:1rem; }
+    .card a{ color:var(--accent); font-weight:700; text-decoration:none; }
+    .card a:hover{ color:var(--gold); text-decoration:underline; }
+
+    /* ANIMATION (fade-in) */
+    [data-fade]{ opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+    [data-fade].visible{ opacity:1; transform:translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width:600px){
+      .hero{ padding:3.2rem 1rem 4rem; }
+      .hero h1{ font-size:2rem; }
+    }
+	/* 🔹 إزالة أي فاصل أو خط بين المحتوى والفوتر */
+main {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+body {
+  background: #f9fcff !important; /* نفس خلفية الصفحة */
+}
+
+/* إزالة أي ظل من البطاقات الأخيرة */
+.sections .card:last-child {
+  box-shadow: none !important;
+}
+
+/* جعل الفوتر يندمج تمامًا بدون فاصل */
+footer.footer {
+  background: #0b2540 !important;  /* الخلفية الداكنة نفسها */
+  border-top: none !important;
+  margin-top: -2px !important; /* يزيل الخط الفاصل */
+  padding-top: 2rem !important;
+}
+
+/* إزالة أي اختلاف ألوان بين الخلفيات */
+#footer-holder {
+  background: #0b2540 !important;
+  margin-top: -2px !important;
+}
+/* 🔹 تنظيم المسافات بين الكروت والهيدر والفوتر */
+.hero {
+  margin-bottom: 3rem !important;
+}
+
+/* الكروت */
+.sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.5rem; /* زيادة التباعد بين الصناديق */
+  padding: 0 1rem;
+  margin-bottom: 3rem;
+}
+
+.card {
+  background: var(--card-glass);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  backdrop-filter: blur(12px);
+  transition: all 0.4s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* إضافة مسافة مريحة قبل الفوتر */
+main {
+  margin-bottom: 4rem !important;
+}
+
+/* ضمان عدم تلاصق الفوتر بالمحتوى */
+#footer-holder {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* تحسين مظهر الخلفية */
+body {
+  background: linear-gradient(180deg, #f9fcff 0%, #eef6ff 100%);
+}
+/* تحسين ظهور ظل آخر بطاقة قبل الفوتر */
+.sections {
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2; /* يجعل الظل فوق الفوتر */
+}
+
+.footer {
+  position: relative;
+  z-index: 0;
+  background: #041627;
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+  </style>
+</head>
+
+<body>
+  <div id="header-holder"></div>
+
+  <section class="hero" aria-label="Hero">
+    <div class="hero-content">
+      <h1>سلسبيلا</h1>
+      <p>منصة تجمع بين جمال القرآن الكريم وعمق الذكر وأسماء الله الحسنى.</p>
+      <div class="buttons">
+        <a href="quran.html" class="btn-main" role="button">📖 ابدأ التلاوة</a>
+        <a href="radio.html" class="btn-main" role="button">📻 استمع للإذاعة</a>
+      </div>
+    </div>
   </section>
-</main>
-<div id="footer-holder"></div>
-<script src="js/common.js"></script></body></html>
+
+  <main>
+    <div class="sections" aria-live="polite">
+      <article class="card" data-fade>
+        <h3>📖 المصحف الشريف</h3>
+        <p>اقرأ سور القرآن الكريم بالرسم العثماني واستمع إلى تلاوات خاشعة من كبار القراء.</p>
+        <a href="quran.html">عرض المصحف</a>
+      </article>
+
+      <article class="card" data-fade>
+        <h3>🌙 الأذكار</h3>
+        <p>أذكار الصباح والمساء والأدعية اليومية لتجدد صلتك بالله كل يوم.</p>
+        <a href="adhkar.html">عرض الأذكار</a>
+      </article>
+
+      <article class="card" data-fade>
+        <h3>💫 أسماء الله الحسنى</h3>
+        <p>تعرف على أسماء الله الحسنى ومعانيها وفضلها في تهذيب القلب وزيادة الإيمان.</p>
+        <a href="asmaulhusna.html">اكتشف الأسماء</a>
+      </article>
+
+      <article class="card" data-fade>
+        <h3>📻 الإذاعة القرآنية</h3>
+        <p>استمع لبث مباشر على مدار الساعة لتلاوات متنوعة بأصوات خاشعة.</p>
+        <a href="radio.html">تشغيل الإذاعة</a>
+      </article>
+
+      <article class="card" data-fade>
+        <h3>📚 الكتب الإسلامية</h3>
+        <p>مكتبة رقمية تضم كتب التفسير والعقيدة والسيرة النبوية لتوسيع معرفتك.</p>
+        <a href="books.html">تصفح الكتب</a>
+      </article>
+    </div>
+  </main>
+
+  <div id="footer-holder"></div>
+
+  <script src="js/common.js"></script>
+  <script>
+    // شغّل الكود بعد تحميل DOM حتى نتجنّب أخطاء اختيار العناصر قبل وجودها
+    document.addEventListener('DOMContentLoaded', function() {
+      const elements = document.querySelectorAll('[data-fade]');
+
+      // تحقق من وجود IntersectionObserver
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+          });
+        }, { threshold: 0.12 });
+
+        elements.forEach(el => observer.observe(el));
+      } else {
+        // متصفحات أقدم: فقط أضف الفئة visible حتى يظهر المحتوى
+        elements.forEach(el => el.classList.add('visible'));
+      }
+    });
+  </script>
+</body>
+</html>
