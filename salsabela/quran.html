@@ -72,7 +72,6 @@
   margin-top: 6px;
 }
 
-
     .suggestion-box div {
       padding: 10px 14px;
       cursor: pointer;
@@ -109,6 +108,19 @@
       color: #2a9d8f;
       transform: translateY(-2px);
     }
+
+    /* 🌙 تنسيق عرض الآية */
+    #ayahDisplay {
+      margin-top: 25px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-align: center;
+      font-family: 'Amiri', serif;
+      font-size: 1.3rem;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -119,11 +131,12 @@
   <h1>📖 فهرس سور القرآن الكريم</h1>
 
   <div class="search-container">
-    <input type="search" id="search" placeholder="ابحث عن سورة بالاسم..." autocomplete="off">
+    <input type="search" id="search" placeholder="ابحث عن سورة أو آية..." autocomplete="off">
     <div id="suggestionBox" class="suggestion-box"></div>
   </div>
 
   <div class="sura-list" id="suraList"></div>
+  <div id="ayahDisplay"></div>
 </main>
 
 <div id="footer-holder"></div>
@@ -133,6 +146,7 @@
   const suraList = document.getElementById("suraList");
   const searchInput = document.getElementById("search");
   const suggestionBox = document.getElementById("suggestionBox");
+  const ayahDisplay = document.getElementById("ayahDisplay");
 
   const surahNames = [
     "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
@@ -149,6 +163,15 @@
     "المسد","الإخلاص","الفلق","الناس"
   ];
 
+  // ⚠️ مثال صغير لآيات — يمكن استبدالها بملف JSON لاحقًا
+  const ayat = [
+    { text: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ", surah: "الفاتحة", number: 1 },
+    { text: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", surah: "الفاتحة", number: 2 },
+    { text: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ", surah: "البقرة", number: 255 },
+    { text: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", surah: "البقرة", number: 153 },
+    { text: "وَقُلْ رَبِّ زِدْنِي عِلْمًا", surah: "طه", number: 114 }
+  ];
+
   function normalizeArabic(text) {
     return text.toLowerCase()
       .replace(/[ًٌٍَُِّْـ]/g, "")
@@ -160,7 +183,6 @@
       .replace(/[^ءاأإآء-ي\s]/g, "");
   }
 
-  // ⚡ خوارزمية الذكاء التقاربي (قياس التشابه)
   function similar(a, b) {
     if (!a || !b) return 0;
     const lenA = a.length, lenB = b.length;
@@ -198,9 +220,11 @@
     const val = normalizeArabic(searchInput.value.trim());
     suggestionBox.innerHTML = "";
     suggestionBox.style.display = "none";
+    ayahDisplay.style.display = "none";
 
     if (!val) { renderSurahList(); return; }
 
+    // 🔹 البحث في أسماء السور
     const filtered = surahNames.filter(name => {
       const n = normalizeArabic(name);
       return n.includes(val) || similar(n, val) > 0.7;
@@ -208,15 +232,28 @@
 
     renderSurahList(filtered);
 
-    if (filtered.length > 0) {
-      filtered.slice(0, 6).forEach(name => {
-        const item = document.createElement("div");
-        item.textContent = name;
-        item.onclick = () => {
-          const index = surahNames.indexOf(name) + 1;
-          window.location.href = `surah.html?id=${index}`;
-        };
-        suggestionBox.appendChild(item);
+    // 🔹 البحث في الآيات
+    const matchedAyat = ayat.filter(a => normalizeArabic(a.text).includes(val));
+
+    // عرض الاقتراحات
+    if (filtered.length > 0 || matchedAyat.length > 0) {
+      [...filtered.slice(0, 5), ...matchedAyat.slice(0, 5)].forEach(item => {
+        const div = document.createElement("div");
+        if (typeof item === "string") {
+          div.textContent = "سورة " + item;
+          div.onclick = () => {
+            const index = surahNames.indexOf(item) + 1;
+            window.location.href = `surah.html?id=${index}`;
+          };
+        } else {
+          div.textContent = `${item.text} (${item.surah}:${item.number})`;
+          div.onclick = () => {
+            ayahDisplay.innerHTML = `<strong>${item.surah} - آية ${item.number}</strong><br>${item.text}`;
+            ayahDisplay.style.display = "block";
+            suggestionBox.style.display = "none";
+          };
+        }
+        suggestionBox.appendChild(div);
       });
       suggestionBox.style.display = "block";
     }
