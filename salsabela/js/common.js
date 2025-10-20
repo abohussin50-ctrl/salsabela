@@ -12,9 +12,9 @@ function buildHeader() {
       <a href="index.html">🏠 الرئيسية</a>
       <a href="quran.html">📖 المصحف</a>
       <a href="adhkar.html">🌙 الأذكار</a>
-      <a href="radio.html">📻 الإذاعة</a>
-      <a href="books.html">📕 الكتب</a>
+      <a href="radio.html">📻 إذاعة القرآن الكريم</a>
       <a href="asmaulhusna.html">🕋 أسماء الله الحسنى</a>
+      <a href="books.html">📕 مكتبة الكتب الإسلامية</a>
     </nav>
 
     <div id="overlay"></div>
