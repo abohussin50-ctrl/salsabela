@@ -13,9 +13,9 @@ function buildHeader() {
       <a href="index.html">🏠 Home</a>
       <a href="quran.html">📖 Quran</a>
       <a href="adhkar.html">🌙 Adhkar</a>
-      <a href="radio.html">📻 Radio</a>
-      <a href="books.html">📕 Books</a>
+      <a href="radio.html">📻 Holy quran radio</a>
       <a href="asmaulhusna.html">🕋 99 Names of Allah</a>
+      <a href="books.html">📕 Islamic books library</a>
     </nav>
 
     <div id="overlay"></div>
@@ -101,5 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+
 
 
