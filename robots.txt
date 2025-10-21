@@ -1,4 +1,38 @@
+# robots.txt for https://salsabela.com
+# آخر تحديث: 2025-10-21
+# هذا الملف يوضح صلاحيات الزحف لمحركات البحث
+
+# السماح الكامل لمحركات البحث الموثوقة
 User-agent: *
 Allow: /
 
+# حظر روبوتات الذكاء الاصطناعي من استخدام المحتوى في التدريب
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+# خريطة الموقع
 Sitemap: https://salsabela.com/sitemap.xml
