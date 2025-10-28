@@ -23,34 +23,53 @@
       letter-spacing: 0.5px;
     }
 
-    .search-container { position: relative; margin-bottom: 20px; }
-    #searchBox {
-      width: 100%; padding: 14px 50px 14px 20px;
-      border-radius: 999px;
-      border: 2px solid #2a9d8f40;
-      font-family: 'Cairo', sans-serif;
-      font-size: 1rem;
-      background: #fff url('data:image/svg+xml;utf8,<svg fill="%232a9d8f" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>') no-repeat 98% center;
-      background-size: 22px;
-      box-shadow: 0 3px 10px rgba(42, 157, 143, 0.15);
-      transition: all 0.3s ease;
-    }
-    #searchBox:focus {
-      outline: none; border-color: #2a9d8f;
-      box-shadow: 0 4px 12px rgba(42, 157, 143, 0.25);
-      background-color: #fefefe;
-    }
-
-    .suggestions {
-      position: absolute; background: #fff;
-      border: 1px solid #ddd; border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      max-height: 220px; overflow-y: auto;
-      z-index: 1000; width: 100%; display: none; top: 100%; margin-top: 5px;
-    }
-    .suggestions div { padding: 10px 14px; cursor: pointer; transition: 0.25s; border-bottom: 1px solid #f2f2f2; }
-    .suggestions div:last-child { border-bottom: none; }
-    .suggestions div:hover { background: #e8f7f4; color: #2a9d8f; }
+/* 🔍 محرك البحث */
+.search-container {
+  position: relative;
+  margin-bottom: 25px;
+}
+#searchBox {
+  width: 100%;
+  padding: 14px 50px 14px 20px;
+  border-radius: 999px;
+  border: 2px solid #2a9d8f40;
+  font-size: 1rem;
+  background: #fff url('data:image/svg+xml;utf8,<svg fill="%232a9d8f" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>') no-repeat 98% center;
+  background-size: 22px;
+  box-shadow: 0 3px 10px rgba(42, 157, 143, 0.15);
+  transition: all 0.3s ease;
+}
+#searchBox:focus {
+  outline: none;
+  border-color: #2a9d8f;
+  box-shadow: 0 4px 12px rgba(42, 157, 143, 0.25);
+  background-color: #fefefe;
+}
+.suggestions {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 1000;
+  width: 100%;
+  display: none;
+  top: 100%;
+  margin-top: 5px;
+}
+.suggestions div {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: 0.25s;
+  border-bottom: 1px solid #f2f2f2;
+}
+.suggestions div:last-child { border-bottom: none; }
+.suggestions div:hover {
+  background: #e8f7f4;
+  color: #2a9d8f;
+}
 
     .section-card {
       background: #fff; border-radius: 12px; padding: 12px 15px;
