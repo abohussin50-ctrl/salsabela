@@ -3,32 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Salsabila — Holy Quran Radio</title>
-  <meta name="description" content="Listen to the Holy Quran Radio live on Salsabela — 24/7 streaming of beautiful Quran recitations by renowned reciters."><meta name="keywords" content="الكلمات المفتاحية هنا">
-  <meta name="keywords" content="Quran radio live, Holy Quran broadcast, 24/7 Quran streaming, Islamic radio online, listen to Quran recitations, Mishary Rashid Alafasy, Mohammed Siddiq Al-Minshawi, Mahmoud Khalil Al-Husary, Mustafa Ismail, Mahmoud Ali Al-Banna, Abdul Basit Abdus Samad, Saud Al-Shuraim, Abdul Rahman Al-Sudais, Maher Al-Muaiqly, Ahmed Al-Ajmi, Yasser Al-Dosari, Salah Al-Budair, Ali Jaber, Idris Abkar, Saad Al-Ghamdi, Nasser Al-Qatami, Fares Abbad, emotional Quran recitations, Salsabela Quran radio, free online Quran station">
+  <title>Salsabila — Quran Radio</title>
+  <meta name="description" content="Listen to the Holy Quran Radio live via Salsabila platform — continuous Quran recitations 24/7 by the most renowned reciters.">
+  <meta name="keywords" content="Quran Radio, Live Quran Broadcast, Islamic Radio, Listen to Quran Online, Mishary Rashid Alafasy, Mohammed Siddiq Al-Minshawi, Mahmoud Khalil Al-Husary, Mustafa Ismail, Mahmoud Ali Al-Banna, Abdul Basit Abdul Samad, Saud Al-Shuraim, Abdul Rahman Al-Sudais, Maher Al-Muaiqly, Ahmad Al-Ajmi, Yasser Al-Dosari, Salah Al-Budair, Ali Jaber, Idris Abkar, Saad Al-Ghamdi, Nasser Al-Qatami, Fares Abbad, Emotional Quran Recitations, Saudi Quran Radio, Egyptian Quran Radio, Salsabila website, Free Quran Radio 24 hours">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
   <style>
+    :root {
+      --accent: #2b9edb;
+      --accent-dark: #1a6aa5;
+      --bg: #f5f9ff;
+      --card: #ffffffc9;
+      --shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(180deg, #fafdff 0%, #e8f2ff 100%);
+      margin: 0;
+      color: #0b2540;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
     main {
       max-width: 700px;
-      margin: 2rem auto;
-      background: white;
-      padding: 2rem;
+      margin: 4rem auto;
+      background: var(--card);
+      padding: 3rem 2rem;
       border-radius: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow);
       text-align: center;
+      backdrop-filter: blur(10px);
     }
+
     h1 {
-      color: #00695c;
+      color: var(--accent-dark);
       margin-bottom: 1rem;
+      font-size: 2rem;
+      font-weight: 800;
     }
+
+    p {
+      color: #444;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
     select {
-      padding: 10px;
+      width: 100%;
+      padding: 12px;
       border-radius: 10px;
-      border: 1px solid #ccc;
-      margin: 10px;
+      border: 1px solid #cfdce6;
       font-size: 1rem;
+      margin-bottom: 1.5rem;
+      background: #fff;
+      transition: border 0.3s ease;
+    }
+    select:focus {
+      border-color: var(--accent);
+      outline: none;
     }
     button {
       background: #00897b;
@@ -40,55 +77,70 @@
       font-size: 1rem;
       transition: background 0.3s;
     }
-    button:hover {
-      background: #00695c;
-    }
     audio {
       width: 100%;
-      margin-top: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     }
+
     .station-info {
       margin-top: 1rem;
       font-weight: 600;
-      color: #444;
+      color: #333;
+      font-size: 1.05rem;
+    }
+
+    .radio-icon {
+      font-size: 3rem;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+      display: inline-block;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        margin: 2rem 1rem;
+        padding: 2rem 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
+
 <div id="header-holder"></div>
+
 <main>
-  <h1>📻 Holy Quran Radio</h1>
-  <p>Listen to live broadcasts of Quran recitations from various stations around the world.</p>
+  <h1>Quran Radio</h1>
+  <p>Listen to Quran recitations from various Islamic radio stations around the world.</p>
 
-  <div>
-    <label for="radioSelect">Choose a station:</label><br>
-    <select id="radioSelect">
-      <option value="">-- Select a station --</option>
-      <option value="https://qurango.net/radio/tarateel">Tarteel Quran Radio</option>
-      <option value="https://stream.radiojar.com/8s5u5tpdtwzuv">Holy Quran Radio - Cairo</option>
-      <option value="http://stream.radiojar.com/0tpy1h0kxtzuv">Holy Quran Radio - Saudi Arabia</option>
-      <option value="http://r1.tarat.com:8196/;">Al-Majd Quran Radio</option>      
-      <option value="https://backup.qurango.net/radio/mohammed_siddiq_alminshawi/%D8%A3%D8%AB%D9%8A%D8%B1%20%D8%B1%D8%A7%D8%AF%D9%8A%D9%88.mp3">Al-Minshawi Radio</option>
-      <option value="https://server03.quran-uni.com:7007/;*.mp3">Al-Husary Radio</option>
-      <option value="https://qurango.net/radio/mahmoud_ali__albanna_mojawwad.mp3">Sheikh Mahmoud Ali Al-Banna Radio</option>
-      <option value="https://server03.quran-uni.com:7132/;*.mp3">Sheikh Mustafa Ismail Radio</option>
-      <option value="https://qurango.net/radio/abdulbasit_abdulsamad_mojawwad.mp3">Sheikh Abdulbasit Abdulsamad Radio</option>
-      <option value="https://qurango.net/radio/yasser_aldosari.mp3">Sheikh Yasser Al-Dosari Radio</option>
-      <option value="https://server03.quran-uni.com:7005/;*.mp3">Sheikh Maher Al-Muaiqly Radio</option>
-      <option value="https://qurango.net/radio/abdulrahman_alsudaes.mp3">Sheikh Abdulrahman Al-Sudais Radio</option>
-      <option value="https://qurango.net/radio/ahmad_alajmy.mp3">Sheikh Ahmed Al-Ajmi Radio</option>
-      <option value="https://qurango.net/radio/saad_alghamdi.mp3">Sheikh Saad Al-Ghamdi Radio</option>
-      <option value="https://server03.quran-uni.com:7032/;*.mp3">Sheikh Abdullah Awad Al-Juhani Radio</option>
-      <option value="https://qurango.net/radio/mishary_alafasi.mp3">Al-Afasy Radio</option>
-    </select>
-  </div>
+  <select id="radioSelect">
+    <option value="">-- Select a station --</option>
+    <option value="https://qurango.net/radio/tarateel">Tarateel Quran Radio</option>
+    <option value="https://stream.radiojar.com/8s5u5tpdtwzuv">Quran Radio from Cairo</option>
+    <option value="http://stream.radiojar.com/0tpy1h0kxtzuv">Saudi Quran Radio</option>
+    <option value="http://r1.tarat.com:8196/">Al-Majd Quran Radio</option>
+    <option value="https://qurango.net/radio/mohammed_siddiq_alminshawi.mp3">Al-Minshawi Radio</option>
+    <option value="https://server03.quran-uni.com:7007/;*.mp3">Al-Husary Radio</option>
+    <option value="https://qurango.net/radio/mahmoud_ali__albanna_mojawwad.mp3">Sheikh Mahmoud Ali Al-Banna Radio</option>
+    <option value="https://server03.quran-uni.com:7132/;*.mp3">Sheikh Mustafa Ismail Radio</option>
+    <option value="https://qurango.net/radio/abdulbasit_abdulsamad_mojawwad.mp3">Sheikh Abdul Basit Abdul Samad Radio</option>
+    <option value="https://qurango.net/radio/yasser_aldosari.mp3">Sheikh Yasser Al-Dosari Radio</option>
+    <option value="https://server03.quran-uni.com:7005/;*.mp3">Sheikh Maher Al-Muaiqly Radio</option>
+    <option value="https://qurango.net/radio/abdulrahman_alsudaes.mp3">Sheikh Abdul Rahman Al-Sudais Radio</option>
+    <option value="https://qurango.net/radio/ahmad_alajmy.mp3">Sheikh Ahmad Al-Ajmi Radio</option>
+    <option value="https://qurango.net/radio/saad_alghamdi.mp3">Sheikh Saad Al-Ghamdi Radio</option>
+    <option value="https://server03.quran-uni.com:7032/;*.mp3">Sheikh Abdullah Al-Juhany Radio</option>
+    <option value="https://qurango.net/radio/mishary_alafasi.mp3">Al-Afasy Radio</option>
+  </select>
 
-  <button id="playBtn">Play Radio</button>
+  <button id="playBtn">▶ Play Radio</button>
 
   <div class="station-info" id="stationName"></div>
 
   <audio id="radioPlayer" controls autoplay></audio>
 </main>
+
 <div id="footer-holder"></div>
 
 <script src="js/common.js"></script>
@@ -102,13 +154,14 @@ btn.addEventListener("click", () => {
   const url = select.value;
   const name = select.options[select.selectedIndex].text;
   if (!url) {
-    alert("Please select a radio station first 🎧");
+    alert("Please select a station first 🎧");
     return;
   }
   player.src = url;
   player.play();
-  info.textContent = "Now playing: " + name;
+  info.textContent = "🎙️ Now playing: " + name;
 });
 </script>
+
 </body>
 </html>
