@@ -34,7 +34,7 @@ function buildFooter() {
       </div>
       <div class="footer-divider"></div>
       <div class="footer-copy">
-        © ${new Date().getFullYear()} —
+        © ${new Date().getFullYear()}
         <span class="footer-brand">سلسبيلا</span> · جميع الحقوق محفوظة
       </div>
     </div>
