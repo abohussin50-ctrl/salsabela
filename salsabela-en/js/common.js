@@ -35,7 +35,7 @@ function buildFooter() {
       </div>
       <div class="footer-divider"></div>
       <div class="footer-copy">
-        © ${new Date().getFullYear()}<span class="footer-brand">Salsabela</span> · All rights reserved
+        © ${new Date().getFullYear()} <span class="footer-brand">Salsabela</span> · All rights reserved
       </div>
     </div>
   </footer>
@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+
 
 
 
