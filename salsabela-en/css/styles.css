@@ -215,3 +215,45 @@ body {
   color: #00c4ff;
   font-weight: 800;
 }
+
+.book-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.book-buttons .view,
+.book-buttons .download {
+  flex: 1;
+  padding: 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.book-buttons .view {
+  background-color: #009688;
+  color: #fff;
+}
+
+.book-buttons .view:hover {
+  background-color: #00796b;
+  transform: translateY(-2px);
+}
+
+.book-buttons .download {
+  background-color: #ff9800;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.book-buttons .download:hover {
+  background-color: #e68900;
+  transform: translateY(-2px);
+}
