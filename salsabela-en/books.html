@@ -1,42 +1,326 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Salsabela — Books</title>
-  <meta name="description" content="Explore the Islamic books library on Salsabela — Read and download books on Tafsir, Aqeedah, Hadith, and the Prophet’s biography with ease.">
-  <meta name="keywords" content="Islamic books library, download tafsir books, hadith books, aqeedah studies, prophetic biography, Islamic reading, online religious books, free Islamic ebooks, Salsabela library">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salsabila — Islamic Books Library</title>
+<meta name="description" content="Explore the Islamic Books Library on the Salsabila platform — Download and read books on Tafsir, Aqeedah, Hadith, and the Prophet's biography with ease.">
+<meta name="keywords" content="Islamic books, Islamic books pdf, Islamic bookstore, Buy Islamic books online, Download Islamic books, Islamic library, Quran books, Hadith books, Seerah books, Aqeedah books, Islamic ebooks, Islamic pdf store, Free Islamic books, Islamic studies books, Fiqh books, Tafsir books, Islamic book shop, Islamic digital library, Islamic heritage books, Sunni books, Arabic Islamic books, Islamic religion books, Islamic book collection, Buy Quran online, Islamic pdf download, Islamic knowledge booksIslamic religious books, download tafsir books, hadith books, aqeedah books, prophetic biography books, free Islamic library, read Islamic books online, Salsabila books platform">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+body {
+  font-family: 'Cairo', sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  color: #222;
+}
+
+/* Title */
+h2 {
+  text-align: center;
+  color: #2a9d8f;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* 🔍 Search Engine */
+.search-container {
+  position: relative;
+  margin-bottom: 25px;
+}
+#searchBox {
+  width: 100%;
+  padding: 14px 50px 14px 20px;
+  border-radius: 999px;
+  border: 2px solid #2a9d8f40;
+  font-size: 1rem;
+  background: #fff url('data:image/svg+xml;utf8,<svg fill="%232a9d8f" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM5 9.5C5 7.01 7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14 5 11.99 5 9.5z"/></svg>') no-repeat 98% center;
+  background-size: 22px;
+  box-shadow: 0 3px 10px rgba(42, 157, 143, 0.15);
+  transition: all 0.3s ease;
+}
+#searchBox:focus {
+  outline: none;
+  border-color: #2a9d8f;
+  box-shadow: 0 4px 12px rgba(42, 157, 143, 0.25);
+  background-color: #fefefe;
+}
+.suggestions {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 1000;
+  width: 100%;
+  display: none;
+  top: 100%;
+  margin-top: 5px;
+}
+.suggestions div {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: 0.25s;
+  border-bottom: 1px solid #f2f2f2;
+}
+.suggestions div:last-child { border-bottom: none; }
+.suggestions div:hover {
+  background: #e8f7f4;
+  color: #2a9d8f;
+}
+
+/* Book Cards */
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+.book-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: 0.3s;
+}
+.book-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+}
+.book-card img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.book-card h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+.book-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+button.view {
+  background: #198754;
+  color: #fff;
+}
+button.download {
+  background: #0d6efd;
+  color: #fff;
+}
+button:hover { opacity: 0.85; }
+
+/* PDF Viewer Popup */
+#viewerPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#popupContent {
+  background: #fff;
+  width: 90%;
+  max-width: 900px;
+  height: 90%;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#popupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2a9d8f;
+  color: #fff;
+  padding: 10px 15px;
+}
+#popupHeader h3 { margin: 0; }
+#closePopup {
+  cursor: pointer;
+  font-size: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+}
+#pdfViewer {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+</style>
 </head>
 <body>
 <div id="header-holder"></div>
 
-<main class="container card">
-  <h2>📚 Islamic Books Library</h2>
-  <p>Add PDF files or book links here.</p>
+<main class="container">
+  <h2>Islamic Books Library</h2>
+
+  <!-- 🔍 Search Box -->
+  <div class="search-container">
+    <input type="search" id="searchBox" placeholder="Search for a book..." autocomplete="off">
+    <div id="suggestions" class="suggestions"></div>
+  </div>
+
   <div class="book-list" id="bookList"></div>
 </main>
 
-<div id="footer-holder"></div>
+<!-- Book Viewer Popup -->
+<div id="viewerPopup">
+  <div id="popupContent">
+    <div id="popupHeader">
+      <h3 id="popupTitle">View Book</h3>
+      <button id="closePopup">✖</button>
+    </div>
+    <iframe id="pdfViewer"></iframe>
+  </div>
+</div>
+
+<div id="footer-holder">© Salsabila · All rights reserved</div>
 
 <script src="js/common.js"></script>
 <script>
-// Example of a book item — you can modify it later
 const books = [
-  { title: 'Tafsir Ibn Kathir', link: '#' },
-  { title: 'Sahih Al-Bukhari', link: '#' }
+  {
+    title: 'Islamic Creed',
+    keywords: ['aqeedah', 'creed', 'islamic belief', 'aqida', 'akidah', 'tawheed', 'islamic creed pdf', 'belief in islam', 'islamic theology', 'sunni creed'],
+    viewLink: 'https://drive.google.com/file/d/1Xhh8qMfv_BvKOAvrtCiMsFRcDDsnWX8N/preview',
+    downloadLink: 'https://payhip.com/b/QOi0X',
+    image: 'source/aqeedah.png'
+  },
+  {
+    title: 'Duaa in Islam',
+    keywords: ['dua', 'supplication', 'prayer', 'islamic dua', 'duaa book', 'islamic prayer book', 'invocations', 'islam duaa pdf', 'muslim duaa', 'best dua in islam'],
+    viewLink: 'https://drive.google.com/file/d/1GUMHNrW2cxzu6OmM5yIn_axjZ7p0xOR2/preview',
+    downloadLink: 'https://payhip.com/b/2YFSl',
+    image: 'source/Duaa.png'
+  },
+  {
+    title: 'Adhkar in Islam',
+    keywords: ['adhkar', 'azkar', 'morning adhkar', 'evening adhkar', 'remembrance', 'islamic adhkar pdf', 'daily adhkar', 'zikr', 'dhikr', 'muslim remembrance book'],
+    viewLink: 'https://drive.google.com/file/d/1CeWiCQjwdVa2AJ9UoV3Ailew1zVvbANd/preview',
+    downloadLink: 'https://payhip.com/b/3tCkx',
+    image: 'source/Adhkar.png'
+  },
+  {
+    title: 'Manners of The Prophet',
+    keywords: ['manners', 'prophetic manners', 'akhlaq', 'character of prophet', 'sunnah manners', 'islamic behavior', 'prophet muhammad character', 'good manners in islam'],
+    viewLink: 'https://drive.google.com/file/d/1RKoqDarQoT0f2A-LsbBgV60WHvAuA6XA/preview',
+    downloadLink: 'https://payhip.com/b/f2CbG',
+    image: 'source/Manners of The Prophet.png'
+  },
+  {
+    title: 'The book of virtues',
+    keywords: ['virtues', 'fadaa’il', 'good deeds', 'reward in islam', 'virtues of quran', 'virtues of islamic actions', 'islamic virtues pdf'],
+    viewLink: 'https://drive.google.com/file/d/1-gQwjHqHhVzcqsHEj1spV1biZYnyO6Zo/preview',
+    downloadLink: 'https://payhip.com/b/iBKNp',
+    image: 'source/The book of virutes.png'
+  },
+  {
+    title: 'Etiquettes in Islam',
+    keywords: ['etiquettes', 'islamic manners', 'adab', 'eating manners', 'travel manners', 'greeting etiquette', 'visiting etiquette', 'islamic behavior book', 'sunnah etiquette'],
+    viewLink: 'https://drive.google.com/file/d/1Qm1__VnoNdEeo388RYgx-XNYthgoA_jT/preview',
+    downloadLink: 'https://payhip.com/b/13HBK',
+    image: 'source/etiquittes.png'
+  }
 ];
 
-const holder = document.getElementById('bookList');
-books.forEach(b => {
-  const div = document.createElement('div');
-  div.className = 'card';
-  div.style.marginBottom = '8px';
-  div.innerHTML = `<h3>${b.title}</h3><a href="${b.link}" target="_blank">📥 Download / View</a>`;
-  holder.appendChild(div);
+const list = document.getElementById('bookList');
+const popup = document.getElementById('viewerPopup');
+const pdfViewer = document.getElementById('pdfViewer');
+const popupTitle = document.getElementById('popupTitle');
+const closePopup = document.getElementById('closePopup');
+const searchBox = document.getElementById('searchBox');
+const suggestionBox = document.getElementById('suggestions');
+
+function renderBooks(filtered = books) {
+  list.innerHTML = '';
+  filtered.forEach(book => {
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    card.innerHTML = `
+      <img src="${book.image}" alt="${book.title}">
+      <h3>${book.title}</h3>
+      <div class="book-buttons">
+        <button class="view">View</button>
+        <a href="${book.downloadLink}" class="download" download>Buy</a>
+      </div>
+    `;
+    const viewBtn = card.querySelector('.view');
+    viewBtn.addEventListener('click', () => {
+      popup.style.display = 'flex';
+      pdfViewer.src = book.viewLink;
+      popupTitle.textContent = book.title;
+    });
+    list.appendChild(card);
+  });
+}
+renderBooks();
+
+closePopup.addEventListener('click', () => {
+  popup.style.display = 'none';
+  pdfViewer.src = '';
 });
+
+// Fuzzy search
+function fuzzyMatch(text, search) {
+  const pattern = search.split('').join('.*');
+  return new RegExp(pattern, 'i').test(text);
+}
+
+// Search + Suggestions
+searchBox.addEventListener('input', () => {
+  const q = searchBox.value.trim().toLowerCase();
+  suggestionBox.innerHTML = '';
+
+  if (!q) { 
+    suggestionBox.style.display = 'none';
+    renderBooks();
+    return;
+  }
+
+  const matches = books.filter(b =>
+    b.title.toLowerCase().includes(q) ||
+    b.keywords.some(k => k.includes(q)) ||
+    fuzzyMatch(b.title.toLowerCase(), q)
+  );
+
+  matches.slice(0, 7).forEach(m => {
+    const div = document.createElement('div');
+    div.textContent = m.title;
+    div.onclick = () => {
+      searchBox.value = m.title;
+      suggestionBox.style.display = 'none';
+      renderBooks([m]);
+    };
+    suggestionBox.appendChild(div);
+  });
+
+  suggestionBox.style.display = matches.length ? 'block' : 'none';
+  renderBooks(matches);
+});
+
+searchBox.addEventListener('blur', () => setTimeout(() => suggestionBox.style.display = 'none', 200));
 </script>
 </body>
 </html>
