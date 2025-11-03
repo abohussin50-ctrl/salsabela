@@ -1,104 +1,65 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Redirecting...</title>
-<script>
-/*
-  أسرع تحويل عملي:
-  1) تحويل فوري لو لغة المتصفح عربية.
-  2) خلاف ذلك: إعداد "fallback" سريع (80ms) يحوّل إلى الإنجليزية فوراً.
-  3) في الخلفية نطلب خدمة Geo-IP (مهلة 300ms). إن كانت دولة عربية نلغي الفالباك ونحوّل للعربية.
-*/
 
-(function () {
-  // روابط النسخ
+<script>
+(async () => {
   const AR_URL = 'salsabela/index.html';
   const EN_URL = 'salsabela-en/index.html';
 
-  // قائمة الدول العربية (lowercase)
+  // قائمة الدول العربية (بحروف صغيرة)
   const arabCountries = new Set([
     'egypt','saudi arabia','united arab emirates','kuwait','qatar','bahrain',
     'oman','yemen','syria','lebanon','jordan','palestine','iraq','morocco',
     'algeria','tunisia','libya','sudan','mauritania','somalia','comoros','djibouti'
   ]);
 
-  // حالة منع تحويل مزدوج
   let redirected = false;
-  function doRedirect(url) {
+  const doRedirect = (url) => {
     if (redirected) return;
     redirected = true;
-    // استبدال الصفحة بدون إضافة إلى السجل
     window.location.replace(url);
-  }
+  };
 
   try {
-    const lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    // الخطوة 1: جلب بيانات البلد عبر IP
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 1000); // مهلة 1 ثانية فقط
+    const response = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+    clearTimeout(timeout);
 
-    // 1) تحويل فوري لو لغة المتصفح عربية (الأسرع)
-    if (lang.startsWith('ar')) {
-      doRedirect(AR_URL);
+    if (response.ok) {
+      const data = await response.json();
+      const country = (data.country_name || '').toLowerCase();
+
+      // الخطوة 2: تحديد الوجهة بناءً على الدولة
+      if (arabCountries.has(country)) {
+        doRedirect(AR_URL);
+      } else {
+        doRedirect(EN_URL);
+      }
       return;
     }
+  } catch (err) {
+    // فشل في تحديد الدولة
+  }
 
-    // 2) إعداد fallback سريع إلى الإنجليزية (يعمل بعد X ملّي ثانية إذا لم يأتِ رد الجيو)
-    const FALLBACK_MS = 80;   // مهلة قصيرة جداً لضمان تحويل فوري إن كان تحديد الدولة بطيئاً
-    const GEO_TIMEOUT_MS = 300; // مهلة طلب Geo-IP قبل الاستسلام
-
-    const fallbackTimer = setTimeout(() => {
-      // إذا لم يتم تحديد الدولة بسرعة، نرسل المستخدم إلى الإنجليزية فوراً
-      doRedirect(EN_URL);
-    }, FALLBACK_MS);
-
-    // 3) تنفيذ طلب Geo-IP مع مهلة (AbortController)
-    const controller = new AbortController();
-    const signal = controller.signal;
-    const geoUrl = 'https://ipapi.co/json/'; // سريع وموثوق عادةً
-
-    // إعداد مهلة للإلغاء
-    const geoTimeout = setTimeout(() => controller.abort(), GEO_TIMEOUT_MS);
-
-    fetch(geoUrl, { signal })
-      .then(res => {
-        clearTimeout(geoTimeout);
-        if (!res.ok) throw new Error('geo fetch failed');
-        return res.json();
-      })
-      .then(data => {
-        // لو لم نحوّل بعد، نقرِّر بناءً على الدولة
-        if (redirected) return;
-        clearTimeout(fallbackTimer);
-        const country = (data.country_name || '').toLowerCase();
-        if (country && arabCountries.has(country)) {
-          doRedirect(AR_URL);
-        } else {
-          doRedirect(EN_URL);
-        }
-      })
-      .catch(() => {
-        // فشل في جلب Geo-IP -> الاعتماد على الفالباك (الذي قد سبق ونفَّذ)
-        // لا نفعل شيئًا هنا لأن الفالباك سينفّذ بعد FALLBACK_MS أو قد يكون قد نُفذ بالفعل.
-        // للتأمين: إن لم يُنفّذ الفالباك حتى الآن، نُشغّله فوراً
-        if (!redirected) {
-          clearTimeout(fallbackTimer);
-          doRedirect(EN_URL);
-        }
-      });
-
-  } catch (e) {
-    // أي خطأ غير متوقع -> اعادة الاعتماد على لغة المتصفح أو الإنجليزية
-    const lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-    if (lang.startsWith('ar')) {
-      doRedirect(AR_URL);
-    } else {
-      doRedirect(EN_URL);
-    }
+  // الخطوة 3 (خطة بديلة): استخدام لغة المتصفح
+  const lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+  if (lang.startsWith('ar')) {
+    doRedirect(AR_URL);
+  } else {
+    doRedirect(EN_URL);
   }
 })();
 </script>
 
-<style>body{display:none;margin:0;padding:0}</style>
+<style>
+  body { display: none; }
+</style>
 </head>
 <body></body>
 </html>
