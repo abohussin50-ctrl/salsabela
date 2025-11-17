@@ -4,7 +4,10 @@ function buildHeader() {
   <header class="site-header">
     <div class="header-inner">
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
-      <div class="brand">Salsabela</div>
+      <div class="brand">
+  <img src="favicon.png" alt="Salsabela logo" class="brand-logo">
+  <span>Salsabela</span>
+</div>
     </div>
 
     <!-- Sidebar menu -->
@@ -101,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+
 
 
 
