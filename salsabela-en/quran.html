@@ -3,35 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Salsabela — The Qur’an</title>
-  <meta name="description" content="Read the Holy Quran in Uthmani script and listen to recitations by famous reciters, with tafsir and translation options available.">
-  <meta name="keywords" content="Read the Holy Quran, Uthmani script Quran, full Quran chapters, online Quran reading, Quran recitation audio, Quran without internet, digital Quran reader, Salsabela Quran, the Holy Quran, Surat Al-Baqarah, Surat Al-Kahf, Surat Yasin, Surat Al-Rahman, Surat Al-Ikhlas, Surat Al-Falaq, Surat An-Nas, Surat Al-Imran, Surat Al-A’raf, Juz’ Amma">
-  <meta name="robots" content="index, follow">
+  <title>Salsabela — Quran</title>
+  <meta name="description" content="Read the Holy Quran in Uthmani script and listen to recitations by various readers with the ability to view interpretation and translation.">
+  <meta name="keywords" content="Quran reading, Holy Quran Uthmani script, full Quran surahs, Quran audio recitations, download surahs, read Quran offline, Quran reading website, Quran platform, Al-Baqara, Al-Kahf, Yasin, Ar-Rahman, Al-Ikhlas, Al-Falaq, An-Nas, Al-Imran, Al-A'raf, Juz Amma">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/styles.css">
+
   <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      background-color: #f8faf9;
-      margin: 0;
-    }
+/* 🌙 General Settings */
+body {
+  font-family: 'Cairo', sans-serif;
+  background: #f4f7f6;
+  margin: 0;
+  color: #1d2d2a;
+}
 
-    main {
-      max-width: 850px;
-      margin: auto;
-      padding: 1rem;
-      position: relative;
-    }
+/* 🟢 Title */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin: 25px 0 35px;
+  font-weight: 700;
+  color: #168f79;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: #2a9d8f;
-      font-weight: 700;
-    }
-
-    /* 🔍 تصميم محرك البحث البيضاوي الذكي */
+    /* 🔍 Oval Search Bar Design */
     .search-container {
       position: relative;
       margin-bottom: 25px;
@@ -40,7 +37,7 @@
     #search {
       width: 100%;
       padding: 16px 55px 16px 18px;
-      border-radius: 50px; /* الشكل البيضاوي */
+      border-radius: 50px;
       border: 2px solid #2a9d8f33;
       font-family: 'Cairo', sans-serif;
       font-size: 1.05rem;
@@ -57,8 +54,7 @@
       background-color: #fefefe;
     }
 
-    /* ✅ صندوق الاقتراحات الذكي */
-    #suggestions {
+    .suggestion-box {
       position: absolute;
       background: #fff;
       border: 1px solid #ddd;
@@ -73,152 +69,175 @@
       margin-top: 6px;
     }
 
-    .suggestion-item {
+    .suggestion-box div {
       padding: 10px 14px;
       cursor: pointer;
       transition: 0.25s;
       border-bottom: 1px solid #f2f2f2;
     }
 
-    .suggestion-item:last-child { border-bottom: none; }
-    .suggestion-item:hover {
+    .suggestion-box div:last-child {
+      border-bottom: none;
+    }
+
+    .suggestion-box div:hover {
       background: #e8f7f4;
       color: #2a9d8f;
     }
 
-    /* 🕋 فهرس السور */
-    .sura-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-    }
+/* 🕋 Surah Index — More Professional */
+.sura-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  padding-bottom: 50px;
+}
 
-    .sura-item {
-      background-color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 12px;
-      text-align: center;
-      transition: 0.3s;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-
+.sura-item {
+  background: #ffffff;
+  padding: 18px 10px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #123a35;
+  cursor: pointer;
+  border: 1px solid #e6f0ef;
+  transition: 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
     .sura-item:hover {
       background-color: #e8f7f4;
       color: #2a9d8f;
       transform: translateY(-2px);
     }
   </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7559491443488147"
-     crossorigin="anonymous"></script>
 </head>
+
 <body>
+  <div id="header-holder"></div>
 
-<div id="header-holder"></div>
+  <main>
+    <h1>Quran Surah Index</h1>
 
-<main>
-  <h1>Index of Qur’an Chapters</h1>
+    <div class="search-container">
+      <input type="search" id="search" placeholder="Search for a surah by name..." autocomplete="off">
+      <div id="suggestionBox" class="suggestion-box"></div>
+    </div>
 
-  <div class="search-container">
-    <input type="search" id="search" placeholder="Search for a surah..." autocomplete="off">
-    <div id="suggestions"></div>
-  </div>
+    <div class="sura-list" id="suraList"></div>
+  </main>
 
-  <div class="sura-list" id="suraList"></div>
-</main>
+  <div id="footer-holder"></div>
 
-<div id="footer-holder"></div>
-<script src="js/common.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    const suraList = document.getElementById("suraList");
+    const searchInput = document.getElementById("search");
+    const suggestionBox = document.getElementById("suggestionBox");
 
-<script>
-  const suraList = document.getElementById("suraList");
-  const searchInput = document.getElementById("search");
-  const suggestionsBox = document.getElementById("suggestions");
+    const surahNames = [
+      "Al-Fatihah","Al-Baqarah","Aal Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus",
+      "Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha",
+      "Al-Anbya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum",
+      "Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir",
+      "Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf",
+      "Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah",
+      "As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij",
+      "Nuh","Al-Jinn","Al-Muzzammil","Al-Muddathir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa",
+      "At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad",
+      "Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat",
+      "Al-Qari'ah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr",
+      "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
+    ];
 
-  const surahNames = [
-    "Al-Fatihah","Al-Baqarah","Aal Imran","An-Nisa","Al-Ma’idah","Al-An’am","Al-A’raf","Al-Anfal","At-Tawbah","Yunus",
-    "Hud","Yusuf","Ar-Ra’d","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha",
-    "Al-Anbiya","Al-Hajj","Al-Mu’minun","An-Nur","Al-Furqan","Ash-Shu’ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum",
-    "Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir",
-    "Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf",
-    "Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi’ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah",
-    "As-Saff","Al-Jumu’ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma’arij",
-    "Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi’at","Abasa",
-    "At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A’la","Al-Ghashiyah","Al-Fajr","Al-Balad",
-    "Ash-Shams","Al-Layl","Ad-Duhaa","Ash-Sharh","At-Tin","Al-‘Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-‘Adiyat",
-    "Al-Qari’ah","At-Takathur","Al-‘Asr","Al-Humazah","Al-Fil","Quraish","Al-Ma’un","Al-Kawthar","Al-Kafirun","An-Nasr",
-    "Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
-  ];
-
-  function normalizeText(text) {
-    return text
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u064B-\u0652]/g, "")
-      .replace(/['’‘`´]/g, "")
-      .replace(/[^a-z\u0600-\u06FF\s]/g, "")
-      .trim();
-  }
-
-  function renderSurahList() {
-    suraList.innerHTML = "";
-    surahNames.forEach((name, i) => {
-      const div = document.createElement("div");
-      div.className = "sura-item";
-      div.textContent = `${i + 1}. ${name}`;
-      div.onclick = () => window.location.href = `surah.html?id=${i + 1}`;
-      suraList.appendChild(div);
-    });
-  }
-
-  // 🔹 البحث الذكي مع اقتراحات فورية
-  searchInput.addEventListener("input", () => {
-    const query = normalizeText(searchInput.value);
-    suggestionsBox.innerHTML = "";
-
-    if (!query) {
-      suggestionsBox.style.display = "none";
-      showAll();
-      return;
+    function normalizeArabic(text) {
+      return text.toLowerCase()
+        .replace(/[ًٌٍَُِّْـ]/g, "")
+        .replace(/[أإآٱا]/g, "ا")
+        .replace(/ؤ/g, "و")
+        .replace(/ئ/g, "ي")
+        .replace(/ة/g, "ه")
+        .replace(/ى/g, "ي")
+        .replace(/[^ءاأإآء-ي\s]/g, "");
     }
 
-    const matches = surahNames
-      .map((name, i) => ({ name, index: i + 1 }))
-      .filter(item => normalizeText(item.name).includes(query))
-      .slice(0, 8);
+    // ⚡ Approximate Matching Algorithm
+    function similar(a, b) {
+      if (!a || !b) return 0;
+      const lenA = a.length, lenB = b.length;
+      const dp = Array(lenA + 1).fill().map(() => Array(lenB + 1).fill(0));
 
-    if (matches.length > 0) {
-      matches.forEach(match => {
+      for (let i = 0; i <= lenA; i++) dp[i][0] = i;
+      for (let j = 0; j <= lenB; j++) dp[0][j] = j;
+
+      for (let i = 1; i <= lenA; i++) {
+        for (let j = 1; j <= lenB; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + cost
+          );
+        }
+      }
+
+      const dist = dp[lenA][lenB];
+      return 1 - dist / Math.max(lenA, lenB);
+    }
+
+    function renderSurahList(filtered = surahNames) {
+      suraList.innerHTML = "";
+      filtered.forEach(name => {
         const div = document.createElement("div");
-        div.className = "suggestion-item";
-        div.innerHTML = `${match.index}. ${match.name}`;
-        div.onclick = () => {
-          window.location.href = `surah.html?id=${match.index}`;
-        };
-        suggestionsBox.appendChild(div);
+        div.className = "sura-item";
+        div.textContent = `${surahNames.indexOf(name) + 1}. ${name}`;
+        div.onclick = () => window.location.href = `surah.html?id=${surahNames.indexOf(name) + 1}`;
+        suraList.appendChild(div);
       });
-      suggestionsBox.style.display = "block";
-    } else {
-      suggestionsBox.style.display = "none";
+
+      if (filtered.length === 0)
+        suraList.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#777;">No matching surah found 🔍</p>`;
     }
 
-    const items = document.querySelectorAll(".sura-item");
-    items.forEach(item => {
-      item.style.display = normalizeText(item.textContent).includes(query) ? "block" : "none";
+    function filterSurahs() {
+      const val = normalizeArabic(searchInput.value.trim());
+      suggestionBox.innerHTML = "";
+      suggestionBox.style.display = "none";
+
+      if (!val) {
+        renderSurahList();
+        return;
+      }
+
+      const filtered = surahNames.filter(name => {
+        const n = normalizeArabic(name);
+        return n.includes(val) || similar(n, val) > 0.7;
+      });
+
+      renderSurahList(filtered);
+
+      if (filtered.length > 0) {
+        filtered.slice(0, 6).forEach(name => {
+          const item = document.createElement("div");
+          item.textContent = name;
+          item.onclick = () => {
+            const index = surahNames.indexOf(name) + 1;
+            window.location.href = `surah.html?id=${index}`;
+          };
+          suggestionBox.appendChild(item);
+        });
+        suggestionBox.style.display = "block";
+      }
+    }
+
+    searchInput.addEventListener("input", filterSurahs);
+    searchInput.addEventListener("focus", filterSurahs);
+    searchInput.addEventListener("blur", () => {
+      setTimeout(() => suggestionBox.style.display = "none", 200);
     });
-  });
 
-  searchInput.addEventListener("blur", () => {
-    setTimeout(() => (suggestionsBox.style.display = "none"), 200);
-  });
-
-  function showAll() {
-    document.querySelectorAll(".sura-item").forEach(item => item.style.display = "block");
-  }
-
-  renderSurahList();
-</script>
-
+    renderSurahList();
+  </script>
 </body>
 </html>
