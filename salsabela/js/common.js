@@ -4,7 +4,10 @@ function buildHeader() {
   <header class="site-header">
     <div class="header-inner">
       <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
-      <div class="brand">سلسبيلا</div>
+      <div class="brand">
+  <img src="favicon.png" alt="شعار سلسبيلا" class="brand-logo">
+  <span>سلسبيلا</span>
+</div>
     </div>
 
     <nav class="side-menu" id="sideMenu" aria-label="قائمة الموقع">
