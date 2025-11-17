@@ -230,3 +230,20 @@ body {
   color: #00c4ff;
   font-weight: 800;
 }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* المسافة بين الشعار والنص */
+  margin-left: auto;
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: #fff;
+}
+
+.brand-logo {
+  width: 35px;   /* حجم الشعار */
+  height: 35px;  /* حجم الشعار */
+  object-fit: contain;
+  border-radius: 6px; /* اختياري: يجعل الحواف دائرية قليلاً */
+}
+
